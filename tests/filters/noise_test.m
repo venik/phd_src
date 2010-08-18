@@ -15,8 +15,11 @@ awgn = randn(1, len*10);
 %plot(awgn), grid on, xlim([1, len]) ;
 
 % calculate filter
-[N, Wn] = buttord(Wc, Wb, 0.707, 30, 's') ;
-[b, a] = butter(N, Wn, 's') ;
+%[N, Wn] = buttord(Wc, Wb, 0.707, 30, 's') ;
+%[b, a] = butter(N, Wn, 's') ;
+
+[N, Wn] = buttord(0.3, 0.4, 0.707, 30) ;
+[b, a] = butter(N, Wn) ;
 
 fprintf('Filter N = %d, Wn = %f\n', N, Wn);
 
