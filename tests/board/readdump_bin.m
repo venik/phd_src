@@ -18,10 +18,6 @@ for idx_b=1:length(x_binary)
     x(idx + 2) = bitshift(bitand(x_binary(idx_b), 0x0c), -2);
     x(idx + 3) =          bitand(x_binary(idx_b), 0x03);
 
-    %x(idx + 1) = x_binary(idx_b) & 0xbf;
-    %x(idx + 2) = x_binary(idx_b) & 0xf3;
-    %x(idx + 3) = x_binary(idx_b) & 0xfb;
-
     idx = idx + 4;
 end
 
