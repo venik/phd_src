@@ -1,0 +1,8 @@
+images/*
+*.dvi
+*.blg
+*.bbl
+*.log
+*.aux
+*.pdf
+larm*.*
