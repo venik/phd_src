@@ -7,11 +7,10 @@ y(x1:x2) = y(x1:x2) .* (-1) ;
 
 % bit
 y_bit = ones(length(y), 1);
-y_bit(x1:x2) = y_bit(x1:x2) .* (-1) ;
+y_bit(x1:x2) = y_bit(x1:x2) .* 0 ;
 
-
-figure(1), , grid on;
-subplot(2,1,1), plot(x,y), title('a)')
-subplot(2,1,2), plot(x, y_bit, 'r'), title('b)'), ylim([-1.5,1.5 ]);
-%figure (1, 'visible', 'off');
+figure(1),
+subplot(2,1,1), plot(x,y), title('a)'), xlim([x(1), x(end)]), ylim([-1.1,1.1 ]), grid on,
+subplot(2,1,2), plot(x, y_bit, 'r'), title('b)'), xlim([x(1), x(end)]), ylim([-0.1,1.1 ]), grid on,
+figure (1, 'visible', 'on');
 print -deps 'bpsk.eps'

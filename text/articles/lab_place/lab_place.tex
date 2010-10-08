@@ -133,8 +133,14 @@
 положением спутников. Оборудование захвата содержит высокочастотный тракт, микросхему программируемой логики, память размером 256 Кбайт
 для временного хранения сигнала и интерфейс RS-232 для передачи измеренного сигнала из памяти в основной сервер системы захвата.
 
-%\scalebox{0.4}{\includegraphics[width=1\linewidth]{./images/board_main.eps}}
-\includegraphics[width=1\linewidth]{./images/board_main.eps}
+\begin{figure}[h]
+\begin{center}
+    %\scalebox{0.4}{\includegraphics[width=1\linewidth]{./images/board_main.eps}}
+    %\includegraphics[width=1\linewidth]{./images/board_main.eps}
+\end{center}
+\caption{Структурная схема платы}
+\label{pic:bpsk}
+\end{figure}
 
 Сигнал спутника на частоте 1575.42МГц поступает на вход малошумящего усилителя (МШУ) и далее через ПАВ фильтр на модуль смесителя.
 После смесителя выделяются две квадратурные компоненты на промежуточной частоте 4.092 МГц.
@@ -153,8 +159,8 @@ s_i=\sqrt{\frac{2E}{T}}\cos{[{{\omega}_0}t + \phi_i(t)]}, \nonumber \\
 \end{eqnarray}
 В данном случае фазовый член ${\phi_t(t)}$ может принимать ${M}$ дискретных значений. Для случая модуляции в GPS системе ${M=2}$.
 \begin{eqnarray}
-	\phi_i(t)=\pi{i} \nonumber \\
-	i = \{1,2\};
+	\phi_i(t)=\frac{2\pi{i}}{M}=\pi{i} \nonumber \\
+	i = \{1,2\}.
 \label{eq:bpsk_phi}
 \end{eqnarray}
 На рисунке \ref{pic:bpsk} представлена схема двочной модуляции показан переход битов 101. В формуле \ref{eq:bpsk}, ${E}$ - это энергия
