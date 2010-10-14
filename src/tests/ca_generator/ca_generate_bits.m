@@ -65,18 +65,18 @@ if (trace_me == 1)
 	% we can our generator via the first 10 bits
 	% refer to Tsui book, chapter 5
 	% but first we must map {1, -1} => {0, 1}
-	code_array =  abs((code_array .- 1) ./ (-2));
+	code_array_n =  abs((code_array .- 1) ./ (-2));
 	% code_array(1:10)
-	val =	(1*code_array(1))*512	+ \
-		(4*code_array(2) + \
-	 	 2*code_array(3) + \
- 	 	 1*code_array(4))*64 	+ \
-		(4*code_array(5) + \
-	 	 2*code_array(6) + \
-	  	 1*code_array(7))*8 	+ \
-		(4*code_array(8) + \
-		 2*code_array(9) + \
-		 1*code_array(10))*1;
+	val =	(1*code_array_n(1))*512	+ \
+		(4*code_array_n(2) + \
+	 	 2*code_array_n(3) + \
+ 	 	 1*code_array_n(4))*64 	+ \
+		(4*code_array_n(5) + \
+	 	 2*code_array_n(6) + \
+	  	 1*code_array_n(7))*8 	+ \
+		(4*code_array_n(8) + \
+		 2*code_array_n(9) + \
+		 1*code_array_n(10))*1;
 	
 	fprintf('PRN:%d val:%o\n', PRN, val);
 end %if 0

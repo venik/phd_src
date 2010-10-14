@@ -26,7 +26,7 @@ fs = 16.368e6;			% sampling rate GPS data in Hz
 fc =   1.023e6;			% sampling rate C/A in Hz
 
 % we know that in out case fs/fc = integer digit
-ca_bits = ca_generate_bits(PRN, 0) ;
+ca_bits = ca_generate_bits(PRN, trace_me) ;
 b = fs / fc;
 ca_16 = zeros(length(ca_bits)*b, 1);
 %ca_16 = zeros(16368, 1);
