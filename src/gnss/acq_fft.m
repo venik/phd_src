@@ -1,5 +1,6 @@
 %    FFT based acquisition
-%    Copyright (C) Alex Nikiforov  nikiforov.pub[dog]gmail.com
+%    Copyright (C) 2010 Alex Nikiforov  nikiforov.alex@rf-lab.org
+%			 2010 Alexey Melnikov melnikov.aleksey@rf-lab.org
 %
 %    This program is free software: you can redistribute it and/or modify
 %    it under the terms of the GNU General Public License as published by
@@ -14,40 +15,46 @@
 %    You should have received a copy of the GNU General Public License
 %    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-function acq_fft(PRN, FR, trace_me)
+function res = acq_fft(x, PRN, FR, trace_me)
 	
-	PRN = 19;
-	FR = 4.092e6-10e3 : 1e3 : 4.092e6+10e3;
-	trace_me = 1;
-
 if (trace_me == 1)
 	fprintf('[acq_fft] SVN:%02d\n', PRN);
 end
 
-	fd= 16.368e6;		% 16.368 MHz
-	N = 16368;			% samples in 1 ms
-	
-	ca_base = ca_get(PRN, trace_me);	
-	
-%for k = 1:length(FR)
-for k = 1:1	
-	lo_sig = exp(-2*j*pi * (FR(k)/fd)*(0:N-1));
-	CA = fft(lo_sig .* (ca_base.'));
-	
-	ca = ifft(conj(CA) .* CA)	;
-	[acx, shift_ca] = max(ca);
+fd= 16.368e6;		% 16.368 MHz
+N = 16368;			% samples in 1 ms
 
+x = x(1:N);						% get 1ms of data\
+X = fft(x);
+ca_base = ca_get(PRN, trace_me);		% generate C/A code
+
+result = zeros(length(FR), 2);			% [acx, ca_shift] array
 	
+for k = 1:length(FR)
+	lo_sig = exp(j*2*pi * (FR(k)/fd)*(0:N-1)).';
+	CA = fft(real(lo_sig) .* ca_base);
+	
+	ca = ifft(conj(CA) .* X)	;
+	ca = ca .* conj(ca);
+	[result(k,1), result(k,2)] = max(ca);
+
 	if (trace_me == 1)
-		fprintf('PRN:%d\t acx=%05d\t shift_ca=%05d\n', PRN, acx, shift_ca);
-		figure(1), plot(abs(ca)), xlim([0,N]);
-		figure(2), subplot(2, 1, 1), plot(0:50, abs(ca(1:51)));
-		figure(2), subplot(2, 1, 2), plot([N-50]:N, abs(ca(N-50:N))), xlim([N-50,N]);;
+		fprintf('PRN:%d FR:%d \t acx=%d\t shift_ca=%05d\n', PRN, FR(k), result(k,1), result(k,2));
+		corr_sss = [ abs(ca(N-50:N)) abs(ca(1:51))];
+
+		%figure(1), plot(abs(ca)), xlim([0,N]);
+		%figure(2), subplot(1,1,1); plot(-51:50, corr_sss); grid on;
 	end % if (trace_me == 1)
 end % for k = 1:length(FR)
 
+% get the max
+res = zeros(2,1);
+[res(1), res(3)] = max(result(1:length(FR),1));
+res(2) = result(res(3),2);
+res(3) = FR(res(3));
+
 if (trace_me == 1)
-	fprintf('\n[acq_fft] exit....\n', PRN);
+	fprintf('\n[acq_fft] PRN:02%d acx=%05d shift_ca=%05d exit....\n', PRN, res(1), res(2));
 end %if (trace_me == 1)
 
 end

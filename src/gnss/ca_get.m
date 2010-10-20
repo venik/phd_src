@@ -1,5 +1,5 @@
 %    C/A resampling code 1.023 MHz => 16.368 MHz
-%    Copyright (C) Alex Nikiforov  nikiforov.pub[dog]gmail.com
+%    Copyright (C) 2010 Alex Nikiforov  nikiforov.pub[dog]gmail.com
 %
 %    This program is free software: you can redistribute it and/or modify
 %    it under the terms of the GNU General Public License as published by
