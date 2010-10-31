@@ -25,6 +25,7 @@ gps_value = [2; 6; -2; -6];
 
 %printf ("%s", program_name ());
 
+% FIXME - add banenr skipper
 fd = fopen(fname, "r");
 fseek(fd, 327, SEEK_SET);
 
