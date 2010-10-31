@@ -1,3 +1,7 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%      C/A code generator for GPS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 %    C/A code generator for GPS - generate C/A sequence
 %    Copyright (C) 2010 Alex Nikiforov  nikiforov.pub[dog]gmail.com
 %
@@ -14,9 +18,6 @@
 %    You should have received a copy of the GNU General Public License
 %    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-%%%%%%%%%%%%%%%%%%%%%%
-%      C/A code generator for GPS
-%%%%%%%%%%%%%%%%%%%%%%
 %
 %    we can implement XOR as multiply 
 %
