@@ -31,6 +31,7 @@ ca_base = ca_get(PRN, trace_me);		% generate C/A code
 result = zeros(length(FR), 2);			% [acx, ca_shift] array
 	
 for k = 1:length(FR)
+%for k = 8
 	lo_sig = exp(j*2*pi * (FR(k)/fd)*(0:N-1)).';
 	CA = fft(real(lo_sig) .* ca_base);
 	
@@ -41,7 +42,15 @@ for k = 1:length(FR)
 	if (trace_me == 1)
 		fprintf('PRN:%d FR:%d \t acx=%d\t shift_ca=%05d\n', PRN, FR(k), result(k,1), result(k,2));
 		corr_sss = [ abs(ca(N-50:N)) abs(ca(1:51))];
-
+		
+		plot(ca), \
+			grid on, \
+			title(sprintf('PRN=%d, F_0=%d Hz',PRN,FR(k)), 'Fontsize', 18),  \
+			xlim([0,16368]);
+			
+		%pause;
+		%print -deps 'corr_05_4092.eps'
+		
 		%figure(1), plot(abs(ca)), xlim([0,N]);
 		%figure(2), subplot(1,1,1); plot(-51:50, corr_sss); grid on;
 	end % if (trace_me == 1)
