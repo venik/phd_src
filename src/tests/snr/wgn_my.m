@@ -113,6 +113,7 @@ function y = wgn_my (m, n, p, varargin)
 
   if (strcmp(type,"dBW"))
     np = 10 ^ (p/10);
+    fprintf('Restore in energetic value np = %f\n', np);
   elseif (strcmp(type,"dBm"))
     np = 10 ^((p - 30)/10);
   elseif (strcmp(type,"linear"))
@@ -123,7 +124,7 @@ function y = wgn_my (m, n, p, varargin)
     randn("state",seed);
   endif
   
-fprintf('Real multiplicator [%f] imp = %f, np = %f\n', sqrt(imp*np), imp, np);
+fprintf('Real multiplicator(amplitude) [%f] np(energyee) = %f p=%f\n', sqrt(imp*np), np, p);
 
   if (strcmp(out,"complex"))
     y = (sqrt(imp*np/2))*(randn(m,n)+1i*randn(m,n));

@@ -118,18 +118,21 @@ function y = awgn_my (x, snr, varargin)
 
   if (meas == 1)
     p = sum( abs( x(:)) .^ 2) / length(x(:));
+    fprintf('measured value mean square(energy) = %f\n', p);
     if (strcmp(type,"dB"))
       p = 10 * log10(p);
+      fprintf('convert mean square in dB scale p = %f\n',p);
     endif
   endif
 
   if (strcmp(type,"linear"))
+    fprintf('linear');
     np = p / snr;
   else
     np = p - snr;
   endif
   
-  fprintf('m = %d, n = %d, np = %d \n', m, n, np) ;
+  fprintf('m = %f, n = %f, np = %f, p = %f snr = %f \n', m, n, np, p, snr) ;
   
   y = x + wgn_my (m, n, np, 1, seed, type, out);
   
