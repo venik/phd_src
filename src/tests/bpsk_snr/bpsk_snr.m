@@ -31,8 +31,9 @@ for k = 1:length(SNR)
 end;
 
 % BER
-err_num = err_num / N;
-simul = 0.5 * erfc(sqrt(10.^(SNR/10)));
+err_num = err_num / N
+simul = 0.5 * erfc(sqrt(10.^(SNR/10))/sqrt(2))
+
 
 figure(1),
 	hold off,
