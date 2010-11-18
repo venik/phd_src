@@ -1,8 +1,8 @@
 PRN = 1:32;
-fs = 4.092e6-5e3 : 1e3 : 4.092e6+5e3;
+fs = 4.092e6-1e3 : 1e3 : 4.092e6+1e3;
 %fs = 4.092e6;
 trace_me = 0;
-DumpSize = 16368*2 ;
+DumpSize = 16368*3 ;
 
 x = readdump_bin_2bsm('./data/flush.bin', DumpSize);
 

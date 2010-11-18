@@ -7,7 +7,7 @@ Eb = 1;
 T = 1;
 
 %s = sqrt(2*Eb/T)*cos(2*pi*fc*(1:N) + pi*(1-x_binary));
-s = 2*x_binary -1 + 0.0001j;
+s = 2*x_binary -1;
 SNR  = -3:1:3;
 err_num = zeros(length(SNR),1) ;
 x_noise = zeros(N,1);
@@ -21,7 +21,7 @@ end;
 
 % BER
 err_num = err_num / N
-simul = 0.5 * erfc(sqrt(10.^(SNR/10)))
+simul = 0.5 * erfc(sqrt(10.^(SNR/10))/sqrt(2))
 
 figure(1),
 	hold off,

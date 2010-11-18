@@ -27,35 +27,49 @@ end
 N = 16368;						% samples in 1 ms
 fd= 16.368e6;						% 16.368 MHz
 
-x = x(1:N);						% get 1ms of data
+x = x(1:2*N);						% get 1ms of data
 
-lo_sig = exp(j*2*pi * (fs/fd)*(0:N-1)).';
+%lo_sig = exp(j*2*pi * (fs/fd)*(0:N-1)).';
 ca_base = ca_get(PRN, trace_me);		% generate C/A code
 ca_base = [ca_base; ca_base];
 
-lo_sig = lo_sig .* ca_base(1:length(lo_sig));
+%lo_sig = lo_sig .* ca_base(1:length(lo_sig));
 
 % get new code
-ca_new_code = real(lo_sig .* conj(x));
+%ca_new_code = real(lo_sig .* conj(x));
+ca_new_code = x(1:N) .* conj(x(1+16:N+16));
+CA_NEW_CODE = fft(ca_new_code);
+
 res = zeros(N, 1);
 
-for k=1:1:N-1
-	ca_new_tmp = ca_base(k:N+k-1) .* ca_base(1:N);
-
-	res(k) = sum(ca_new_tmp .* ca_new_code) ^ 2;
+%for k=1:1:N-1
+%for k=2500:2510
+	ca_new_tmp = ca_base(1:N) .* ca_base(1+16:N+16);
+	CA_NEW_TMP = fft(ca_new_tmp);
+	
+	acx = ifft(CA_NEW_TMP .* conj(CA_NEW_CODE));
+	
+	acx = acx .* conj(acx);
+	%res(1) = max(acx);
+	
+	plot(acx);
+		
+	%res(k) = sum(ca_new_tmp .* conj(ca_new_code));
 	
 	%fprintf('shift_ca = [%d] corr = %15.5f\n', k, res(k));
 %	figure(1),
 %		plot(ca_new_tmp);
 %		pause;
-end
+%end
 
 [acx(2), acx(1)] = max(res);
 
 if (trace_me == 1)
 	fprintf('shift_ca = [%d] corr = %15.5f\n', acx(1), acx(2));
 	plot(res);
-	pause;
+	%pause;
 end %if (trace_me == 1)
+
+res(1:10);
 
 end
