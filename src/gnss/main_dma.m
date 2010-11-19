@@ -1,10 +1,9 @@
 PRN = 1:32;
-fs = 4.092e6-1e3 : 1e3 : 4.092e6+1e3;
-%fs = 4.092e6;
+%PRN = 31:32;
 trace_me = 0;
-DumpSize = 16368*3 ;
+DumpSize = 16368*10 ;
 
-model = 1;				% is it model
+model = 0;				% is it model
 
 % ========= generate =======================
 if model
@@ -27,14 +26,14 @@ if model
     fprintf('Generated\n');
 else
 	x = readdump_bin_2bsm('./data/flush.bin', DumpSize);
+	fprintf('Real\n');
 end
 % ========= generate =======================
 
 acx = zeros(length(PRN), 2);
 
-%for k = PRN
 for k = PRN
-	acx(k, :)= acq_dma(x, PRN(k), 33, trace_me);
+	acx(k, :)= acq_dma(x, PRN(k), 33, 5, trace_me);
 		
 	fprintf('%02d: acx=%15.5f shift_ca=%05d\n', k, acx(k,2), acx(k, 1));
 end
