@@ -18,58 +18,53 @@
 % Tsui "Fundamentals of Global Positioning System Receivers" 2nd edition
 % chapter 7.10
 
-function acx = acq_dma(x, PRN, fs, trace_me)
+function res = acq_dma(x, PRN, trace_me)
+
+%trace_me = 0;
+%PRN = 31;
 
 if (trace_me == 1)
 	fprintf('[acq_dma]\n');
 end
 
 N = 16368;						% samples in 1 ms
-fd= 16.368e6;						% 16.368 MHz
+tau = 10000;
 
-x = x(1:2*N);						% get 1ms of data
+% FIXME 
+%x = readdump_bin_2bsm('./data/flush.bin', 3*N);
 
-%lo_sig = exp(j*2*pi * (fs/fd)*(0:N-1)).';
+x = x(1:3*N);						% get 1ms of data
+
 ca_base = ca_get(PRN, trace_me);		% generate C/A code
-ca_base = [ca_base; ca_base];
-
-%lo_sig = lo_sig .* ca_base(1:length(lo_sig));
+ca_base = [ca_base; ca_base; ca_base];
 
 % get new code
 %ca_new_code = real(lo_sig .* conj(x));
-ca_new_code = x(1:N) .* conj(x(1+16:N+16));
+ca_new_code = x(1:N) .* conj(x(1+tau : N+tau));
 CA_NEW_CODE = fft(ca_new_code);
 
-res = zeros(N, 1);
+ca_new_tmp = ca_base(1:N) .* ca_base(1+tau : N+tau);
+CA_NEW_TMP = fft(ca_new_tmp);
+	
+acx = ifft(CA_NEW_TMP .* conj(CA_NEW_CODE));
+	
+acx = acx .* conj(acx);
+%plot(acx);
 
-%for k=1:1:N-1
-%for k=2500:2510
-	ca_new_tmp = ca_base(1:N) .* ca_base(1+16:N+16);
-	CA_NEW_TMP = fft(ca_new_tmp);
+[res(2), res(1)] = max(acx);
 	
-	acx = ifft(CA_NEW_TMP .* conj(CA_NEW_CODE));
-	
-	acx = acx .* conj(acx);
-	%res(1) = max(acx);
-	
-	plot(acx);
-		
-	%res(k) = sum(ca_new_tmp .* conj(ca_new_code));
-	
-	%fprintf('shift_ca = [%d] corr = %15.5f\n', k, res(k));
+%fprintf('shift_ca = [%d] corr = %15.5f\n', k, res(k));
 %	figure(1),
 %		plot(ca_new_tmp);
 %		pause;
 %end
 
-[acx(2), acx(1)] = max(res);
+%[acx(2), acx(1)] = max(res);
 
-if (trace_me == 1)
-	fprintf('shift_ca = [%d] corr = %15.5f\n', acx(1), acx(2));
-	plot(res);
+%if (trace_me == 1)
+%	fprintf('shift_ca = [%d] corr = %15.5f\n', acx(1), acx(2));
+	%plot(res);
 	%pause;
-end %if (trace_me == 1)
+%end %if (trace_me == 1)
 
-res(1:10);
-
-end
+end;
