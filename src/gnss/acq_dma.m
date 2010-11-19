@@ -18,7 +18,7 @@
 % Tsui "Fundamentals of Global Positioning System Receivers" 2nd edition
 % chapter 7.10
 
-function res = acq_dma(x, PRN, trace_me)
+function res = acq_dma(x, PRN, tau, trace_me)
 
 %trace_me = 0;
 %PRN = 31;
@@ -28,7 +28,7 @@ if (trace_me == 1)
 end
 
 N = 16368;						% samples in 1 ms
-tau = 10000;
+%tau = 12000;
 
 % FIXME 
 %x = readdump_bin_2bsm('./data/flush.bin', 3*N);
@@ -39,7 +39,7 @@ ca_base = ca_get(PRN, trace_me);		% generate C/A code
 ca_base = [ca_base; ca_base; ca_base];
 
 % get new code
-%ca_new_code = real(lo_sig .* conj(x));
+
 ca_new_code = x(1:N) .* conj(x(1+tau : N+tau));
 CA_NEW_CODE = fft(ca_new_code);
 

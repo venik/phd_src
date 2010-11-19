@@ -4,7 +4,7 @@ fs = 4.092e6-1e3 : 1e3 : 4.092e6+1e3;
 trace_me = 0;
 DumpSize = 16368*3 ;
 
-model = 0;				% is it model
+model = 1;				% is it model
 
 % ========= generate =======================
 if model
@@ -31,24 +31,11 @@ end
 % ========= generate =======================
 
 acx = zeros(length(PRN), 2);
-freq_sat = zeros(length(PRN), 1);
-acx_local = zeros(2, 2);
 
 %for k = PRN
 for k = PRN
+	acx(k, :)= acq_dma(x, PRN(k), 33, trace_me);
 		
-	%acx_local(2) = 0;
-	
-	%for t = fs
-		 %acx_local = acq_dma(x, PRN(k), t, trace_me);
-		 acx(k, :)= acq_dma(x, PRN(k), trace_me);
-		 %acx(k, :) = acx_local;
-		 %if( acx(k, 2) < acx_local(2))
-		 	%freq_sat(k) = t;
-		 	%acx(k, :) = acx_local;
-	 	%endif
-	%end
-	
 	fprintf('%02d: acx=%15.5f shift_ca=%05d\n', k, acx(k,2), acx(k, 1));
 end
 
