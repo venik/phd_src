@@ -3,15 +3,17 @@ clc, clear all;
 sigma_n = .4 ;
 drw_pts = 500 ;
 
-%N_filt = 128 ;
-%N = 1024*128 ;
-N = 16368 ;
-N_filt = 2 ;
+N_filt = 128 ;
+N = 1024*128 ;
+%N = 16368 ;
+%N_filt = 2 ;
 
 
 xp = cos(2*pi/N_filt*(0:(N_filt-1))).' ;
-xp(xp>0) = 2 ;
-xp(xp<0) = -3 ;
+%xp(xp>0) = 2 ;
+%xp(xp<0) = -3 ;
+xp(xp>0) = 1 ;
+xp(xp<0) = -1 ;
 x = repmat(xp,N/N_filt,1) ;
 
 y = x + randn(size(x))*sigma_n ;
