@@ -10,8 +10,26 @@ time_offs = 100;
 PRN_range = 1:32 ;
 %PRN_range = 20 ;
 
-%x = readdump_txt('./data/flush.txt', DumpSize);				% create data vector
-x = readdump_bin_2bsm('./data/flush.bin', DumpSize);				% create data vector
+model = 1;				% is it the model?
+
+% ========= generate =======================
+if model
+	x = signal_generate(	1,	\  %PRN
+					0,	\  % freq delta in Hz
+					199,	\  % CA phase
+					0,	\  % noise sigma
+					DumpSize);
+	fprintf('Generated\n');
+else
+	%x = readdump_txt('./data/flush.txt', DumpSize);				% create data vector
+	x = readdump_bin_2bsm('./data/flush.bin', DumpSize);			% create data vector
+	fprintf('Real\n');
+end
+% ========= generate =======================
+
+% calculate noise floor
+%X = fft(x(1:N));
+%noise = mean(X .* conj(X));
 
 %data = x(100:32000);
 sat_acx_val = zeros(32,3) ;		% [acx, ca_phase, freq]
@@ -24,6 +42,12 @@ for k=PRN_range
 		sat_acx_val(k, 2),
 		sat_acx_val(k, 3)
 	);
+	
+	% get in dB scale
+	%SNR = 10*log10(sat_acx_val(k, 1)/noise);
+	%if( SNR > 3 )
+	%	fprintf("presented [%d] satellite SNR=%d\n", k, SNR);
+	%end % if( SNR > 3 )
 end
 
 barh(sat_acx_val((1:32),1)), grid on, title('Correlation', 'Fontsize', 18), ylim([0 ,33]);

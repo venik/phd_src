@@ -31,7 +31,6 @@ ca_base = ca_get(PRN, trace_me);		% generate C/A code
 result = zeros(length(FR), 2);			% [acx, ca_shift] array
 	
 for k = 1:length(FR)
-%for k = 8
 	%lo_sig = exp(j*2*pi * (FR(k)/fd)*(0:N-1)).';
 	%lo_sig = 6*cos(2*pi * (FR(k)/fd)*(0:N-1)).';
 	lo_sig = cos(2*pi * (FR(k)/fd)*(0:N-1)).';
@@ -39,6 +38,9 @@ for k = 1:length(FR)
 	
 	ca = ifft(conj(CA) .* X)	;
 	ca = ca .* conj(ca);
+	
+	ca = ca / N;
+	
 	[result(k,1), result(k,2)] = max(ca);
 
 	if (trace_me == 1)
