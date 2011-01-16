@@ -24,16 +24,16 @@ end
 fd= 16.368e6;		% 16.368 MHz
 N = 16368;			% samples in 1 ms
 
-x = x(1:N);						% get 1ms of data\
+x = x(1:N);						% get 1ms of data
 X = fft(x);
 ca_base = ca_get(PRN, trace_me);		% generate C/A code
 
 result = zeros(length(FR), 2);			% [acx, ca_shift] array
 
 for k = 1:length(FR)
-	%lo_sig = exp(j*2*pi * (FR(k)/fd)*(0:N-1)).';
+	lo_sig = exp(j*2*pi * (FR(k)/fd)*(0:N-1)).';
 	%lo_sig = 6*cos(2*pi * (FR(k)/fd)*(0:N-1)).';
-	lo_sig = cos(2*pi * (FR(k)/fd)*(0:N-1)).';
+	%lo_sig = cos(2*pi * (FR(k)/fd)*(0:N-1)).';
 	CA = fft(real(lo_sig) .* ca_base);
 	
 	ca = ifft(conj(CA) .* X)	;
@@ -61,7 +61,7 @@ for k = 1:length(FR)
 end % for k = 1:length(FR)
 
 % get the max
-res = zeros(2,1);
+res = zeros(3,1);
 [res(1), res(3)] = max(result(1:length(FR),1));
 res(2) = result(res(3),2);
 res(3) = FR(res(3));
