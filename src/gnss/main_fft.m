@@ -1,7 +1,6 @@
 clc; clear all;
 
 DumpSize = 16368*6 ;
-%DumpSize = 100 ;
 N = 16368 ;
 fs = 4.092e6-5e3 : 1e3 : 4.092e6+5e3 ;		% sampling rate 4.092 MHz
 ts = 1/16.368e6 ;
@@ -10,7 +9,7 @@ time_offs = 100;
 PRN_range = 1:32 ;
 %PRN_range = 20 ;
 
-model = 1;				% is it the model?
+model = 0;				% is it the model?
 
 % ========= generate =======================
 if model
@@ -27,9 +26,11 @@ else
 end
 % ========= generate =======================
 
-% calculate noise floor
-%X = fft(x(1:N));
-%noise = mean(X .* conj(X));
+% calculate threshold
+X = fft(x(1:N));
+threshold = std(X);
+threshold = threshold * sqrt(-2 * log(10^(-6)));
+fprintf('threshold = %f \n', threshold);
 
 %data = x(100:32000);
 sat_acx_val = zeros(32,3) ;		% [acx, ca_phase, freq]

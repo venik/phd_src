@@ -29,7 +29,7 @@ X = fft(x);
 ca_base = ca_get(PRN, trace_me);		% generate C/A code
 
 result = zeros(length(FR), 2);			% [acx, ca_shift] array
-	
+
 for k = 1:length(FR)
 	%lo_sig = exp(j*2*pi * (FR(k)/fd)*(0:N-1)).';
 	%lo_sig = 6*cos(2*pi * (FR(k)/fd)*(0:N-1)).';
