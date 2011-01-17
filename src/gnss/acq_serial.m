@@ -22,7 +22,7 @@ N = 16368;			% samples in 1 ms
 
 x = x(1:N);						% get 1ms of data
 ca_base = ca_get(PRN, trace_me);		% generate C/A code
-ca_base = repmat(ca_base, 3, 1);
+ca_base = repmat(ca_base, 2, 1);
 
 result = zeros(length(FR), 2);			% [acx, ca_shift] array
 corr_vals = zeros(N, 1);				%
@@ -40,7 +40,7 @@ for k=1:length(FR)
 		
 		acx = sum(real(lo_sig) .* lo_x) ;
 		acx = acx .* conj(acx) ;
-		corr_vals(ca_shift) = acx;
+		corr_vals(ca_shift) = acx / N;
 		
 	end 	% for k=ca_shift:N
 	

@@ -1,13 +1,13 @@
 clc; clear all;
 
-DumpSize = 16368*6 ;
+DumpSize = 16368*2 ;
 N = 16368 ;
 fs = 4.092e6-5e3 : 1e3 : 4.092e6+5e3 ;		% sampling rate 4.092 MHz
 ts = 1/16.368e6 ;
 
 time_offs = 100;
 %PRN_range = 1:32 ;
-PRN_range = 20 ;
+PRN_range = 31 ;
 
 model = 0;				% is it the model?
 

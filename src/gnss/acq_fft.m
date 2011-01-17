@@ -36,7 +36,8 @@ for k = 1:length(FR)
 	%lo_sig = cos(2*pi * (FR(k)/fd)*(0:N-1)).';
 	CA = fft(real(lo_sig) .* ca_base);
 	
-	ca = ifft(conj(CA) .* X)	;
+	%ca = ifft(conj(CA) .* X);
+	ca = ifft(CA .* conj(X));
 	ca = ca .* conj(ca);
 	
 	ca = ca / N;
