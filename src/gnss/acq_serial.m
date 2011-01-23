@@ -1,6 +1,6 @@
 %    Serial correaltor acquisition
-%    Copyright (C) 2010 Alex Nikiforov  nikiforov.alex@rf-lab.org
-%			 2010 Alexey Melnikov melnikov.aleksey@rf-lab.org
+%    Copyright (C) 2010 - 2011 Alex Nikiforov  nikiforov.alex@rf-lab.org
+%			 2010 - 2011 Alexey Melnikov melnikov.aleksey@rf-lab.org
 %
 %    This program is free software: you can redistribute it and/or modify
 %    it under the terms of the GNU General Public License as published by

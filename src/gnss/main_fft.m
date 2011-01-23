@@ -1,4 +1,21 @@
-clc; clear all;
+%    Top module for the Serial correaltor acuisition method
+%    Copyright (C) 2010 - 2011 Alex Nikiforov  nikiforov.alex@rf-lab.org
+%			 2010 - 2011 Alexey Melnikov melnikov.aleksey@rf-lab.org
+%
+%    This program is free software: you can redistribute it and/or modify
+%    it under the terms of the GNU General Public License as published by
+%    the Free Software Foundation, either version 3 of the License, or
+%    (at your option) any later version.
+
+%    This program is distributed in the hope that it will be useful,
+%    but WITHOUT ANY WARRANTY; without even the implied warranty of
+%    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%    GNU General Public License for more details.
+
+%    You should have received a copy of the GNU General Public License
+%    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+clc; clear all; clf;
 
 DumpSize = 16368*2 ;
 N = 16368 ;
@@ -29,7 +46,7 @@ end
 % calculate threshold
 X = fft(x(1:N));
 threshold = std(X);
-threshold = threshold * sqrt(-2 * log(10^(-6)));
+threshold = threshold * sqrt(-2 * log(10^(-3)));
 fprintf('threshold = %f \n', threshold);
 
 %data = x(100:32000);
@@ -51,8 +68,10 @@ for k=PRN_range
 	%end % if( SNR > 3 )
 end
 
-barh(sat_acx_val((1:32),1)), grid on, title('Correlation', 'Fontsize', 18), ylim([0 ,33]);
-%print -deps 'corr_bar.eps'
+bar(sat_acx_val((1:32),1)),
+	grid on,
+	title('Correlation', 'Fontsize', 18),
+	ylim([0 ,33]);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
