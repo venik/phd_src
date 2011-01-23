@@ -28,17 +28,15 @@ result = zeros(length(FR), 2);			% [acx, ca_shift] array
 corr_vals = zeros(N, 1);				%
 lo_x = zeros(N, 1);				%
 
-
 for k=1:length(FR)
 
 	%lo_sig = exp(j*2*pi * (FR(k)/fd)*(0:N-1)).';
-	lo_sig = cos(2*pi * (FR(k)/fd)*(0:N-1)).';
+	lo_sig = cos(2*pi * (FR(k)/fd)*(0:2*N-1)).';
 		
 	for ca_shift=1:N
-		lo_x = x;
-		lo_x = lo_x .* ca_base(ca_shift : ca_shift + N -1);
-		
-		acx = sum(real(lo_sig) .* lo_x) ;
+		lo_x = lo_sig(ca_shift : ca_shift + N -1) .* ca_base(ca_shift : ca_shift + N -1);
+				
+		acx = sum(real(lo_x) .* x) ;
 		acx = acx .* conj(acx) ;
 		corr_vals(ca_shift) = acx / N;
 		
