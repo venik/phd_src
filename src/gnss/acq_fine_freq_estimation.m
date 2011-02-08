@@ -70,7 +70,7 @@ for i=1:4 ;
 dfrq = mean(phase)*1000 / (2*pi) ;
 
 if (trace_me == 1)
-	fprintf('\%[acq_fine_freq_estimation] freq.:%5.1f phase_FREQ.%5.1f\n', FR, dfrq) ;
+	fprintf('[acq_fine_freq_estimation] freq.:%5.1f phase_FREQ.%5.1f. exit...\n', FR, dfrq) ;
 end %if (trace_me == 1)  
 
 
