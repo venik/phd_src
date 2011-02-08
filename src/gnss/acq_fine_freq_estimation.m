@@ -27,7 +27,10 @@
 function res = acq_fine_freq_estimation(x, PRN, FR, ca_phase, trace_me)
 
 if (trace_me == 1)
-	fprintf('[acq_fine_freq_estimation] SVN:%02d\n', PRN);
+	fprintf('[acq_fine_freq_estimation] SVN:%02d shift_ca=%05d freq:%4.1f\n',
+		PRN,
+		ca_phase,
+		FR);
 end
 
 N = 16368 ;
@@ -46,31 +49,54 @@ sig = data_5ms.' .* exp(j*2*pi * FR *ts * (0:5*N-1)) ;
 phase = diff(-angle(sum(reshape(sig, N, 5))));
 phase_fix = phase;
 
-threshold = (2.3*pi)/5 ; 
+threshold = (2.3*pi)/5 ; 		% freq: 408.60
 
-for i=1:4 ;
-      %fprintf('\t %d => %f => %f\n', i, phase(i), phase(i)/2*pi * 180 );
+if trace_me == 1
+	fprintf('\t threshold:%02.03f\n\tphase => \n', threshold);
+	phase
+endif;
+
+
+
+
+for i=1:4
+      if trace_me == 1
+      		fprintf('\t %d: phase:%01.03f freq:%03.05f\n',
+      			i, phase(i), phase(i)/2*pi * 180 );
+      endif;
       
-      if(abs(phase(i))) > threshold ;
+      if(abs(phase(i))) > threshold
           phase(i) = phase_fix(i) - sign(phase(i))* 2 * pi ;
-          %fprintf('\t\t %d => %f => %f\n', i, phase(i), phase(i)/2*pi * 180 );
+          if trace_me == 1
+      		fprintf('\t\t %d: phase:%01.03f freq:%03.05f\n',
+      			i, phase(i), phase(i)/2*pi * 180 );
+	endif;
           
-          if(abs(phase(i))) > threshold ;
+          if(abs(phase(i))) > threshold
               phase(i) = phase(i) - sign(phase(i))* pi ;
-              %fprintf('\t\t\t %d => %f => %f\n', i, phase(i), phase(i)/2*pi * 180 );
-              
-              if(abs(phase(i))) > threshold ;
+              if trace_me == 1
+      		fprintf('\t\t\t %d: phase:%01.03f freq:%03.05f\n',
+      			i, phase(i), phase(i)/2*pi * 180 );
+	    endif;
+           
+              if(abs(phase(i))) > threshold
                   phase(i) = phase_fix(i) - sign(phase(i))* 2 * pi ;
-                  %fprintf('\t\t\t\t %d => %f => %f\n', i, phase(i), phase(i)/2*pi * 180 );
-              end
-          end
-      end
-  end
+                  if trace_me == 1
+      		fprintf('\t\t\t %d: phase:%01.03f freq:%03.05f\n',
+      			i, phase(i), phase(i)/2*pi * 180 );
+	        endif;
+              endif;
+              
+          endif;
+      endif;
+end;		% for i=1:4
+
+phase 
 
 dfrq = mean(phase)*1000 / (2*pi) ;
 
 if (trace_me == 1)
-	fprintf('[acq_fine_freq_estimation] freq.:%5.1f phase_FREQ.%5.1f. exit...\n', FR, dfrq) ;
+	fprintf('[acq_fine_freq_estimation] freq.:%5.1f phase_FREQ.%03.02f. exit...\n', FR, dfrq) ;
 end %if (trace_me == 1)  
 
 

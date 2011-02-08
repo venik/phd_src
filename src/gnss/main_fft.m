@@ -31,7 +31,7 @@ model = 1;				% is it the model?
 % ========= generate =======================
 if model
 	x = signal_generate(	1,	\  %PRN
-					101,	\  % freq delta in Hz
+					310,	\  % freq delta in Hz
 					199,	\  % CA phase
 					0,	\  % noise sigma
 					DumpSize);
@@ -85,6 +85,6 @@ dfrq = acq_fine_freq_estimation( x,
 				PRN_range,
 				sat_acx_val(k, 3),			% freq
 				sat_acx_val(k, 2),			% CA phase
-				0);					% trace me
+				1);					% trace me
 
 fprintf('freq component after phase estimation dfrq = %03.2f\n', dfrq);
