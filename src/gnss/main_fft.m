@@ -81,10 +81,10 @@ if length(PRN_range) > 1
 endif;
 	
 % need proper phase estimation
-dfrq = acq_fine_freq_estimation( x,
+fr_fine = acq_fine_freq_estimation( x,
 				PRN_range,
 				sat_acx_val(k, 3),			% freq
 				sat_acx_val(k, 2),			% CA phase
-				1);					% trace me
+				0);					% trace me
 
-fprintf('freq component after phase estimation dfrq = %03.2f\n', dfrq);
+fprintf('freq component after phase estimation dfrq = %03.2f\n', fr_fine);

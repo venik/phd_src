@@ -26,7 +26,7 @@
 
 function res = acq_fine_freq_estimation(x, PRN, FR, ca_phase, trace_me)
 
-if (trace_me == 1)
+if (trace_me == 0)
 	fprintf('[acq_fine_freq_estimation] SVN:%02d shift_ca=%05d freq:%4.1f\n',
 		PRN,
 		ca_phase,
@@ -41,11 +41,45 @@ if length(x) < N*5
 	return;
 endif;
 
-% +- 400 Hz in freq bin
-phase_data = zeros(3,1) ;
+ca16 = ca_get(PRN, trace_me);				% generate C/A code
+ca16 = [ca16;ca16;ca16;ca16;ca16] ;
 data_5ms = x(ca_phase : ca_phase + 5*N-1);
+lo_x = zeros(N, 1);
+
+% adjust to +- 400Hz
+fr = zeros(3,1) ;
+for i=[1:3]
+	fr(i) = FR - 400 + (i - 1) * 400 ; 			% in Hz
+end
+
+% calculate early-prompt-late correlation in the +- 400Hz area
+for i=[1:3]
+	lo_sig = exp(j*2*pi * fr(i)*ts *(0:2*N-1)).';
+
+	% curcular convolution - in the fft manner
+	%lo_x = lo_sig(ca_phase : ca_phase + N -1) .* ca16(ca_phase : ca_phase + N -1);
+	lo_x = lo_sig(1:N) .* ca16(1:N);
+			
+	acx = sum(real(lo_x) .* data_5ms(1:N)) ;
+	acx = acx .* conj(acx); 
+	max_bin_freq(i) = acx / N;		% FIXME
+end
+
+fr
+max_bin_freq
+
+% adjust freq in freq bin
+[acx, k] = max(max_bin_freq) ;
+FR = fr(k);
+if trace_me == 1
+	fprintf('\t New FR=%4.1f \n', FR);
+endif;
+
+% downconvert to the baseband  
+data_5ms = ca16 .* data_5ms ;
 
 sig = data_5ms.' .* exp(j*2*pi * FR *ts * (0:5*N-1)) ;
+%sig = data_5ms.' .* cos(j*2*pi * FR *ts * (0:5*N-1)) ;
 phase = diff(-angle(sum(reshape(sig, N, 5))));
 phase_fix = phase;
 
@@ -53,11 +87,8 @@ threshold = (2.3*pi)/5 ; 		% freq: 408.60
 
 if trace_me == 1
 	fprintf('\t threshold:%02.03f\n\tphase => \n', threshold);
-	phase
+	%phase
 endif;
-
-
-
 
 for i=1:4
       if trace_me == 1
@@ -73,7 +104,7 @@ for i=1:4
 	endif;
           
           if(abs(phase(i))) > threshold
-              phase(i) = phase(i) - sign(phase(i))* pi ;
+              phase(i) = phase(i) - sign(phase(i)) * pi ;
               if trace_me == 1
       		fprintf('\t\t\t %d: phase:%01.03f freq:%03.05f\n',
       			i, phase(i), phase(i)/2*pi * 180 );
@@ -91,15 +122,12 @@ for i=1:4
       endif;
 end;		% for i=1:4
 
-phase 
-
 dfrq = mean(phase)*1000 / (2*pi) ;
 
 if (trace_me == 1)
 	fprintf('[acq_fine_freq_estimation] freq.:%5.1f phase_FREQ.%03.02f. exit...\n', FR, dfrq) ;
 end %if (trace_me == 1)  
 
-
-res = dfrq;
+res = FR + dfrq;
   
 end		% function res = acq_fine_freq_part()

@@ -1,4 +1,6 @@
-%    Serial correaltor acquisition
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    Acquisition - serial correaltor 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Copyright (C) 2010 - 2011 Alex Nikiforov  nikiforov.alex@rf-lab.org
 %			 2010 - 2011 Alexey Melnikov melnikov.aleksey@rf-lab.org
 %
@@ -34,6 +36,7 @@ for k=1:length(FR)
 	lo_sig = cos(2*pi * (FR(k)/fd)*(0:2*N-1)).';
 		
 	for ca_shift=1:N
+		% curcular convolution - in the fft manner
 		lo_x = lo_sig(ca_shift : ca_shift + N -1) .* ca_base(ca_shift : ca_shift + N -1);
 				
 		acx = sum(real(lo_x) .* x) ;
