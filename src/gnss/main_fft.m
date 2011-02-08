@@ -17,21 +17,21 @@
 
 clc; clear all; clf;
 
-DumpSize = 16368*2 ;
+DumpSize = 16368*6 ;
 N = 16368 ;
 fs = 4.092e6-5e3 : 1e3 : 4.092e6+5e3 ;		% sampling rate 4.092 MHz
 ts = 1/16.368e6 ;
 
 time_offs = 100;
 %PRN_range = 1:32 ;
-PRN_range = 31 ;
+PRN_range = 1 ;
 
-model = 0;				% is it the model?
+model = 1;				% is it the model?
 
 % ========= generate =======================
 if model
 	x = signal_generate(	1,	\  %PRN
-					0,	\  % freq delta in Hz
+					101,	\  % freq delta in Hz
 					199,	\  % CA phase
 					0,	\  % noise sigma
 					DumpSize);
@@ -46,6 +46,7 @@ end
 % calculate threshold
 X = fft(x(1:N));
 threshold = std(X);
+noise = std(X);
 threshold = threshold * sqrt(-2 * log(10^(-3)));
 fprintf('threshold = %f \n', threshold);
 
@@ -54,11 +55,12 @@ sat_acx_val = zeros(32,3) ;		% [acx, ca_phase, freq]
 
 for k=PRN_range
 	sat_acx_val(k, :) = acq_fft(x, k, fs, 0);
-	fprintf('%02d: acx=%15.5f shift_ca=%05d freq:%4.1f\n', \
+	fprintf('%02d: acx=%15.5f shift_ca=%05d freq:%4.1f SNR:%4.1f dB\n', \
 		k,
 		sat_acx_val(k, 1),
 		sat_acx_val(k, 2),
-		sat_acx_val(k, 3)
+		sat_acx_val(k, 3),
+		10*log10(sat_acx_val(k, 1)/noise)
 	);
 	
 	% get in dB scale
@@ -68,7 +70,21 @@ for k=PRN_range
 	%end % if( SNR > 3 )
 end
 
-bar(sat_acx_val((1:32),1)),
-	grid on,
-	title('Correlation', 'Fontsize', 18),
-	ylim([0 ,33]);
+% check for vector length - we want to work just with 1 satellite
+% if more than 1, just show barh() and exit
+if length(PRN_range) > 1
+	barh(sat_acx_val((1:32),1)),
+		grid on,
+		title('Correlation', 'Fontsize', 18),
+		ylim([0 ,33]);
+	return;
+endif;
+	
+% need proper phase estimation
+dfrq = acq_fine_freq_estimation( x,
+				PRN_range,
+				sat_acx_val(k, 3),			% freq
+				sat_acx_val(k, 2),			% CA phase
+				0);					% trace me
+
+fprintf('freq component after phase estimation dfrq = %03.2f\n', dfrq);

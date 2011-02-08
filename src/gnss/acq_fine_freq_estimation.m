@@ -1,4 +1,6 @@
-%    Fine frequency estimation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    Fine frequency estimator
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %    Copyright (C) 2010 - 2011 Alex Nikiforov  nikiforov.alex@rf-lab.org
 %			 2010 - 2011 Alexey Melnikov melnikov.aleksey@rf-lab.org
 %
@@ -22,18 +24,29 @@
 %http://books.google.ru/books?id=HQCGPr7pGV8C&lpg=PR8&dq=Fine%20frequency%20estimation%20tsui%20gps%20books&hl=en&pg=PA146#v=onepage&q&f=false
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function res = acq_fine_freq_part(x, PRN, FR, trace_me)
+function res = acq_fine_freq_estimation(x, PRN, FR, ca_phase, trace_me)
+
+if (trace_me == 1)
+	fprintf('[acq_fine_freq_estimation] SVN:%02d\n', PRN);
+end
+
+N = 16368 ;
+ts = 1/16.368e6 ;
+
+if length(x) < N*5
+	fprintf('[ERR] cannot estimate phase, because signal is < 5ms');
+	return;
+endif;
 
 % +- 400 Hz in freq bin
 phase_data = zeros(3,1) ;
-PRN_sat = 31;
-data_5ms = x(sat_acx_val(PRN_sat , 2): sat_acx_val(PRN_sat , 2) + 5*N-1);
+data_5ms = x(ca_phase : ca_phase + 5*N-1);
 
-sig = data_5ms.' .* exp(j*2*pi * sat_acx_val(PRN_sat, 3) *ts * (0:5*N-1)) ;
+sig = data_5ms.' .* exp(j*2*pi * FR *ts * (0:5*N-1)) ;
 phase = diff(-angle(sum(reshape(sig, N, 5))));
 phase_fix = phase;
 
-threshold = (2.3*pi)/5 ; % FIXME / or \
+threshold = (2.3*pi)/5 ; 
 
 for i=1:4 ;
       %fprintf('\t %d => %f => %f\n', i, phase(i), phase(i)/2*pi * 180 );
@@ -55,12 +68,12 @@ for i=1:4 ;
   end
 
 dfrq = mean(phase)*1000 / (2*pi) ;
-phase_data(PRN_sat) =  sat_acx_val(PRN_sat, 3)  + dfrq;
+
+if (trace_me == 1)
+	fprintf('\%[acq_fine_freq_estimation] freq.:%5.1f phase_FREQ.%5.1f\n', FR, dfrq) ;
+end %if (trace_me == 1)  
+
+
+res = dfrq;
   
-fprintf('\t#PRN: %2d ff_FREQ.:%5.1f phase_FREQ.%5.1f\n', \
-  		PRN_sat,
-  		sat_acx_val(PRN_sat, 3),
-  		phase_data(PRN_sat)
-  ) ;
-  
-  end		% function res = acq_fine_freq_part()
+end		% function res = acq_fine_freq_part()

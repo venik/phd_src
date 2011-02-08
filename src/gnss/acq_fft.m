@@ -24,7 +24,8 @@ end
 fd= 16.368e6;		% 16.368 MHz
 N = 16368;			% samples in 1 ms
 
-x = x(1:N);						% get 1ms of data
+%x = 1 * (x(1:N) + x(N+1:2*N));						% get 1ms of data
+x = x(1:N);
 X = fft(x);
 ca_base = ca_get(PRN, trace_me);		% generate C/A code
 
