@@ -48,7 +48,7 @@ for k=1:length(FR)
 	[val, ca_phase]= max(corr_vals);
 	result(k, :) = [val, ca_phase];
 	if (trace_me == 1)
-		fprintf('PRN:%d FR:%d \t acx=%d\t shift_ca=%05d\n', PRN, FR(k), result(k,1), result(k,2));
+		fprintf('PRN:%d FR:%d \t acx=%15.5f\t shift_ca=%05d\n', PRN, FR(k), result(k,1), result(k,2));
 	end
 	
 end 	%for k=1:length(FR)

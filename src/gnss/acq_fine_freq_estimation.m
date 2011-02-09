@@ -26,7 +26,7 @@
 
 function res = acq_fine_freq_estimation(x, PRN, FR, ca_phase, trace_me)
 
-if (trace_me == 0)
+if (trace_me == 1)
 	fprintf('[acq_fine_freq_estimation] SVN:%02d shift_ca=%05d freq:%4.1f\n',
 		PRN,
 		ca_phase,
@@ -42,8 +42,7 @@ if length(x) < N*5
 endif;
 
 ca16 = ca_get(PRN, trace_me);				% generate C/A code
-ca16 = [ca16;ca16;ca16;ca16;ca16] ;
-data_5ms = x(ca_phase : ca_phase + 5*N-1);
+ca16 = repmat(ca16, 5, 1);
 lo_x = zeros(N, 1);
 
 % adjust to +- 400Hz
@@ -56,17 +55,16 @@ end
 for i=[1:3]
 	lo_sig = exp(j*2*pi * fr(i)*ts *(0:2*N-1)).';
 
-	% curcular convolution - in the fft manner
-	%lo_x = lo_sig(ca_phase : ca_phase + N -1) .* ca16(ca_phase : ca_phase + N -1);
-	lo_x = lo_sig(1:N) .* ca16(1:N);
-			
-	acx = sum(real(lo_x) .* data_5ms(1:N)) ;
+	lo_x = lo_sig(ca_phase : ca_phase + N - 1) .* ca16(ca_phase : ca_phase + N - 1);
+	acx = sum(lo_x .* x(1:N)) ;
+	
 	acx = acx .* conj(acx); 
 	max_bin_freq(i) = acx / N;		% FIXME
-end
-
-fr
-max_bin_freq
+	
+	if (trace_me == 1)
+		fprintf('\t%d:FR:%d \t acx=%15.5f\n', i, fr(i), max_bin_freq(i));
+	endif;
+end	% for i=[1:3]
 
 % adjust freq in freq bin
 [acx, k] = max(max_bin_freq) ;
@@ -75,15 +73,19 @@ if trace_me == 1
 	fprintf('\t New FR=%4.1f \n', FR);
 endif;
 
-% downconvert to the baseband  
+% phase estimation
+data_5ms = x(ca_phase : ca_phase + 5*N-1); 
+
+% despread
 data_5ms = ca16 .* data_5ms ;
 
+% downconvert to the baseband and calculate phase
 sig = data_5ms.' .* exp(j*2*pi * FR *ts * (0:5*N-1)) ;
 %sig = data_5ms.' .* cos(j*2*pi * FR *ts * (0:5*N-1)) ;
 phase = diff(-angle(sum(reshape(sig, N, 5))));
 phase_fix = phase;
 
-threshold = (2.3*pi)/5 ; 		% freq: 408.60
+threshold = (2.3*pi)/5 ; 		% FIXME - check this. freq: 408.60
 
 if trace_me == 1
 	fprintf('\t threshold:%02.03f\n\tphase => \n', threshold);
@@ -125,7 +127,7 @@ end;		% for i=1:4
 dfrq = mean(phase)*1000 / (2*pi) ;
 
 if (trace_me == 1)
-	fprintf('[acq_fine_freq_estimation] freq.:%5.1f phase_FREQ.%03.02f. exit...\n', FR, dfrq) ;
+	fprintf('[acq_fine_freq_estimation] freq.:%5.1f phase_FREQ.%03.02f real= %5.1f exit...\n', FR, dfrq, FR + dfrq) ;
 end %if (trace_me == 1)  
 
 res = FR + dfrq;
