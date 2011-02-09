@@ -31,8 +31,8 @@ model = 1;				% is it the model?
 % ========= generate =======================
 if model
 	x = signal_generate(	1,	\  %PRN
-					250,	\  % freq delta in Hz
-					101,	\  % CA phase
+					950,	\  % freq delta in Hz
+					1,	\  % CA phase
 					0,	\  % noise sigma
 					DumpSize);
 	fprintf('Generated\n');

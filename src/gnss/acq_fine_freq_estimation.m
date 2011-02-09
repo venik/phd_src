@@ -88,42 +88,45 @@ phase_fix = phase;
 threshold = (2.3*pi)/5 ; 		% FIXME - check this. freq: 408.60
 
 if trace_me == 1
-	fprintf('\t threshold:%02.03f\n\tphase => \n', threshold);
+	fprintf('\t threshold:%01.03f freq:%03.05f\n', threshold, threshold * 1000/(2*pi));
 	%phase
 endif;
 
 for i=1:4
       if trace_me == 1
       		fprintf('\t %d: phase:%01.03f freq:%03.05f\n',
-      			i, phase(i), phase(i)/2*pi * 180 );
+      			i, phase(i), phase(i) * 1000/(2*pi) );
       endif;
       
       if(abs(phase(i))) > threshold
           phase(i) = phase_fix(i) - sign(phase(i))* 2 * pi ;
           if trace_me == 1
       		fprintf('\t\t %d: phase:%01.03f freq:%03.05f\n',
-      			i, phase(i), phase(i)/2*pi * 180 );
+      			i, phase(i), phase(i) * 1000/(2*pi) );
 	endif;
           
           if(abs(phase(i))) > threshold
-              phase(i) = phase(i) - sign(phase(i)) * pi ;
+              %phase(i) = phase(i) - sign(phase(i)) * pi ;
+              phase(i) = phase(i) - pi ;
               if trace_me == 1
       		fprintf('\t\t\t %d: phase:%01.03f freq:%03.05f\n',
-      			i, phase(i), phase(i)/2*pi * 180 );
+      			i, phase(i), phase(i) * 1000/(2*pi) );
 	    endif;
            
               if(abs(phase(i))) > threshold
                   phase(i) = phase_fix(i) - sign(phase(i))* 2 * pi ;
+                  %phase(i) = phase_fix(i) - 2 * pi ;
                   if trace_me == 1
       		fprintf('\t\t\t %d: phase:%01.03f freq:%03.05f\n',
-      			i, phase(i), phase(i)/2*pi * 180 );
+      			i, phase(i), phase(i) * 1000/(2*pi) );
 	        endif;
               endif;
-              
+     
           endif;
       endif;
 end;		% for i=1:4
 
+mean(phase)
 dfrq = mean(phase)*1000 / (2*pi) ;
 
 if (trace_me == 1)
