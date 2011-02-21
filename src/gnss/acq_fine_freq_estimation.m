@@ -34,7 +34,8 @@ if (trace_me == 1)
 end
 
 N = 16368 ;
-ts = 1/16.368e6 ;
+Fs = 16.368e6
+ts = 1/ Fs;
 
 if length(x) < N*5
 	fprintf('[ERR] cannot estimate phase, because signal is < 5ms');
@@ -79,8 +80,14 @@ data_5ms = x(ca_phase : ca_phase + 5*N-1);
 % despread
 data_5ms = ca16 .* data_5ms ;
 
+% make simple filter
+Fc=400 ;
+[b,a]=butter(2, Fc/(Fs/2));
+% clear unused variables
+
 % downconvert to the baseband and calculate phase
 sig = data_5ms.' .* exp(j*2*pi * FR *ts * (0:5*N-1)) ;
+%sig=filter(b,a,sig);
 %sig = data_5ms.' .* cos(j*2*pi * FR *ts * (0:5*N-1)) ;
 phase = diff(-angle(sum(reshape(sig, N, 5))));
 phase_fix = phase;
@@ -92,41 +99,36 @@ if trace_me == 1
 	%phase
 endif;
 
-for i=1:4
-      if trace_me == 1
-      		fprintf('\t %d: phase:%01.03f freq:%03.05f\n',
-      			i, phase(i), phase(i) * 1000/(2*pi) );
-      endif;
+for k=1:4
+      trace_phase_out(k, phase(k), trace_me)
       
-      if(abs(phase(i))) > threshold
-          phase(i) = phase_fix(i) - sign(phase(i))* 2 * pi ;
-          if trace_me == 1
-      		fprintf('\t\t %d: phase:%01.03f freq:%03.05f\n',
-      			i, phase(i), phase(i) * 1000/(2*pi) );
-	endif;
-          
-          if(abs(phase(i))) > threshold
-              %phase(i) = phase(i) - sign(phase(i)) * pi ;
-              phase(i) = phase(i) - pi ;
-              if trace_me == 1
-      		fprintf('\t\t\t %d: phase:%01.03f freq:%03.05f\n',
-      			i, phase(i), phase(i) * 1000/(2*pi) );
-	    endif;
-           
-              if(abs(phase(i))) > threshold
-                  phase(i) = phase_fix(i) - sign(phase(i))* 2 * pi ;
-                  %phase(i) = phase_fix(i) - 2 * pi ;
-                  if trace_me == 1
-      		fprintf('\t\t\t %d: phase:%01.03f freq:%03.05f\n',
-      			i, phase(i), phase(i) * 1000/(2*pi) );
-	        endif;
-              endif;
-     
-          endif;
-      endif;
-end;		% for i=1:4
+      if(abs(phase(k))) > threshold
+          phase(k) = phase_fix(k) - 2 * pi ;
+          trace_phase_out(k, phase(k), trace_me);
 
-mean(phase)
+          if(abs(phase(k))) > threshold
+              phase(k) = phase_fix(k) + 2 * pi ;
+              trace_phase_out(k, phase(k), trace_me);
+
+              if(abs(phase(k))) > threshold
+                  phase(k) = phase_fix(k) - pi ;
+                  trace_phase_out(k, phase(k), trace_me);
+
+                  if(abs(phase(k))) > threshold
+                  	phase(k) = phase_fix(k) - 3*pi ;
+                  	trace_phase_out(k, phase(k), trace_me);
+                  	
+                  	if(abs(phase(k))) > threshold
+                  		phase(k) = phase_fix(k) + pi ;
+	                  	trace_phase_out(k, phase(k), trace_me);
+	                  	
+              	endif; % if(abs(phase(i))) > threshold
+         	      endif;                  
+              endif; % if(abs(phase(i))) > threshold
+         endif;
+      endif;
+end;		% for k=1:4
+
 dfrq = mean(phase)*1000 / (2*pi) ;
 
 if (trace_me == 1)
@@ -136,3 +138,10 @@ end %if (trace_me == 1)
 res = FR + dfrq;
   
 end		% function res = acq_fine_freq_part()
+
+function trace_phase_out(k, phase, trace_me)
+	if trace_me == 1
+		fprintf('%d: phase:%01.03f freq:%03.05f\n',
+			k, phase, phase * 1000/(2*pi) );
+	endif; % if trace_me == 1
+end       % function trace_phace_out(i, phase)
