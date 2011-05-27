@@ -41,7 +41,7 @@ for k = 1:length(FR)
 	ca = ifft(CA .* conj(X));
 	ca = ca .* conj(ca);
 	
-	ca = ca / N;
+	ca = ca;
 	
 	[result(k,1), result(k,2)] = max(ca);
 

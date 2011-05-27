@@ -24,15 +24,15 @@ ts = 1/16.368e6 ;
 
 time_offs = 100;
 %PRN_range = 1:32 ;
-PRN_range = 31 ;
+PRN_range = 1 ;
 
-model = 0;				% is it the model?
+model = 1;				% is it the model?
 
 % ========= generate =======================
 if model
 	x = signal_generate(	1,	\  %PRN
-					100,	\  % freq delta in Hz
-					1000,	\  % CA phase
+					1,	\  % freq delta in Hz
+					1,	\  % CA phase
 					0,	\  % noise sigma
 					DumpSize);
 	fprintf('Generated\n');
@@ -85,7 +85,7 @@ fr_fine = acq_fine_freq_estimation( x,
 				PRN_range,		
 				sat_acx_val(PRN_range, 3),			% freq
 				sat_acx_val(PRN_range, 2),			% CA phase
-				1);						% trace me
+				0);						% trace me
 %x_lo = x(6:end);
 %acq_serial(x_lo, 1, sat_acx_val(1, 3), 1);
 
