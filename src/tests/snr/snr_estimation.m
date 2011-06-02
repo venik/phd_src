@@ -4,7 +4,7 @@ addpath('../../gnss/');
 
 PRN = 19 ;
 N=16368;
-sigma = 10;
+sigma = 0;
 delta = 5000;
 
 ca_base = ca_get(PRN, 0) ;
@@ -30,7 +30,14 @@ max_val = max(corr_array)
 mean_val = mean(corr_array)
 std_val = std(corr_array)
 
-snr = 10*log10( (max_val - mean_val) / std_val )
+snr = 10*log10( (max_val - mean_val) / std_val );
+
+fprintf('max_val = %.2f in dB = %.2f\n', max_val, 10*log10(max_val));
+fprintf('mean_val = %.2f in dB = %.2f\n', mean_val, 10*log10(mean_val));
+fprintf('std_val = %.2f in dB = %.2f\n', std_val, 10*log10(std_val));
+
+fprintf('Result = %.2f\n', snr);
+
 
 plot(corr_array);
 
