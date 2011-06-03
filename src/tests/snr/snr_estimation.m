@@ -2,6 +2,8 @@
 
 addpath('../../gnss/');
 
+
+
 PRN = 19 ;
 N=16368;
 sigma = 0;
@@ -26,17 +28,27 @@ corr_array = ifft(S .* conj(NS) );
 corr_array = corr_array .* conj(corr_array);
 
 % calculate SNR
-max_val = max(corr_array)
-mean_val = mean(corr_array)
-std_val = std(corr_array)
+max_val = max(corr_array);
+mean_val = mean(corr_array);
+std_val = std(corr_array);
 
 snr = 10*log10( (max_val - mean_val) / std_val );
+
+fprintf('\n Real sigma = %d\n', sigma);
 
 fprintf('max_val = %.2f in dB = %.2f\n', max_val, 10*log10(max_val));
 fprintf('mean_val = %.2f in dB = %.2f\n', mean_val, 10*log10(mean_val));
 fprintf('std_val = %.2f in dB = %.2f\n', std_val, 10*log10(std_val));
-
 fprintf('Result = %.2f\n', snr);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+fprintf('\nWithout noise\n');
+fprintf('max_val = 66977856.00 in dB = 78.26\n');
+fprintf('mean_val = 47964.81 in dB = 46.81\n');
+fprintf('std_val = 949449.42 in dB = 59.77\n');
+fprintf('Result = 18.48\n');
+%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 plot(corr_array);
