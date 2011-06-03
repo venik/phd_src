@@ -3,8 +3,8 @@
 addpath('../../gnss/');
 
 PRN = 19 ;
-sigma = 0;
-delta = 1;
+sigma =  15;
+delta = 500;
 
 ca_base = ca_generate_bits(PRN, 0);
 ca_local = [ca_base] ;
@@ -32,15 +32,16 @@ corr_array = sqrt(corr_array);
 std_val = std(corr_array);			% here var bcoz I got sqrt() from corr_array
 mean_val = mean(corr_array);
 
-fprintf('phase: %03d max_val = %.2f\n', ca_phase, max_val);
-fprintf('after spreading std_val = %.2f before = %.2f\n', std_val, var(noised_signal));
-fprintf('after spreading mean = %.2f before = %.2f\n', mean_val, mean(noised_signal));
+%  snr magic
+snr = 10*log10( (max_val - mean_val)^2 / std_val^2 );
 
-% snr magic
-snr = 10*log10( (max_val - mean_val) / std_val );
+fprintf('\n Real sigma = %.2f dB sigma = %d\n', 10*log10(1/sigma^2), sigma);
+
+fprintf('max_val = %.2f in dB = %.2f phase:%03d\n', max_val, 10*log10(max_val),ca_phase);
+fprintf('mean_val = %.2f in dB = %.2f\n', mean_val, 10*log10(mean_val));
+fprintf('std_val = %.2f in dB = %.2f\n', std_val, 10*log10(std_val));
 fprintf('Result = %.2f dB\n', snr);
 
-
-plot(corr_array);
+%plot(corr_array);
 
 rmpath('../../gnss/');
