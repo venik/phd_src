@@ -26,4 +26,6 @@
 %  //  carrier_nco = IF_FREQUENCY + aPLL.z;
 %  carrier_nco = aPLL.z;
 
+% http://cms.cttc.es/trac/gnss-sdr/browser/trunk/gnss-sdr_0_1/src/algorithms/tracking/gnuradio_blocks/gps_l1_ca_dll_pll_tracking_cc.cc
 
+Wn = lbw * 8 * dzeta / (4 * dzeta*dzeta + 1)

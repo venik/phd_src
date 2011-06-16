@@ -11,7 +11,7 @@ nco_freq = fs;		% NCO freq
 delta  = 10;			
 
 % local signal
-sig = exp(2 * pi * ( (fs + delta)/fd)*(0:N-1)).';
+sig = exp(j * 2 * pi * ( (fs + delta)/fd)*(0:N-1)).';
 
 % make filter
 %Fnyq = fd/2;					% nyquist freq (fd/2) Hz
@@ -26,16 +26,17 @@ a = [1; -1.99995; 0.99995];
 b =  [3.6838e-10; 7.3676e-10; 3.6838e-10];
 
 % vectors for loop
-x_I = zeros(length(a), 1);
-y_I = zeros(length(b), 1);
-x_Q = zeros(length(a), 1);
-y_Q = zeros(length(b), 1);
+x_I = ones(length(a), 1);
+y_I = ones(length(b), 1);
+x_Q = ones(length(a), 1);
+y_Q = ones(length(b), 1);
 
 % Loop cycle
-for k=3:10
+for k=3:100
 	% stage 1 - downconvertion
-	x_I(1)   = sig(k) .* 2 * cos(2 * pi * (nco_freq/fd) * k).' ;
-	x_Q(1) = sig(k) .* 2 * sin(2 * pi * (nco_freq/fd) * k).';
+	%x_I(1)   = sig(k) .* 2 * cos(2 * pi * (nco_freq/fd) * k).' ;
+	%x_Q(1) = sig(k) .* 2 * sin(2 * pi * (nco_freq/fd) * k).';
+	sig_bb = sig(k) .* exp(j * 2 * pi * ( nco_freq/fd) * k).';
 
 	% stage 2 - LPF
 	% y(n) = b1*x(n) + b2*x(n-1) + b3*x(n-2) - a2*y(n-1) - a3*y(n-2)
