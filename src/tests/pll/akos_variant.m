@@ -25,7 +25,7 @@ DampLength = N * num_symbols;	% Length of the signal
 fd= 16.368e6;		% 16.368 MHz
 fs = 4.092e6;		% 4.092MHz
 nco_freq = fs;		% NCO freq
-delta  = 0;			% in Hz
+delta  = 20;			% in Hz
 sigma = 0.01;		% FIXME - add a noise
 
 % local signal
@@ -56,18 +56,28 @@ for k=1:num_symbols
             % Finally compute the signal to mix the collected data to
             % bandband
             carrsig = exp(j .* trigarg.');
+            %carrsig = exp(j * 2 * pi * ( (carrFreq)/fd)*(0:N-1)).';
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+if 0
+	%fprintf('first\n');
+	lo_sig = signal(1 + N*(k-1) : N + N*(k-1)) .* ca_base;
+	lo_sig = lo_sig .* carrsig;
 	
-	% Fixme - fix range
+	real_Sig = sum(real(lo_sig));
+           image_Sig = sum(imag(lo_sig));
+
+	%carrError = atan(image_Sig/real_Sig) / (2 * pi);
+	carrError = atan(real_Sig/image_Sig) / (2 * pi);
+else 
 	q_bb_Sig = real(signal(1 + N*(k-1) : N + N*(k-1)) .* carrsig);
            i_bb_Sig = imag(signal(1 + N*(k-1) : N + N*(k-1)) .* carrsig);
-           
-           qSig = sum(ca_base .* q_bb_Sig)
+           qSig = sum(ca_base .* q_bb_Sig);
            iSig = sum(ca_base .* i_bb_Sig);
-                      
+           
 	% descriminator
-	%carrErr = atan(qSig/iSig) / (2 * pi);
-	carrErr = atan(iSig/qSig) / (2.0 * pi);
+	carrError = atan(qSig/iSig) / (2 * pi);
+	%carrError = atan(iSig/qSig) / (2.0 * pi);
+end
 	
 	  % Implement carrier loop filter and generate NCO command
             carrNco = oldCarrNco + (tau2carr/tau1carr) * (carrError - oldCarrError) + carrError * (PDIcarr/tau1carr);
