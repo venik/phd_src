@@ -25,15 +25,16 @@ DampLength = N * num_symbols;	% Length of the signal
 fd= 16.368e6;		% 16.368 MHz
 fs = 4.092e6;		% 4.092MHz
 nco_freq = fs;		% NCO freq
-delta  = 20;			% in Hz
-sigma = 0.01;		% FIXME - add a noise
+delta  = 15;			% in Hz
+sigma = 0.00001;		% FIXME - add a noise
 
 % local signal
-ca_base = ca_get(PRN, 0) ;
-ca16 = repmat(ca_base, num_symbols, 1); 
+%ca_base = ca_get(PRN, 0) ;
+%ca16 = repmat(ca_base, num_symbols, 1); 
 
 sig_l = cos(2 * pi * ( (fs + delta)/fd)*(0:DampLength-1)).';
-sig_l = sig_l .* ca16;
+ca_base = 1;
+%sig_l = sig_l .* ca16;
 
 wn = (sigma/sqrt(2)) * (randn(DampLength, 1) + j * randn(DampLength, 1));
 
@@ -50,12 +51,12 @@ carrFreqRes = zeros(num_symbols, 1);
 for k=1:num_symbols
 %for k=1:10
             % Get the argument to sin/cos functions
-            trigarg = ( 2 * pi * carrFreq ./ fd) .* (0:N-1) + remCarrPhase;
-            remCarrPhase = rem(trigarg(N), (2 * pi));
+            trigarg = ( 2*pi * carrFreq / fd) .* (0:N-1) + remCarrPhase;
+            remCarrPhase = rem(trigarg(N), (2*pi));
             
             % Finally compute the signal to mix the collected data to
             % bandband
-            carrsig = exp(j .* trigarg.');
+            carrsig = exp(j * trigarg.');
             %carrsig = exp(j * 2 * pi * ( (carrFreq)/fd)*(0:N-1)).';
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if 0
@@ -86,8 +87,10 @@ end
 
             % Modify carrier freq based on NCO command
             carrFreq = fs + carrNco;
-
+		
             carrFreqRes(k) = carrNco;
+            %carrFreqRes(k) = carrFreq;
 end 	% for k = 
 
 plot(carrFreqRes(1:k));
+print -djpeg 'pll.jpg';
