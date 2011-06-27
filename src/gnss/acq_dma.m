@@ -15,7 +15,7 @@
 %    You should have received a copy of the GNU General Public License
 %    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-% more about method in
+% Reference
 % Tsui "Fundamentals of Global Positioning System Receivers" 2nd edition
 % chapter 7.10
 

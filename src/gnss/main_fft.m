@@ -33,7 +33,7 @@ if model
 	x = signal_generate(	1,	\  %PRN
 					1,	\  % freq delta in Hz
 					1,	\  % CA phase
-					0,	\  % noise sigma
+					0.1,	\  % noise sigma
 					DumpSize);
 	fprintf('Generated\n');
 else

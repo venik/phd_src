@@ -15,6 +15,10 @@
 %    You should have received a copy of the GNU General Public License
 %    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+% Reference
+% Tsui "Fundamentals of Global Positioning System Receivers" 2nd edition
+% chapter 7
+
 function res = acq_fft(x, PRN, FR, trace_me)
 	
 if (trace_me == 1)
@@ -33,12 +37,10 @@ result = zeros(length(FR), 2);			% [acx, ca_shift] array
 
 for k = 1:length(FR)
 	lo_sig = exp(j*2*pi * (FR(k)/fd)*(0:N-1)).';
-	%lo_sig = 6*cos(2*pi * (FR(k)/fd)*(0:N-1)).';
-	%lo_sig = cos(2*pi * (FR(k)/fd)*(0:N-1)).';
 	CA = fft(real(lo_sig) .* ca_base);
 	
 	%ca = ifft(conj(CA) .* X);
-	ca = ifft(CA .* conj(X));
+	ca = ifft(CA .* conj(X));		% equal to circular correlation
 	ca = ca .* conj(ca);
 	
 	ca = ca;
