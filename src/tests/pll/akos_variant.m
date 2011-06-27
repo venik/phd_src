@@ -19,20 +19,25 @@ tau1carr = k / (Wn * Wn);
 tau2carr = 2.0 * zeta / Wn;
 
 % Constants signal
-N = 16368;			% samples in 1 ms
+%fd= 16.368e6;		% 16.368 MHz
+%fs = 4.092e6;		% 4.092MHz
+%N = 16368;			% samples in 1 ms
+fd= 5e6;		% 16.368 MHz
+fs = 1.25e6;		% 4.092MHz
+N = 5000;			% samples in 1 ms
+
 num_symbols = 60;	% 60ms
 DampLength = N * num_symbols;	% Length of the signal
-fd= 16.368e6;		% 16.368 MHz
-fs = 4.092e6;		% 4.092MHz
 nco_freq = fs;		% NCO freq
-delta  = 15;			% in Hz
+delta  = 5	;			% in Hz
 sigma = 0.00001;		% FIXME - add a noise
 
 % local signal
 %ca_base = ca_get(PRN, 0) ;
 %ca16 = repmat(ca_base, num_symbols, 1); 
 
-sig_l = cos(2 * pi * ( (fs + delta)/fd)*(0:DampLength-1)).';
+%sig_l = cos(2 * pi * ( (fs + delta)/fd)*(0:DampLength-1)).';
+sig_l = exp(j * 2 * pi * ( (fs + delta)/fd)*(0:DampLength-1)).';
 ca_base = 1;
 %sig_l = sig_l .* ca16;
 
@@ -59,7 +64,7 @@ for k=1:num_symbols
             carrsig = exp(j * trigarg.');
             %carrsig = exp(j * 2 * pi * ( (carrFreq)/fd)*(0:N-1)).';
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if 0
+if 1
 	%fprintf('first\n');
 	lo_sig = signal(1 + N*(k-1) : N + N*(k-1)) .* ca_base;
 	lo_sig = lo_sig .* carrsig;
@@ -92,5 +97,12 @@ end
             %carrFreqRes(k) = carrFreq;
 end 	% for k = 
 
+rmpath('../../gnss/');
+
 plot(carrFreqRes(1:k));
-print -djpeg 'pll.jpg';
+%print -djpeg 'pll.jpg';
+
+% zplane
+% A = [tau1carr, -tau1carr];
+% B = [tau2carr+PDIcarr, -tau2carr]
+% zplane(B, A);
