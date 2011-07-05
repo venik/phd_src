@@ -25,14 +25,14 @@ ca_base = ca_get(PRN, 0) ;
 carr_base = exp(j * 2*pi * fs/fd * (0 : N-1));
 lo_base = ca_base .* carr_base.' ;
 
+% ++++++++++++++++++++++++++++++++++++++++++++++++++
 % double block - Figure 3, part 300 and 301
-% test vals
-M = 16;
-%sig = [1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16];
-sig = 1:M+1;
-N = 1;
-
-
+% ++++++++++++++++++++++++++++++++++++++++++++++++++
+% ========= test vals ========= 
+%M = 16;
+%sig = 1:M+1;
+%N = 1;
+% ========================== 
 sig_double = zeros(M * N * 2, 1);
 k2 = 1;
 for k1=1:N:M
@@ -42,16 +42,18 @@ for k1=1:N:M
 	sig_double(k2 + 1) = sig(k1 + 1);
 	
 	k2 = k2 + 2*N;
-end	% for k=0:M-1
+end	% for k1=1:N:M
 
-sig_double
-
+% ++++++++++++++++++++++++++++++++++++++++++++++++++
 % zero padding
+% ++++++++++++++++++++++++++++++++++++++++++++++++++
 lo_tmp = zeros(2 * length(lo_base), 1);
 
-% make [lo_tmp] .... [lo_tmp] M-times
-lo_sig = repmat(lo_base, M, 1);
+% make [lo_tmp] [zerooo] 
+lo_tmp(1:N) = lo_base;
 
+% [lo_sig] ... [lo_sig] M-times
+lo_sig = repmat(lo_tmp, M, 1);
 
 
 rmpath('../../gnss/');
