@@ -1,3 +1,6 @@
+%    Copyright (C) 2011 Alex Nikiforov  nikiforov.alex@rf-lab.org
+%    	                      2011 Alexey Melnikov  melnikov.alexey@rf-lab.org
+%
 % Reference:
 % United States patent Lin et al. US 6.567.042 B2
 
@@ -26,34 +29,60 @@ carr_base = exp(j * 2*pi * fs/fd * (0 : N-1));
 lo_base = ca_base .* carr_base.' ;
 
 % ++++++++++++++++++++++++++++++++++++++++++++++++++
-% double block - Figure 3, part 300 and 301
+% DOUBLE BLOCK - Figure 3, part 300 and 301
+% map the input data to new form (extended data) into M blocks
+% for example we have N = 2 (samples in signal) M = 5
+% we need M + 1 block of the start signal (in our example (M + 1) * N = 12)
+% input:	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 (first block 1,2, second 3, 4, etc)
+% output:	1, 2, 3, 4;
+%		3, 4, 5, 6;
+%		................
+%		7, 8, 9, 10;
+%		9, 10, 11, 12;
+% ++++++++++++++++++++++++++++++++++++++++++++++++++
+% ========= test vals ========= 
+M = 5;
+N = 2;
+sig =  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+% ========================== 
+sig_double = zeros(M, 2 * N);
+for k1=1:5
+	sig_double( k1 , 1:N ) = sig((k1 - 1) * N + 1 : k1 * N);
+	sig_double( k1, N + 1 : 2*N) = sig((k1 *  N) + 1 : (k1 + 1) * N);
+end	% for k1=
+
+% ========= test end ========= 
+sig_double
+return
+% ========= test end ========= 
+% ++++++++++++++++++++++++++++++++++++++++++++++++++
+% ZERO PADDING
 % ++++++++++++++++++++++++++++++++++++++++++++++++++
 % ========= test vals ========= 
 %M = 16;
-%sig = 1:M+1;
 %N = 1;
+%lo_base = 1:N;
 % ========================== 
-sig_double = zeros(M * N * 2, 1);
-k2 = 1;
-for k1=1:N:M
-	%sig_double((k-1) * N + 1: k * N) = sig((n-1) * N + 1: n * N);
-	%sig_double( (k*N) + 1 : k*(N+1)) = 1;
-	sig_double(k2) = sig(k1);
-	sig_double(k2 + 1) = sig(k1 + 1);
-	
-	k2 = k2 + 2*N;
-end	% for k1=1:N:M
-
-% ++++++++++++++++++++++++++++++++++++++++++++++++++
-% zero padding
-% ++++++++++++++++++++++++++++++++++++++++++++++++++
 lo_tmp = zeros(2 * length(lo_base), 1);
 
 % make [lo_tmp] [zerooo] 
 lo_tmp(1:N) = lo_base;
 
+% FIXME - Seems that we dont need this, bcoz lo_sig process in DFT
+% circullar correlation and in DBZP every time it's the same
 % [lo_sig] ... [lo_sig] M-times
-lo_sig = repmat(lo_tmp, M, 1);
+%lo_sig = repmat(lo_tmp, M, 1);
+lo_sig = lo_tmp;
 
+% Create M group with FFT results, each group have 2*N point
+% but we interest first N, bcoz second N have partial correlation
+% Fig 4. 402
+
+dft_array = zeros(length(lo_sig), 1);
+LO_SIG = fft(lo_sig);
+%for k1=1:N:M
+for k1=1:1
+	s
+end	% for k1=1:N:M
 
 rmpath('../../gnss/');
