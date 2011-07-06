@@ -105,7 +105,8 @@ for k1=1:N
 	c_i = ifft(C_i);
 	c_i = c_i .* conj(c_i);
 
-	% check for the threshold	
+	% FIXME - check for the threshold	
+	
 end	% for k1=
 
 
