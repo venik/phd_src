@@ -41,9 +41,9 @@ lo_base = ca_base .* carr_base.' ;
 %		9, 10, 11, 12;
 % ++++++++++++++++++++++++++++++++++++++++++++++++++
 % ========= test vals ========= 
-M = 5;
-N = 2;
-sig =  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+%M = 5;
+%N = 2;
+%sig =  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 % ========================== 
 sig_double = zeros(M, 2 * N);
 for k1=1:5
@@ -52,11 +52,19 @@ for k1=1:5
 end	% for k1=
 
 % ========= test end ========= 
-sig_double
-return
+%sig_double
+%return
 % ========= test end ========= 
+
 % ++++++++++++++++++++++++++++++++++++++++++++++++++
 % ZERO PADDING
+% map the local data to new form (extended data) into M blocks
+% for example we have N = 2 (samples in signal) M = 5
+% input:	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 (first block 1,2, second 3, 4, etc)
+% output:	1, 2, 0, 0;
+%		3, 4, 0, 0;
+%		................
+%		9, 10, 0, 0;
 % ++++++++++++++++++++++++++++++++++++++++++++++++++
 % ========= test vals ========= 
 %M = 16;
@@ -74,15 +82,32 @@ lo_tmp(1:N) = lo_base;
 %lo_sig = repmat(lo_tmp, M, 1);
 lo_sig = lo_tmp;
 
+% ++++++++++++++++++++++++++++++++++++++++++++++++++
 % Create M group with FFT results, each group have 2*N point
-% but we interest first N, bcoz second N have partial correlation
-% Fig 4. 402
+% but we interest in the first N, bcoz second N have partial correlation
+% Fig 4. 401
+% ++++++++++++++++++++++++++++++++++++++++++++++++++
 
-dft_array = zeros(length(lo_sig), 1);
+DFT_ARRAY = zeros(M, length(lo_sig));
 LO_SIG = fft(lo_sig);
-%for k1=1:N:M
-for k1=1:1
-	s
-end	% for k1=1:N:M
+for k1=1:M
+	DFT_ARRAY(k1, 1:end) = fft(sig_double( k1 , 1:end )) * LO_SIG;
+end	% for k1=
+
+% ++++++++++++++++++++++++++++++++++++++++++++++++++
+% Get M valie with index i and make DFT, check for peak > threshold
+% i in range [1:N]
+% Fig 4. 402
+% ++++++++++++++++++++++++++++++++++++++++++++++++++
+Ci = zeros(M, 1);
+for k1=1:N
+	C_i(1:M) = DFT_ARRAY(1:M, k1);
+	c_i = ifft(C_i);
+	c_i = c_i .* conj(c_i);
+
+	% check for the threshold	
+end	% for k1=
+
+
 
 rmpath('../../gnss/');
