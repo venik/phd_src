@@ -1,0 +1,269 @@
+#LyX 1.6.8 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\usepackage{hyperref}
+\end_preamble
+\use_default_options true
+\begin_modules
+eqs-within-sections
+figs-within-sections
+tabs-within-sections
+\end_modules
+\language russian
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Алгоритм delay and multiply approach
+\end_layout
+
+\begin_layout Standard
+Алгоритм был предаставлен в книге и статье американского ученого Дж.
+ Цуя 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "lin_dma"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "tsui"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Пусть входной комплексный сигнал описывается формулой:
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\lang english
+\begin_inset Formula \begin{equation}
+s(t)=A(t)e^{j2{\pi}f_{0}t}\label{eq:dma_lo_signal}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+где 
+\begin_inset Formula $A(t)$
+\end_inset
+
+ - амплитуда, а
+\begin_inset Formula $f_{0}$
+\end_inset
+
+- частота сигнала.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Если входящий комплексный сигнал имеет задержку 
+\begin_inset Formula $\tau$
+\end_inset
+
+, то данный сигнал будет описываться формулой: 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\lang english
+\begin_inset Formula \begin{equation}
+s(t-\tau)=A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}\label{eq:dma_signal}\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Получим новый сигнал путем умножения 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:dma_lo_signal"
+
+\end_inset
+
+ и 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:dma_signal"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\lang english
+\begin_inset Formula \begin{eqnarray}
+s_{n}(t) & = & s(t)s(t-\tau)^{*}=\nonumber \\
+ & = & A(t)A(t-\tau)e^{j2\pi f_{0}t}e^{j2\pi f(t-\tau)}=\label{eq:dma}\\
+ & = & A(t)A(t-\tau)e^{j2\pi f_{0}\tau}\nonumber \end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Из формулы 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:dma"
+
+\end_inset
+
+видно, что полученный сигнал не зависит от задержки 
+\begin_inset Formula $\tau$
+\end_inset
+
+.
+ Остается найти фазу C/A кода.
+ Референсный сигнал 
+\begin_inset Formula $A(t)A(t-\tau)$
+\end_inset
+
+ используется для корреляции с новым кодом, который получен по формуле (3)
+ - умножением принятого сигнала и его задержанной копии.
+ Когда фаза C/A кода найдена, поиск сводится к одномерному поиску частоты.
+ Данный метод позволяет уменьшить количество вычислений, путем сведения
+ задачи поиска в двух измерения: по фазе кода и частоте; к задаче поиска
+ только по частоте.
+ Этот метод позволяет существенно сэкономить вычислительные ресурсы при
+ обнаружении сигнала заданного спутника, но, вместе с тем, операция умножения
+ повышает шум в процессе.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Анализ шума алгоритма DMA 
+\end_layout
+
+\begin_layout Standard
+\align center
+
+\lang english
+\begin_inset Formula \begin{eqnarray}
+s_{n}(t) & = & (s(t)+n_{1}(t))(s(t-\tau)+n_{2}(t))^{*}=\nonumber \\
+ & = & A(t)A(t-\tau)e^{j2{\pi}f_{0}{\tau}}+\nonumber \\
+ & + & A(t)e^{j2{\pi}f_{0}t}n_{2}(t)+\label{eq:dma_noise}\\
+ & + & A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t)+\nonumber \\
+ & + & n(t)^{2}\nonumber \end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+где 
+\begin_inset Formula $A(t)A(t-\tau)e^{j2{\pi}f_{0}{\tau}}$
+\end_inset
+
+ - новый C/A код, а 
+\begin_inset Formula $n(t)^{2}+A(t)e^{j2{\pi}f_{0}t}n_{2}(t)+A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t)$
+\end_inset
+
+- шумовая компонента.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Поскольку корреляция производится с "новым" кодом 
+\begin_inset Formula $A(t)A(t-\tau)$
+\end_inset
+
+, компонента 
+\begin_inset Formula $A(t)e^{j2{\pi}f_{0}t}n_{2}(t)+A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t)$
+\end_inset
+
+ будет являеться шумом,
+\begin_inset Formula $n(t)^{2}$
+\end_inset
+
+ - квадрат АБГШ.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+Литература
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "bibtex_db"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
