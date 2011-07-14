@@ -1,5 +1,5 @@
-#LyX 1.6.8 created this file. For more info see http://www.lyx.org/
-\lyxformat 345
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
 \begin_document
 \begin_header
 \textclass article
@@ -12,18 +12,26 @@ eqs-within-sections
 figs-within-sections
 tabs-within-sections
 \end_modules
+\maintain_unincluded_children false
 \language russian
-\inputencoding auto
+\language_package auto
+\inputencoding utf8
+\fontencoding global
 \font_roman default
 \font_sans default
 \font_typewriter default
 \font_default_family default
+\use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
 
 \graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
 \paperfontsize default
 \spacing single
 \use_hyperref false
@@ -31,21 +39,31 @@ tabs-within-sections
 \use_geometry false
 \use_amsmath 1
 \use_esint 1
+\use_mhchem 1
+\use_mathdots 1
 \cite_engine basic
 \use_bibtopic false
+\use_indices false
 \paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Предметный указатель
+\shortcut idx
+\color #008000
+\end_index
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
-\defskip medskip
+\paragraph_indentation default
 \quotes_language english
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
 \tracking_changes false
 \output_changes false
-\author "" 
-\author "" 
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
 \end_header
 
 \begin_body
@@ -83,8 +101,10 @@ key "tsui"
 \align center
 
 \lang english
-\begin_inset Formula \begin{equation}
-s(t)=A(t)e^{j2{\pi}f_{0}t}\label{eq:dma_lo_signal}\end{equation}
+\begin_inset Formula 
+\begin{equation}
+s(t)=A(t)e^{j2{\pi}f_{0}t}\label{eq:dma_lo_signal}
+\end{equation}
 
 \end_inset
 
@@ -119,8 +139,10 @@ s(t)=A(t)e^{j2{\pi}f_{0}t}\label{eq:dma_lo_signal}\end{equation}
 \align center
 
 \lang english
-\begin_inset Formula \begin{equation}
-s(t-\tau)=A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}\label{eq:dma_signal}\end{equation}
+\begin_inset Formula 
+\begin{equation}
+s(t-\tau)=A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}\label{eq:dma_signal}
+\end{equation}
 
 \end_inset
 
@@ -151,10 +173,12 @@ reference "eq:dma_signal"
 \align center
 
 \lang english
-\begin_inset Formula \begin{eqnarray}
+\begin_inset Formula 
+\begin{eqnarray}
 s_{n}(t) & = & s(t)s(t-\tau)^{*}=\nonumber \\
  & = & A(t)A(t-\tau)e^{j2\pi f_{0}t}e^{j2\pi f(t-\tau)}=\label{eq:dma}\\
- & = & A(t)A(t-\tau)e^{j2\pi f_{0}\tau}\nonumber \end{eqnarray}
+ & = & A(t)A(t-\tau)e^{j2\pi f_{0}\tau}\nonumber 
+\end{eqnarray}
 
 \end_inset
 
@@ -202,12 +226,14 @@ reference "eq:dma"
 \align center
 
 \lang english
-\begin_inset Formula \begin{eqnarray}
+\begin_inset Formula 
+\begin{eqnarray}
 s_{n}(t) & = & (s(t)+n_{1}(t))(s(t-\tau)+n_{2}(t))^{*}=\nonumber \\
  & = & A(t)A(t-\tau)e^{j2{\pi}f_{0}{\tau}}+\nonumber \\
  & + & A(t)e^{j2{\pi}f_{0}t}n_{2}(t)+\label{eq:dma_noise}\\
  & + & A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t)+\nonumber \\
- & + & n(t)^{2}\nonumber \end{eqnarray}
+ & + & n(t)^{2}\nonumber 
+\end{eqnarray}
 
 \end_inset
 
