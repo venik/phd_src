@@ -43,9 +43,6 @@ x = x(ca_phase:DumpSize + ca_phase - 1);
 
 wn = (sigma/sqrt(2)) * (randn(DumpSize, 1) + j * randn(DumpSize, 1));
 
-%x=x + sigma * randn(length(x), 1) ;
-%res = x;
-
 res = x + wn ;
     
 end   % function res = signal_generate(freq_delta, ca_phase, sigma)
