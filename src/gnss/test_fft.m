@@ -8,9 +8,7 @@ ts = 1/16.368e6 ;
 model = 1;				% is it the model?
 acx_res = zeros(4) ;		% [acx, ca_phase, freq, detected state]
 
-%sigma = [0.01, 0.1, 1, 1.5, 2];
-sigma = 0.01:0.1:2;
-snr = 10 * log10(1./sigma);
+snr = -6:10;
 
 detected = zeros(length(sigma), 1);
 probability = zeros(length(sigma), 1);
@@ -23,7 +21,7 @@ for h=1:1000
 	x = signal_generate(	1,	\  %PRN
 					1,	\  % freq delta in Hz
 					1,	\  % CA phase
-					sigma(k),	\  % noise sigma
+					snr(k),	\  
 					DumpSize);
 					
 	acx_res = acq_fft(x,
