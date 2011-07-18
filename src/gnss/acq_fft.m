@@ -79,7 +79,7 @@ res = zeros(4,1);
 [res(1), res(3)] = max(result(1:length(FR),1));
 res(2) = result(res(3),2);
 res(3) = FR(res(3));
-res(4) = thr_max(5);
+res(4) = thr_max(5);			% detect flag
 
 if (trace_me == 1)
 	fprintf('\n[acq_fft] PRN:02%d acx=%05d shift_ca=%05d exit....\n', PRN, res(1), res(2));

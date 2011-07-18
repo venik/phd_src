@@ -19,10 +19,13 @@
 % PRN - satellite PRN number
 % freq_delta - freq delta (doppler effect)
 % ca_phase - C/A phase in incoming signal
-% sigma - noise sigma
+% snr - signal to noise rate
 % DumpSize - number of the samples
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function res = signal_generate(PRN, freq_delta, ca_phase, sigma, DumpSize)
+
+% FIXME - remove dummy var, it's just indicate that now we work with SNR
+% instead of sigma and we need rework the old code
+function res = signal_generate(PRN, freq_delta, ca_phase, snr, DumpSize, dummy)
 
 fd= 16.368e6;		% 16.368 MHz
 fs = 4.092e6;
@@ -41,8 +44,9 @@ x = cos(2*pi*(fs + freq_delta)/fd*(0:length(x_ca16)-1)).' ;
 x = x .* x_ca16 ;
 x = x(ca_phase:DumpSize + ca_phase - 1);
 
-wn = (sigma/sqrt(2)) * (randn(DumpSize, 1) + j * randn(DumpSize, 1));
+%wn = (sigma/sqrt(2)) * (randn(DumpSize, 1) + j * randn(DumpSize, 1));
+%res = x + wn ;
 
-res = x + wn ;
+res = awgn(x, snr, 'measured');
     
 end   % function res = signal_generate(freq_delta, ca_phase, sigma)
