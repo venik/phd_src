@@ -34,19 +34,19 @@ X = fft(x);
 ca_base = ca_get(PRN, trace_me);		% generate C/A code
 
 result = zeros(length(FR), 2);			% [acx, ca_shift] array
+thr_max = zeros(5, 1);
 
 for k = 1:length(FR)
 	lo_sig = exp(j*2*pi * (FR(k)/fd)*(0:N-1)).';
-	CA = fft(real(lo_sig) .* ca_base);
+	CA = fft(lo_sig .* ca_base);
+	%CA = fft(real(lo_sig) .* ca_base);
 	
 	%ca = ifft(conj(CA) .* X);
 	ca = ifft(CA .* conj(X));		% equal to circular correlation
 	ca = ca .* conj(ca);
 	
-	ca = ca;
+	ca = sqrt(ca);
 	
-	[result(k,1), result(k,2)] = max(ca);
-
 	if (trace_me == 1)
 		fprintf('PRN:%d FR:%d \t acx=%d\t shift_ca=%05d\n', PRN, FR(k), result(k,1), result(k,2));
 		corr_sss = [ abs(ca(N-50:N)) abs(ca(1:51))];
@@ -62,13 +62,24 @@ for k = 1:length(FR)
 		%figure(1), plot(abs(ca)), xlim([0,N]);
 		%figure(2), subplot(1,1,1); plot(-51:50, corr_sss); grid on;
 	end % if (trace_me == 1)
+	
+	% 2 max threshold algorithm
+	thr_max = threshold_2max(ca, trace_me);
+	result(k,1) = thr_max(1);
+	result(k,2) = thr_max(2);
+	% check for signal presence
+	if thr_max(5) == 1
+		break;
+	end;	% if thr_max(5)
+
 end % for k = 1:length(FR)
 
 % get the max
-res = zeros(3,1);
+res = zeros(4,1);
 [res(1), res(3)] = max(result(1:length(FR),1));
 res(2) = result(res(3),2);
 res(3) = FR(res(3));
+res(4) = thr_max(5);
 
 if (trace_me == 1)
 	fprintf('\n[acq_fft] PRN:02%d acx=%05d shift_ca=%05d exit....\n', PRN, res(1), res(2));

@@ -1,4 +1,4 @@
-%    Top module for the Serial correaltor acuisition method
+%    Top module for the parralel correaltor acuisition method
 %    Copyright (C) 2010 - 2011 Alex Nikiforov  nikiforov.alex@rf-lab.org
 %			 2010 - 2011 Alexey Melnikov melnikov.aleksey@rf-lab.org
 %
@@ -14,6 +14,9 @@
 
 %    You should have received a copy of the GNU General Public License
 %    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%
+% Reference: 	Tsui "Fundamentals of Global Positioning System Receivers" 2nd edition
+% 			chapter 7
 
 clc; clear all; clf;
 
@@ -33,7 +36,7 @@ if model
 	x = signal_generate(	1,	\  %PRN
 					1,	\  % freq delta in Hz
 					1,	\  % CA phase
-					0.1,	\  % noise sigma
+					0.001,	\  % noise sigma
 					DumpSize);
 	fprintf('Generated\n');
 else
@@ -50,11 +53,11 @@ noise = std(X);
 threshold = threshold * sqrt(-2 * log(10^(-3)));
 fprintf('threshold = %f \n', threshold);
 
-%data = x(100:32000);
-sat_acx_val = zeros(32,3) ;		% [acx, ca_phase, freq]
+sat_acx_val = zeros(32, 4) ;		% [acx, ca_phase, freq, detected state]
 
 for k=PRN_range
-	sat_acx_val(k, :) = acq_fft(x, k, fs, 0);
+	%sat_acx_val(k, :) = acq_fft(x, k, fs, 1);
+	sat_acx_val(k, :) = acq_fft(x, k, 4.092e6, 0);
 	fprintf('%02d: acx=%15.5f shift_ca=%05d freq:%4.1f SNR:%4.1f dB\n', \
 		k,
 		sat_acx_val(k, 1),
@@ -79,6 +82,8 @@ if length(PRN_range) > 1
 		ylim([0 ,33]);
 	return;
 endif;
+
+return
 	
 % need proper phase estimation
 fr_fine = acq_fine_freq_estimation( x,			
