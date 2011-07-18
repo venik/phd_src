@@ -1,7 +1,11 @@
 #!/usr/bin/gnuplot -persist
 
-set terminal postscript eps enhanced
-set output "test_fft.ps"
+#set terminal postscript eps enhanced
+#set output "test_fft.ps"
+
+set terminal jpeg 
+set output "test_fft.jpeg"
+
 set encoding koi8r
 
 set xlabel "SNR, dB" font "Helvetica,18"
