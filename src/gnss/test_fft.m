@@ -10,12 +10,12 @@ acx_res = zeros(4) ;		% [acx, ca_phase, freq, detected state]
 
 snr = -6:10;
 
-detected = zeros(length(sigma), 1);
-probability = zeros(length(sigma), 1);
+detected = zeros(length(snr), 1);
+probability = zeros(length(snr), 1);
 
 fd = fopen('./results/test_fft.res', 'w+', 'ieee-le');
 
-for k=1:length(sigma)
+for k=1:length(snr)
 %for h=1:10
 for h=1:1000
 	x = signal_generate(	1,	\  %PRN
@@ -41,7 +41,7 @@ end	%for k=1
 
 % results
 probability = detected / h * 100;
-for k=1:length(sigma)
+for k=1:length(snr)
 	%fprintf('sigma:%f (SNR = %f)\tdetected = %d from i = %d\n', sigma(k), snr(k), detected(k), i);
 	fprintf('SNR = %f \t probabilit = %3.2f\n', snr(k), probability(k));
 end	%for k=1
