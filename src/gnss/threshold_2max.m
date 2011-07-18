@@ -22,6 +22,7 @@
 %			pos1 - position  of max1(phase of the first max - the highest)
 %			max2 - second max
 %			pos2 - position of the max2(phase of the second max)
+%			flag - true/false - is SV detected
 			
 function res = threshold_2max(x, trace_me)
 
