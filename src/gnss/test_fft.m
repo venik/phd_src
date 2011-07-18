@@ -15,7 +15,7 @@ snr = 10 * log10(1./sigma);
 detected = zeros(length(sigma), 1);
 probability = zeros(length(sigma), 1);
 
-fd = fopen('test_fft.res', 'w+', 'ieee-le');
+fd = fopen('./results/test_fft.res', 'w+', 'ieee-le');
 
 for k=1:length(sigma)
 %for h=1:10
