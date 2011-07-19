@@ -34,7 +34,7 @@ N = 16368;
 x_ca16 = ca_get(PRN, 0) ;
 x_ca16 = repmat(x_ca16, DumpSize/N + 1, 1);
 
-delta = 199 ;
+%delta = 199 ;
 x = cos(2*pi*(fs + freq_delta)/fd*(0:length(x_ca16)-1)).' ;
     
     %bit_shift = round(abs(rand(1)*(length(x)-1))) ;
