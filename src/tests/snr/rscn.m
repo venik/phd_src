@@ -32,14 +32,14 @@ ca_phase = 8000;
 %sigma_low = 0.1:0.1:0.9;
 %sigma_high = 1:15;
 %sigma = [sigma_low, sigma_high];
-sigma = 5;
-snr = -6:6;
+sigma = 1;
+snr = -3;
 estimated_sigma = zeros(length(sigma), 1);
 estimated_snr = zeros(length(snr), 1);
 %for k=1:length(sigma)
 for k=1:length(snr)
 	% make signal
-	if 0
+	if 1
 		x_ca16 = ca_get(PRN, 0) ;
 		x_ca16 = repmat(x_ca16, DumpSize/N + 1, 1);
 		x = cos(2*pi*(fs + freq_delta)/fd*(0:length(x_ca16)-1)).' ;
@@ -58,7 +58,7 @@ for k=1:length(snr)
 	% test
 	lo_ca = ca_get(PRN, 0) ;
 	lo_ca = repmat(lo_ca, 2, 1);
-	lo_sig = exp(j*2*pi*fs/fd*(0 : 2*N-1)).' ;
+	lo_sig = exp(j*2*pi*fs/fd*(0 : 2*N-1)).';
 	
 	x = x(1:N);
 	lo_replica = lo_ca .* lo_sig;
@@ -73,19 +73,19 @@ for k=1:length(snr)
 	% SNR estimation
 	for_noise = x .* lo_replica(est_ca_phase : est_ca_phase + N - 1);
 	
-	%acx_real = real(for_noise);
-	%Q_acc_2_real = mean(acx_real.^2);
+	acx_real = real(for_noise);
+	Q_acc_2_real = sum(acx_real(:) .^2 ) / N
 	
 	acx_imag = imag(for_noise);
-	%Q_acc_2_imag = mean(acx_imag.^2);
-	acx_imag = acx_imag.^2;
-	Q_acc_2_imag = sum(acx_imag(1:end)) / N;
+	Q_acc_2_imag = mean(acx_imag.^2)
+	%Q_acc_2_imag = sum(acx_imag(:) .^ 2) / N
 	
 	total_power = for_noise .* conj(for_noise);
-	total_power = sum(total_power(1:end)) / N;
-	estimated_snr(k) = (total_power - 2*Q_acc_2_imag) / (2*Q_acc_2_imag);
+	total_power = sum(total_power(:)) / N
+	%estimated_snr(k) = (total_power - (Q_acc_2_real + Q_acc_2_imag)) / (Q_acc_2_real + Q_acc_2_imag)
+	estimated_snr(k) = (total_power - (2 * Q_acc_2_imag)) / (2*Q_acc_2_imag)
 	fprintf('snr = %f and snr = %f in dB\n', estimated_snr(k), 10*log10(estimated_snr(k)));
-	estimated_snr(k)= 10*log(estimated_snr(k));
+	estimated_snr(k)= 10*log10(estimated_snr(k))
 
 	%estimated_sigma(k) = sqrt(Q_acc_2_real + Q_acc_2_imag);
 	%estimated_sigma(k) = sqrt(2*Q_acc_2_imag);
