@@ -1,0 +1,43 @@
+\section{Алгоритм оценки ОСШ "действительный сигнал - комплексный шум"}
+
+В иностранной литературе она называется "Real Signal - Complex Noise (RSCN)". Введем перевод
+"Действительный сигнал - комлексный шум (ДСКШ)".
+Данный алгоритм рассмотрен в статьях \cite{badke_rscn, presti_insidegnss, presti_ieee}.
+
+Если рассматривать идеально синхронизированный сигнал, тогда в синфазном контуре будет
+находится сигнал и АБГШ, в то время как в квадратурном плече будет находится только шум,
+независимый и одинаково распределенный с шумом в синфазном контуре. Данный факт может
+быть использован для оценки ОСШ в программном приемнике:
+\begin{center}
+\begin{equation}
+	\label{eq:rscn_noise_power}
+	\hat{P_n} = \frac{2}{N}\sum^N_{v=1}|r_{C,Im}[v]|^2
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	\label{eq:rscn_total_power}
+	\hat{P}_{tot} = \frac{1}{N}\sum^N_{v=1}|r_{C}[v]|^2
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	\label{eq:rscn_data_power}
+	\hat{P_d} = \hat{P}_{tot} - \hat{P_n}
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	\label{eq:rscn_snr}
+	\hat{\lambda_C} = \frac{\hat{P_d}}{\hat{P_n}} = \frac{\hat{P}_{tot} - \hat{P_n}}{\hat{P_n}} 
+\end{equation}
+\end{center}
+
+Очевидно, что данный метод является чувствительным к сдвигу фазы, который приводит к переходу энергии
+в квадратурный контур. Любой остаточный сдвиг фазы ведет к возрастанию энергии шума в квадратурном
+контуре (это видно из \ref{eq:rscn_noise_power}).
+
+\newpage
