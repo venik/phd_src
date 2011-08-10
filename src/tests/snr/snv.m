@@ -14,7 +14,10 @@
 %    You should have received a copy of the GNU General Public License
 %    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
-% Reference: FIXME - soon
+% Reference: "Are C/N0 Algorithms Equivalent in All Situations?" Letizia Lo Prest et al
+%	http://www.insidegnss.com/node/1826
+
+
 
 clc; clear all; clf;
 
@@ -29,6 +32,7 @@ freq_delta = 0;
 ca_phase = 8000;
 
 snr = -6:6;
+%snr = -6;
 %sigma = 1;
 
 for k=1:length(snr)
@@ -46,7 +50,7 @@ for k=1:length(snr)
 		fprintf('real snr = %f and %f in dB\n', 0.5/sigma^2, 10*log10(0.5/sigma^2));
 	else
 		x = signal_generate(PRN, freq_delta, ca_phase, snr(k), DumpSize, 1);
-		fprintf('real snr = %f in dB\n', snr(k));
+		%fprintf('real snr = %f in dB\n', snr(k));
 	end; %if 1	
 	% test
 	lo_ca = ca_get(PRN, 0) ;
@@ -65,11 +69,11 @@ for k=1:length(snr)
 	
 	% SNR estimation
 	%for_noise = x .* lo_replica(est_ca_phase : est_ca_phase + N - 1);
-	for_noise = x .* lo_replica(ca_phase : ca_phase + N - 1);
+	for_noise = x .* lo_replica(est_ca_phase : est_ca_phase + N - 1);
 	
 	% signal power
 	data = real(for_noise);
-	%Pd = sum(data(:).^2) / N;		% ????
+	%Pd = sum(data(:).^2) / N;		% FIXME - why dont works
 	Pd = (sum(data(:)) / N) 
 	
 	% total power
@@ -82,7 +86,9 @@ for k=1:length(snr)
 	% estimated snr
 	estimated_snr(k) = Pd / Pn;
 	
-	fprintf('snr = %f and snr = %f in dB\n', estimated_snr(k), 10*log10(estimated_snr(k)));
+	fprintf('snr = %f\n', estimated_snr(k));
+	fprintf('snr = %f in dB real_snr = %d dB\n', 10*log10(estimated_snr(k)), snr(k));
+	fprintf('C/A phase = %d real C/A phase = %d\n', ca_phase, est_ca_phase);
 	estimated_snr(k)= 10*log10(estimated_snr(k));
 
 end	% for k

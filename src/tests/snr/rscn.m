@@ -33,13 +33,13 @@ ca_phase = 8000;
 %sigma_high = 1:15;
 %sigma = [sigma_low, sigma_high];
 sigma = 1;
-snr = -3;
+snr = -3:3;
 estimated_sigma = zeros(length(sigma), 1);
 estimated_snr = zeros(length(snr), 1);
 %for k=1:length(sigma)
 for k=1:length(snr)
 	% make signal
-	if 1
+	if 0
 		x_ca16 = ca_get(PRN, 0) ;
 		x_ca16 = repmat(x_ca16, DumpSize/N + 1, 1);
 		x = cos(2*pi*(fs + freq_delta)/fd*(0:length(x_ca16)-1)).' ;
@@ -51,7 +51,7 @@ for k=1:length(snr)
 		fprintf('real snr = %f and %f in dB\n', 0.5/sigma^2, 10*log10(0.5/sigma^2));
 	else
 		x = signal_generate(PRN, freq_delta, ca_phase, snr(k), DumpSize, 1);
-		fprintf('real snr = %f in dB\n', snr);
+		fprintf('real snr = %f in dB\n', snr(k));
 	end; %if 1
 		
 	
@@ -81,11 +81,11 @@ for k=1:length(snr)
 	%Q_acc_2_imag = sum(acx_imag(:) .^ 2) / N
 	
 	total_power = for_noise .* conj(for_noise);
-	total_power = sum(total_power(:)) / N
+	total_power = sum(total_power(:)) / N;
 	%estimated_snr(k) = (total_power - (Q_acc_2_real + Q_acc_2_imag)) / (Q_acc_2_real + Q_acc_2_imag)
-	estimated_snr(k) = (total_power - (2 * Q_acc_2_imag)) / (2*Q_acc_2_imag)
+	estimated_snr(k) = (total_power - (2 * Q_acc_2_imag)) / (2*Q_acc_2_imag);
 	fprintf('snr = %f and snr = %f in dB\n', estimated_snr(k), 10*log10(estimated_snr(k)));
-	estimated_snr(k)= 10*log10(estimated_snr(k))
+	estimated_snr(k)= 10 * log10(estimated_snr(k));
 
 	%estimated_sigma(k) = sqrt(Q_acc_2_real + Q_acc_2_imag);
 	%estimated_sigma(k) = sqrt(2*Q_acc_2_imag);
