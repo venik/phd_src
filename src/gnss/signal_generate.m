@@ -47,6 +47,6 @@ x = x(ca_phase:DumpSize + ca_phase - 1);
 %wn = (sigma/sqrt(2)) * (randn(DumpSize, 1) + j * randn(DumpSize, 1));
 %res = x + wn ;
 
-res = awgn(x, snr, 'measured');
+res = awgn(x, snr, 'measured', 'dB');
     
 end   % function res = signal_generate(freq_delta, ca_phase, sigma)
