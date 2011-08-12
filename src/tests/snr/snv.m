@@ -31,7 +31,7 @@ DumpSize = N * 2;
 freq_delta = 0;
 ca_phase = 8000;
 
-snr = -6:6;
+snr = -10:10;
 %snr = -6;
 %sigma = 1;
 
@@ -68,23 +68,20 @@ for k=1:length(snr)
 	[max_val, est_ca_phase] = max(corr_res);
 	
 	% SNR estimation
+	for_noise = x .* lo_replica(ca_phase : ca_phase + N - 1);
 	%for_noise = x .* lo_replica(est_ca_phase : est_ca_phase + N - 1);
-	for_noise = x .* lo_replica(est_ca_phase : est_ca_phase + N - 1);
 	
 	% signal power
 	data = real(for_noise);
-	%Pd = sum(data(:).^2) / N;		% FIXME - why dont works
-	Pd = (sum(data(:)) / N) 
+	Pd = mean(abs(data)) .^ 2;		% FIXME - why dont works
+	%Pd = (sum(data(:)) / N) 
 	
 	% total power
 	total_power = for_noise .* conj(for_noise);
 	Ptot = sum(total_power) / N
 	
-	% noise power
-	Pn = Ptot - Pd
-
 	% estimated snr
-	estimated_snr(k) = Pd / Pn;
+	estimated_snr(k) = Pd / (Ptot - Pd);
 	
 	fprintf('snr = %f\n', estimated_snr(k));
 	fprintf('snr = %f in dB real_snr = %d dB\n', 10*log10(estimated_snr(k)), snr(k));
