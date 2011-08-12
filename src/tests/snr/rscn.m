@@ -33,13 +33,15 @@ ca_phase = 8000;
 %sigma_high = 1:15;
 %sigma = [sigma_low, sigma_high];
 sigma = 1;
-snr = -3;
+snr = -6:6;
 estimated_sigma = zeros(length(sigma), 1);
 estimated_snr = zeros(length(snr), 1);
+ca_phase_error = zeros(length(snr), 1);
 %for k=1:length(sigma)
 for k=1:length(snr)
+for gg=1:1000			% times of the C/A phase estimation error	
 	% make signal
-	if 1
+	if 0
 		x_ca16 = ca_get(PRN, 0) ;
 		x_ca16 = repmat(x_ca16, DumpSize/N + 1, 1);
 		x = cos(2*pi*(fs + freq_delta)/fd*(0:length(x_ca16)-1)).' ;
@@ -51,7 +53,7 @@ for k=1:length(snr)
 		fprintf('real snr = %f and %f in dB\n', 0.5/sigma^2, 10*log10(0.5/sigma^2));
 	else
 		x = signal_generate(PRN, freq_delta, ca_phase, snr(k), DumpSize, 1);
-		fprintf('real snr = %f in dB\n', snr);
+		%fprintf('real snr = %f in dB\n', snr);
 	end; %if 1
 		
 	
@@ -70,7 +72,19 @@ for k=1:length(snr)
 	corr_res = acx .* conj(acx);
 	[max_val, est_ca_phase] = max(corr_res);
 	
+	%%%%%%%%%%%%%%%%
+	% part for check probalility of the C/A phase estimation error
+	%%%%%%%%%%%%%%%%
+	if 1
+		if est_ca_phase != ca_phase 
+			ca_phase_error(k) = ca_phase_error(k) + 1;
+		end;
+		continue;
+	end 	% 1;
+	
+	%%%%%%%%%%%%%%%%			
 	% SNR estimation
+	%%%%%%%%%%%%%%%%			
 	for_noise = x .* lo_replica(est_ca_phase : est_ca_phase + N - 1);
 	
 	acx_real = real(for_noise);
@@ -81,24 +95,37 @@ for k=1:length(snr)
 	%Q_acc_2_imag = sum(acx_imag(:) .^ 2) / N
 	
 	total_power = for_noise .* conj(for_noise);
-	total_power = sum(total_power(:)) / N
+	total_power = sum(total_power(:)) / N;
 	%estimated_snr(k) = (total_power - (Q_acc_2_real + Q_acc_2_imag)) / (Q_acc_2_real + Q_acc_2_imag)
-	estimated_snr(k) = (total_power - (2 * Q_acc_2_imag)) / (2*Q_acc_2_imag)
+	estimated_snr(k) = (total_power - (2 * Q_acc_2_imag)) / (2*Q_acc_2_imag);
 	fprintf('snr = %f and snr = %f in dB\n', estimated_snr(k), 10*log10(estimated_snr(k)));
-	estimated_snr(k)= 10*log10(estimated_snr(k))
+	estimated_snr(k)= 10*log10(estimated_snr(k));
 
 	%estimated_sigma(k) = sqrt(Q_acc_2_real + Q_acc_2_imag);
 	%estimated_sigma(k) = sqrt(2*Q_acc_2_imag);
 	
 	%plot(corr_res);
 	%fprintf('real_sigma = %f \t estimated_sigma = %f\n', sigma, estimated_sigma);
+	
+end 	% for gg	
 end	% for k
 
-%plot(sigma, sigma, '-rx', sigma,estimated_sigma, '-go'),
-plot(snr, snr, '-rx', snr, estimated_snr, '-go'),
-	legend('real sigma', 'estimated sigma'),
+ca_phase_error = ca_phase_error ./ gg;
+
+plot(snr, ca_phase_error, '-ro')
+	xlabel('SNR [dB]'),
+	ylabel('Error probalility'),
 	xlim([snr(1), snr(end)]),
 	grid on;
+
+
+%plot(sigma, sigma, '-rx', sigma,estimated_sigma, '-go'),
+%plot(snr, snr, '-rx', snr, estimated_snr, '-go'),
+%	xlabel('Real value [dB]'),
+%	ylabel('Estimated value [dB]'),
+%	legend('real SNR', 'estimated SNR'),
+%	xlim([snr(1), snr(end)]),
+%	grid on;
 %print -djpeg 'rscn_sigma.jpg';
 
 rmpath('../../gnss/');
