@@ -88,17 +88,18 @@ for gg=1:1			% times of the C/A phase estimation error
 	%%%%%%%%%%%%%%%%			
 	% SNR estimation
 	%%%%%%%%%%%%%%%%			
+	%for_noise = x .* lo_replica(ca_phase : ca_phase + N - 1);
 	for_noise = x .* lo_replica(est_ca_phase : est_ca_phase + N - 1);
 	
 	acx_real = real(for_noise);
-	Q_acc_2_real = sum(acx_real(:) .^2 ) / N
+	Q_acc_2_real = mean(acx_real .^2 )
 	
 	acx_imag = imag(for_noise);
 	Q_acc_2_imag = mean(acx_imag.^2)
 	%Q_acc_2_imag = sum(acx_imag(:) .^ 2) / N
 	
 	total_power = for_noise .* conj(for_noise);
-	total_power = sum(total_power(:)) / N;
+	total_power = mean(total_power);
 	%estimated_snr(k) = (total_power - (Q_acc_2_real + Q_acc_2_imag)) / (Q_acc_2_real + Q_acc_2_imag)
 	estimated_snr(k) = (total_power - (2 * Q_acc_2_imag)) / (2*Q_acc_2_imag);
 	fprintf('snr = %f and snr = %f in dB\n', estimated_snr(k), 10*log10(estimated_snr(k)));

@@ -17,8 +17,6 @@
 % Reference: "Are C/N0 Algorithms Equivalent in All Situations?" Letizia Lo Prest et al
 %	http://www.insidegnss.com/node/1826
 
-
-
 clc; clear all; clf;
 
 addpath('../../gnss/');
@@ -71,14 +69,14 @@ for k=1:length(snr)
 	for_noise = x .* lo_replica(ca_phase : ca_phase + N - 1);
 	%for_noise = x .* lo_replica(est_ca_phase : est_ca_phase + N - 1);
 	
+	% total power
+	total_power = for_noise .* conj(for_noise);
+	Ptot = mean(total_power);
+	
 	% signal power
 	data = real(for_noise);
 	Pd = mean(abs(data)) .^ 2;		% FIXME - why dont works
 	%Pd = (sum(data(:)) / N) 
-	
-	% total power
-	total_power = for_noise .* conj(for_noise);
-	Ptot = sum(total_power) / N
 	
 	% estimated snr
 	estimated_snr(k) = Pd / (Ptot - Pd);
