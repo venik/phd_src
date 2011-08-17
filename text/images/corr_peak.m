@@ -15,7 +15,7 @@ time_offs = 8000;
 x = signal_generate(	1,	\  %PRN
 				1,	\  % freq delta in Hz
 				time_offs,	\  % CA phase
-				10,	\  % snr, dB
+				-1,	\  % snr, dB
 				DumpSize);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -37,6 +37,19 @@ for k = 1:length(fs)
 	res(k, :) = ca;
 end % for k = 1:length(FR)
 
-mesh(1:N,fs,res);
+res = res';
+
+[xx, yy] = meshgrid(fs, 1:N);
+
+figure(1),
+	clf,
+	xlabel('f'),
+	ylabel('C/A'),
+	ylim([fs(1), fs(end)]),
+	xlim([1, N]),
+	surf(xx, yy, res, res);
+	
+%print -depsc corr_peak.eps
+%print -djpeg corr_peak.jpeg
 
 rmpath('../../src/gnss/');
