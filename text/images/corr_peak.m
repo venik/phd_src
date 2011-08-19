@@ -15,7 +15,7 @@ time_offs = 8000;
 x = signal_generate(	1,	\  %PRN
 				1,	\  % freq delta in Hz
 				time_offs,	\  % CA phase
-				-1,	\  % snr, dB
+				10,	\  % snr, dB
 				DumpSize);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -39,16 +39,23 @@ end % for k = 1:length(FR)
 
 res = res';
 
-[xx, yy] = meshgrid(fs, 1:N);
-
-figure(1),
-	clf,
-	xlabel('f'),
-	ylabel('C/A'),
-	ylim([fs(1), fs(end)]),
-	xlim([1, N]),
-	surf(xx, yy, res, res);
-	
+if 1
+	[xx, yy] = meshgrid(fs, 1:N);
+	figure(1),
+		clf,
+		xlabel('f'),
+		ylabel('C/A'),
+		ylim([fs(1), fs(end)]),
+		xlim([1, N]),
+		surf(xx, yy, res, res);
+end 	% if 1
+graphics_toolkit("gnuplot");
+if 1
+	plot(1:N, res(:, 6));
+		xlabel("Фаза ПСП"),
+		xlim([1, N]),
+end 	% if 1
+		
 %print -depsc corr_peak.eps
 %print -djpeg corr_peak.jpeg
 
