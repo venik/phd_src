@@ -3,57 +3,63 @@ clc; clear all; clf;
 addpath('../../src/gnss/');
 
 trace_me = 0;
+N = 1023;
+PRN = 1;
 
-DumpSize = 16368 ;
-N = 16368 ;
-fs = 4.092e6-5e3 : 1e3 : 4.092e6+5e3 ;		% sampling rate 4.092 MHz
-fd = 16.368e6;
-ts = 1/fd ;
+res = zeros(11, N);
+% get the CA
+ca_bits = ca_generate_bits(PRN, trace_me) ;
+ca_base = [ca_bits(500:end); ca_bits(1:499)];
 
-time_offs = 8000;
+% not paek for 3d
+ca_bits = ca_generate_bits(PRN + 1, trace_me) ;
+CA_local = fft(ca_bits);
+CA = fft(ca_base);
 
-x = signal_generate(	1,	\  %PRN
-				1,	\  % freq delta in Hz
-				time_offs,	\  % CA phase
-				10,	\  % snr, dB
-				DumpSize);
+ca = ifft(CA .* conj(CA_local));		% equal to circular correlation
+ca = ca .* conj(ca);
+ca = sqrt(ca);
+res(1, :) = ca;
+res(2, :) = [ca(2:end); ca(1:1)];
+res(3, :) = [ca(3:end); ca(1:2)];
+res(4, :) = [ca(4:end); ca(1:3)];
+res(5, :) = [ca(5:end); ca(1:4)];
+res(7, :) = [ca(7:end); ca(1:6)];
+res(8, :) = [ca(8:end); ca(1:7)];
+res(9, :) = [ca(9:end); ca(1:8)];
+res(10, :) = [ca(10:end); ca(1:9)];
+res(11, :) = [ca(11:end); ca(1:10)];
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-X = fft(x);
-ca_base = ca_get(1, trace_me);		% generate C/A code
+% algo
+ca_bits = ca_generate_bits(PRN, trace_me) ;
+ca_base = [ca_bits(500:end); ca_bits(1:499)];
 
-res = zeros(length(fs), N);
+CA_local = fft(ca_bits);
+CA = fft(ca_base);
 
-for k = 1:length(fs)
-	fprintf('stage %d\n', k);
-	
-	lo_sig = exp(j*2*pi * (fs(k)/fd)*(0:N-1)).';
-	CA = fft(lo_sig .* ca_base);
+ca = ifft(CA .* conj(CA_local));		% equal to circular correlation
+ca = ca .* conj(ca);
+ca = sqrt(ca);
+res(6, :) = ca;
 
-	ca = ifft(CA .* conj(X));		% equal to circular correlation
-	ca = ca .* conj(ca);
-	ca = sqrt(ca);
-	
-	res(k, :) = ca;
-end % for k = 1:length(FR)
-
-res = res';
-
-if 1
-	[xx, yy] = meshgrid(fs, 1:N);
+if 0
+	[xx, yy] = meshgrid(1:N, 1:11);
 	figure(1),
-		clf,
-		xlabel('f'),
-		ylabel('C/A'),
-		ylim([fs(1), fs(end)]),
-		xlim([1, N]),
-		surf(xx, yy, res, res);
+		plot3(xx, yy, res, '.-'),
+		ylabel('f', 'FontSize', 16),
+		ylim([1, 11]),
+		xlim([1, N]);
+
 end 	% if 1
+
 graphics_toolkit("gnuplot");
 if 1
-	plot(1:N, res(:, 6));
-		xlabel("Фаза ПСП"),
-		xlim([1, N]),
+	figure(2),
+		plot(1:N, res(6, :)),
+		xlim([1, N]);
+		%xlabel('\tau', 'FontSize', 32),
+		xlabel('{\bf{bold}}'),
+		ylabel('{\iy(t)}');
 end 	% if 1
 		
 %print -depsc corr_peak.eps
