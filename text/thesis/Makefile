@@ -1,11 +1,26 @@
-TEX = texi2dvi
+TEX2DVI = texi2dvi
 
 TEX_FLAGS = --dvipdf
 
-.PHONY: clean
+THESIS_ALL = 	\
+		sec1_2max.tex		\
+		sec1_acq_algo.tex	\
+		sec1_chaos.tex		\
+		sec1_dma.tex		\
+		sec1_fft.tex		\
+		sec1_noise_est.tex	\
+		sec1_rscn.tex		\
+		sec1_serial.tex		\
+		thesis_default.tex	\
+		thesis.tex
 
-thesis: thesis.tex thesis_default.tex sec1_fft.tex sec1_dma.tex sec1_serial.tex
-	${TEX} ${TEX_FLAGS} $< 
+thesis: ${THESIS_ALL}
+	${TEX2DVI} ${TEX_FLAGS} thesis.tex
+
+thesis_ps: ${THESIS_ALL} 
+	${TEX2DVI} thesis.tex
+
+.PHONY: clean
 
 clean:
 	rm -f *.log *.aux *.toc *.pdf *.dvi *.bbl *.blg
