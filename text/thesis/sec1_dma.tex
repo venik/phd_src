@@ -1,17 +1,19 @@
 \subsection{Алгоритм delay and multiply approach}
+\label{ssec:dma}
 
 Алгоритм был предаставлен в книге и статье американского ученого Дж.
 Цуя \cite{lin_dma, tsui}
 
-Пусть входной комплексный сигнал описывается формулой:
+Пусть входной комплексный сигнал описывается формулой \ref{eq:dma_lo_signal}:
 
 \begin{center}
 \begin{equation}
-	s(t)=A(t)e^{j2{\pi}f_{0}t}\label{eq:dma_lo_signal}
+	\label{eq:dma_lo_signal}
+	s(t)=A(t)e^{j2{\pi}f_{0}t}
 \end{equation}
 \end{center}
 
-где $A(t)$ - амплитуда, а $f_{0}$- частота сигнала.
+где $A(t)$ - амплитуда, а $f_{0}$- частота несущей сигнала.
 
 Если входящий комплексный сигнал имеет задержку $\tau$, то данный
 сигнал будет описываться формулой: 
@@ -27,9 +29,9 @@
 
 \begin{center}
 \begin{eqnarray}
-s_{n}(t) & = & s(t)s(t-\tau)^{*}=\nonumber \\
- & = & A(t)A(t-\tau)e^{j2\pi f_{0}t}e^{j2\pi f(t-\tau)}=\label{eq:dma}\\
- & = & A(t)A(t-\tau)e^{j2\pi f_{0}\tau}\nonumber 
+	s_{n}(t) & = & s(t)s(t-\tau)^{*}=\nonumber \\
+	 & = & A(t)A(t-\tau)e^{j2\pi f_{0}t}e^{j2\pi f(t-\tau)}=\label{eq:dma}\\
+	 & = & A(t)A(t-\tau)e^{j2\pi f_{0}\tau}\nonumber 
 \end{eqnarray}
 
 \par\end{center}
@@ -37,7 +39,7 @@ s_{n}(t) & = & s(t)s(t-\tau)^{*}=\nonumber \\
 Из формулы \ref{eq:dma} видно, что полученный сигнал не зависит от
 задержки $\tau$. Остается найти фазу C/A кода. Референсный сигнал
 $A(t)A(t-\tau)$ используется для корреляции с новым кодом, который
-получен по формуле (3) - умножением принятого сигнала и его задержанной
+получен по формуле \ref{eq:dma} - умножением принятого сигнала и его задержанной
 копии. Когда фаза C/A кода найдена, поиск сводится к одномерному поиску
 частоты. Данный метод позволяет уменьшить количество вычислений, путем
 сведения задачи поиска в двух измерения: по фазе кода и частоте; к
@@ -45,7 +47,13 @@ $A(t)A(t-\tau)$ используется для корреляции с новы
 сэкономить вычислительные ресурсы при обнаружении сигнала заданного
 спутника, но, вместе с тем, операция умножения повышает шум в процессе.
 
-Анализ шума алгоритма DMA 
+\subsubsection{Aнализ изменения ОСШ при использовании алгоритма DMA}
+\label{sssec:dma_noise}
+
+Воспользуемся математическим аппаратом теории вероятностей. Необходимый математический аппарат
+рассотрен в \cite{ventcel}, для более подробного изучения можно ознакомиться с \cite{feller}.
+
+Добавим в формулу \ref{eq:dma} АБГШ:
 
 \begin{center}
 \begin{eqnarray}
@@ -57,11 +65,41 @@ $A(t)A(t-\tau)$ используется для корреляции с новы
 \end{eqnarray}
 \end{center}
 
-где $A(t)A(t-\tau)e^{j2{\pi}f_{0}{\tau}}$ - новый C/A код, а $n(t)^{2}+A(t)e^{j2{\pi}f_{0}t}n_{2}(t)+A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t)$-
+где
+$A(t)A(t-\tau)e^{j2{\pi}f_{0}{\tau}}$ - новая ПСП, а
+$A(t)e^{j2{\pi}f_{0}t}n_{2}(t)+A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^{2}$ -
 шумовая компонента.
 
-Поскольку корреляция производится с \textquotedbl{}новым\textquotedbl{}
-кодом $A(t)A(t-\tau)$, компонента $A(t)e^{j2{\pi}f_{0}t}n_{2}(t)+A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t)$
-будет являеться шумом,$n(t)^{2}$ - квадрат АБГШ.
+Свойства дисперсии случайных величин рассмотрены в \cite{ventcel}. Дисперсия суммы 
+независимых случайных величин приведена на формуле \ref{eq:var_add_full}:
+
+\begin{center}
+\begin{equation}
+	\label{eq:var_add_full}
+	D[\sum\limits_{i=1}^{n}{X_i}]=\sum\limits_{i=1}^{n}{D[X_i]} + 2\sum\limits_{i<j}{K_{ij}}
+\end{equation}
+\end{center}
+
+Для некореллированных случайных величин можно формулу \ref{eq:var_add_full} переписать как \ref{eq:var_add}:
+
+\begin{center}
+\begin{equation}
+	\label{eq:var_add}
+	D[\sum\limits_{i=1}^{n}{X_i}]=\sum\limits_{i=1}^{n}{D[X_i]}
+\end{equation}
+\end{center}
+
+Дисперсия произведения независимых случайных величин может быть представлена как \ref{eq:var_mult}:
+\begin{center}
+\begin{equation}
+	\label{eq:var_mult}
+	D[\prod\limits_{i=1}^{n}{X_i}]=\prod\limits_{i=1}^{n}{(D_i + m_{i}^{2})} - \prod\limits_{i=1}^{n}{m_{i}^{2}}
+\end{equation}
+\end{center}
+
+Вернемся к рассмотрению формулы \ref{eq:dma_noise}.
+
+\subsubsection{Результаты моделирования}
+\label{sssec:dma_simulate}
 
 \newpage
