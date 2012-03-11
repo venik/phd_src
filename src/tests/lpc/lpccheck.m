@@ -15,4 +15,6 @@ for k=1:length(poles)
 end
 
 [H,freq]=freqz(1,b) ;
-plot(freq/2/pi*fd,H.*conj(H)), grid on ;
+plot(freq/2/pi*fd,H.*conj(H)),
+	grid on,
+	xlabel('freq') ;
