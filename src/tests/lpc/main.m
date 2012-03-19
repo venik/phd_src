@@ -3,10 +3,10 @@ addpath('../../gnss/');
 
 P = 2 ;        % order of LPC analysis
 N = 1023*4 ;   % number of samples
-fs = 4200 ;       % carrier frequency
-fd = 16368 ;      % sampling frequency
+fs = 4.092e6 ;       % carrier frequency
+fd = 16.368e6 ;      % sampling frequency
 snr = 0 ;     % snr
-ca_error = 10 ; % ca position error
+ca_error = 3000 ; % ca position error
 bit_edge = 0 ; % bit edge flag
 PRN =1;
 
@@ -23,7 +23,7 @@ tx = tx + randn(size(tx))*sqrt(signoise) ;
 
 [freq,E] = lpcs(tx(16369-ca_error:16368*2-ca_error),code(1:16368)) ;
 %plot(freq*fd/2/pi), grid on ;
-%plot(E),grid on ;
+plot(E),grid on ;
 [~,ca_shift] = max(E) ;
 f = freq(ca_shift) ;
 fprintf('freq:%8.2f,  pwr:%5.2f, k:%4d\n', f*fd/2/pi, ...
