@@ -3,10 +3,10 @@ addpath('../../gnss/');
 
 P = 2 ;        % order of LPC analysis
 N = 1023*4 ;   % number of samples
-fs = 4200 ;       % carrier frequency
-fd = 16368 ;      % sampling frequency
-snr = 2 ;     % snr
-ca_error = 1023 ; % ca position error
+fs = 4.092e6 ;       % carrier frequency
+fd = 16.368e6 ;      % sampling frequency
+snr = 0 ;     % snr
+ca_error = 3000 ; % ca position error
 bit_edge = 0 ; % bit edge flag
 PRN =1;
 
