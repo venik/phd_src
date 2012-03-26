@@ -5,8 +5,8 @@ P = 2 ;        % order of LPC analysis
 N = 1023*4 ;   % number of samples
 fs = 4200 ;       % carrier frequency
 fd = 16368 ;      % sampling frequency
-snr = 0 ;     % snr
-ca_error = 10 ; % ca position error
+snr = 2 ;     % snr
+ca_error = 1023 ; % ca position error
 bit_edge = 0 ; % bit edge flag
 PRN =1;
 
@@ -23,7 +23,7 @@ tx = tx + randn(size(tx))*sqrt(signoise) ;
 
 [freq,E] = lpcs(tx(16369-ca_error:16368*2-ca_error),code(1:16368)) ;
 %plot(freq*fd/2/pi), grid on ;
-%plot(E),grid on ;
+plot(E),grid on ;
 [~,ca_shift] = max(E) ;
 f = freq(ca_shift) ;
 fprintf('freq:%8.2f,  pwr:%5.2f, k:%4d\n', f*fd/2/pi, ...
