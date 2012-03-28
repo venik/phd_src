@@ -1,6 +1,7 @@
 %    Top module for the parralel correaltor acuisition method
-%    Copyright (C) 2010 - 2011 Alex Nikiforov  nikiforov.alex@rf-lab.org
-%			 2010 - 2011 Alexey Melnikov melnikov.aleksey@rf-lab.org
+%    Copyright (C)
+%	2012 Alex Nikiforov  nikiforov.alex@rf-lab.org
+%	2012 Alexey Melnikov melnikov.aleksey@rf-lab.org
 %
 %    This program is free software: you can redistribute it and/or modify
 %    it under the terms of the GNU General Public License as published by
@@ -23,17 +24,17 @@ P = 2 ;        % order of LPC analysis
 % Signal related
 DumpSize = 16368*6 ;
 N = 16368 ;
-fs = 4.092e6-5e3 : 1e3 : 4.092e6+5e3 ;		% sampling rate 4.092 MHz
-fs = 16.368e6;
-ts = 1/fs ;
+
+debug_me = 0;
+iteration = 1;
 
 %PRN_range = 1:32 ;
-PRN_range = 1 ;
-model = 1;				% is it the model?
+PRN_range = 31 ;
+model = 0;				% is it the model?
 
 % ========= generate =======================
 if model
-	x = signal_generate(	1,	\  %PRN
+	x = signal_generate(	31,	\  %PRN
 					1,	\  % freq delta in Hz
 					1023,	\  % CA phase
 					10,	\  % snr, dB
@@ -46,13 +47,25 @@ else
 end
 % ========= generate =======================
 
-ca_base = ca_get(PRN_range, 0);		% generate C/A code
-%ca_base = repmat(ca_base, 2, 1);
+% [acx, ca_phase, freq]
+sat_acx_val = zeros(length(PRN_range), 3);
 
-%[freq,E] = lpcs(tx(16369-ca_error:16368*2-ca_error),code(1:16368)) ;
-[freq,E] = acq_lpcs(x(1:N), ca_base) ;
+for k = PRN_range
+	sat_acx_val(k, :) = acq_lpcs(x, PRN_range, iteration, debug_me) ;
+
+	fprintf('%02d: pwr:%5.2f shift_ca=%05d freq:%8.2f\n', k, sat_acx_val(k, 1), sat_acx_val(k, 2), sat_acx_val(k, 3)) ;
+end
+
 %plot(freq*fd/2/pi), grid on ;
-plot(E),grid on ;
-[~,ca_shift] = max(E) ;
-f = freq(ca_shift) ;
-fprintf('freq:%8.2f,  pwr:%5.2f, k:%4d\n', f*fs/2/pi, E(ca_shift), ca_shift-1 ) ;
+%plot(E),grid on ;
+%[~,ca_shift] = max(E) ;
+%f = freq(ca_shift) ;
+%fprintf('freq:%8.2f,  pwr:%5.2f, k:%4d\n', f*fd/2/pi, E(ca_shift), ca_shift-1 ) ;
+
+if length(PRN_range) > 1
+	barh(sat_acx_val((1:32),1)),
+		grid on,
+		title('Correlation with LPC', 'Fontsize', 18),
+		ylim([0 ,33]);
+	return;
+endif;
