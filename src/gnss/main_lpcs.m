@@ -30,7 +30,7 @@ iteration = 1;
 
 %PRN_range = 1:32 ;
 PRN_range = 31 ;
-model = 0;				% is it the model?
+model = 1;				% is it the model?
 
 % ========= generate =======================
 if model
@@ -51,7 +51,7 @@ end
 sat_acx_val = zeros(length(PRN_range), 3);
 
 for k = PRN_range
-	sat_acx_val(k, :) = acq_lpcs(x, PRN_range, iteration, debug_me) ;
+	sat_acx_val(k, :) = acq_lpcs(x, k, iteration, debug_me) ;
 
 	fprintf('%02d: pwr:%5.2f shift_ca=%05d freq:%8.2f\n', k, sat_acx_val(k, 1), sat_acx_val(k, 2), sat_acx_val(k, 3)) ;
 end
@@ -69,3 +69,5 @@ if length(PRN_range) > 1
 		ylim([0 ,33]);
 	return;
 endif;
+
+% print -djpeg '/tmp/lpc_corr.jpg'
