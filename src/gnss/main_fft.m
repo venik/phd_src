@@ -25,18 +25,18 @@ N = 16368 ;
 fs = 4.092e6-5e3 : 1e3 : 4.092e6+5e3 ;		% sampling rate 4.092 MHz
 ts = 1/16.368e6 ;
 
-time_offs = 100;
-PRN_range = 1:32 ;
-%PRN_range = 1 ;
-
 debug_me = 0;
-model = 0;				% is it the model?
+time_offs = 100;
+%PRN_range = 1:32 ;
+PRN_range = 31 ;
+
+model = 1;				% is it the model?
 
 % ========= generate =======================
 if model
-	x = signal_generate(	1,	\  %PRN
+	x = signal_generate(	31,	\  %PRN
 					1,	\  % freq delta in Hz
-					1,	\  % CA phase
+					1023,	\  % CA phase
 					10,	\  % snr, dB
 					DumpSize);
 	fprintf('Generated\n');
@@ -47,9 +47,9 @@ else
 end
 % ========= generate =======================
 
-% calculate threshold
 
-sat_acx_val = zeros(length(PRN_range), 4) ;		% [acx, ca_phase, freq, detected state]
+% [acx, ca_phase, freq, detected state]
+sat_acx_val = zeros(length(PRN_range), 4) ;
 
 for k=PRN_range
 	sat_acx_val(k, :) = acq_fft(x, k, fs, debug_me);
@@ -58,7 +58,7 @@ for k=PRN_range
 		k,
 		sat_acx_val(k, 1),
 		sat_acx_val(k, 2),
-		sat_acx_val(k, 3),
+		sat_acx_val(k, 3)
 	);
 end
 

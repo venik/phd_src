@@ -42,10 +42,11 @@ else
 end
 % ========= generate =======================
 
-sat_acx_val = zeros(length(PRN_range), 2);	% [acx, ca_phase]
+% [acx, ca_phase]
+sat_acx_val = zeros(length(PRN_range), 2);
 
 for k = PRN_range
-	sat_acx_val(k, :)= acq_dma(x, PRN_range(k), tau, iteration, debug_me);
+	sat_acx_val(k, :)= acq_dma(x, k, tau, iteration, debug_me);
 		
 	fprintf('%02d: acx=%15.5f shift_ca=%05d\n', k, sat_acx_val(k, 1), sat_acx_val(k, 2));
 end
