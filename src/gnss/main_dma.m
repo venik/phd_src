@@ -17,9 +17,9 @@
 %    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
-PRN = 1:32;
-%PRN = 14;
-trace_me = 0;
+PRN_range = 1:32;
+%PRN_range = 14;
+debug_me = 0;
 DumpSize = 16368*10 ;
 
 % Algoritm specific data
@@ -32,8 +32,8 @@ model = 0;				% is it the model?
 if model
 	x = signal_generate(	1,	\  %PRN
 					50,	\  % freq delta in Hz
-					199,	\  % CA phase
-					0.1,	\  % noise sigma
+					1,	\  % CA phase
+					10,	\  % SNR
 					DumpSize);
 	fprintf('Generated\n');
 else
@@ -42,12 +42,12 @@ else
 end
 % ========= generate =======================
 
-acx = zeros(length(PRN), 2);
+sat_acx_val = zeros(length(PRN_range), 2);	% [acx, ca_phase]
 
-for k = PRN
-	acx(k, :)= acq_dma(x, PRN(k), tau, iteration, trace_me);
+for k = PRN_range
+	sat_acx_val(k, :)= acq_dma(x, PRN_range(k), tau, iteration, debug_me);
 		
-	fprintf('%02d: acx=%15.5f shift_ca=%05d\n', k, acx(k,2), acx(k, 1));
+	fprintf('%02d: acx=%15.5f shift_ca=%05d\n', k, sat_acx_val(k, 1), sat_acx_val(k, 2));
 end
 
 if length(PRN_range) > 1

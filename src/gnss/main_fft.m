@@ -41,15 +41,15 @@ if model
 					DumpSize);
 	fprintf('Generated\n');
 else
-	%x = readdump_txt('./data/flush.txt', DumpSize);				% create data vector
+	%x = readdump_txt('./data/flush.txt', DumpSize);	% create data vector
 	x = readdump_bin_2bsm('./data/flush.bin', DumpSize);
 	fprintf('Real\n');
 end
-% ========= generate =======================4190
+% ========= generate =======================
 
 % calculate threshold
 
-sat_acx_val = zeros(32, 4) ;		% [acx, ca_phase, freq, detected state]
+sat_acx_val = zeros(length(PRN_range), 4) ;		% [acx, ca_phase, freq, detected state]
 
 for k=PRN_range
 	sat_acx_val(k, :) = acq_fft(x, k, fs, debug_me);

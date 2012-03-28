@@ -1,6 +1,7 @@
 %    Delay and multiply approach
-%    Copyright (C) 2010 Alex Nikiforov  nikiforov.alex@rf-lab.org
-%    	                    2010 Alexey Melnikov  melnikov.alexey@rf-lab.org
+%    Copyright (C)
+%	2010 Alex Nikiforov  nikiforov.alex@rf-lab.org
+%	2010 Alexey Melnikov  melnikov.alexey@rf-lab.org
 %
 %    This program is free software: you can redistribute it and/or modify
 %    it under the terms of the GNU General Public License as published by
@@ -19,16 +20,8 @@
 % Tsui "Fundamentals of Global Positioning System Receivers" 2nd edition
 % chapter 7.10
 
+% return [acx, ca_phase]
 function res = acq_dma(x, PRN, tau, iteration, trace_me)
-
-% FIXME 
-if 0
-	%trace_me = 1;
-	%PRN = 31;
-	%tau = 1023;
-	%iteration = 5;
-	%x = readdump_bin_2bsm('./data/flush.bin', (iteration+1)*16368);
-endif
 
 if (trace_me == 1)
 	fprintf('[acq_dma]\n');
@@ -58,10 +51,11 @@ CA_NEW_TMP = fft(ca_new_tmp);
 acx = ifft(CA_NEW_TMP .* conj(CA_NEW_CODE));
 acx = acx .* conj(acx);
 
-[res(2), res(1)] = max(acx);
+% [acx, ca_phase]
+[res(1), res(2)] = max(acx);
 	
 if (trace_me == 1)
-	fprintf('shift_ca = [%d] corr = %15.5f\n', res(1), res(2));
+	fprintf('corr = %15.5f shift_ca = [%d] \n', res(1), res(2));
 	plot(acx);
 	pause;
 end %if (trace_me == 1)
