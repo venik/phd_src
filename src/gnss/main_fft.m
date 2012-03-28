@@ -26,10 +26,11 @@ fs = 4.092e6-5e3 : 1e3 : 4.092e6+5e3 ;		% sampling rate 4.092 MHz
 ts = 1/16.368e6 ;
 
 time_offs = 100;
-%PRN_range = 1:32 ;
-PRN_range = 1 ;
+PRN_range = 1:32 ;
+%PRN_range = 1 ;
 
-model = 1;				% is it the model?
+debug_me = 0;
+model = 0;				% is it the model?
 
 % ========= generate =======================
 if model
@@ -41,36 +42,24 @@ if model
 	fprintf('Generated\n');
 else
 	%x = readdump_txt('./data/flush.txt', DumpSize);				% create data vector
-	x = readdump_bin_2bsm('./data/flush.bin', DumpSize);			% create data vector
+	x = readdump_bin_2bsm('./data/flush.bin', DumpSize);
 	fprintf('Real\n');
 end
-% ========= generate =======================
+% ========= generate =======================4190
 
 % calculate threshold
-X = fft(x(1:N));
-threshold = std(X);
-noise = std(X);
-threshold = threshold * sqrt(-2 * log(10^(-3)));
-fprintf('threshold = %f \n', threshold);
 
 sat_acx_val = zeros(32, 4) ;		% [acx, ca_phase, freq, detected state]
 
 for k=PRN_range
-	%sat_acx_val(k, :) = acq_fft(x, k, fs, 1);
-	sat_acx_val(k, :) = acq_fft(x, k, 4.092e6, 0);
-	fprintf('%02d: acx=%15.5f shift_ca=%05d freq:%4.1f SNR:%4.1f dB\n', \
+	sat_acx_val(k, :) = acq_fft(x, k, fs, debug_me);
+	%sat_acx_val(k, :) = acq_fft(x, k, 4.092e6, t);
+	fprintf('%02d: acx=%15.5f shift_ca=%05d freq:%4.1f \n', \
 		k,
 		sat_acx_val(k, 1),
 		sat_acx_val(k, 2),
 		sat_acx_val(k, 3),
-		10*log10(sat_acx_val(k, 1)/noise)
 	);
-	
-	% get in dB scale
-	%SNR = 10*log10(sat_acx_val(k, 1)/noise);
-	%if( SNR > 3 )
-	%	fprintf("presented [%d] satellite SNR=%d\n", k, SNR);
-	%end % if( SNR > 3 )
 end
 
 % check for vector length - we want to work just with 1 satellite
@@ -78,7 +67,7 @@ end
 if length(PRN_range) > 1
 	barh(sat_acx_val((1:32),1)),
 		grid on,
-		title('Correlation', 'Fontsize', 18),
+		title('Correlation with DFT', 'Fontsize', 18),
 		ylim([0 ,33]);
 	return;
 endif;
