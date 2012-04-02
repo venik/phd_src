@@ -25,28 +25,40 @@
 
 % FIXME - remove dummy var, it's just indicate that now we work with SNR
 % instead of sigma and we need rework the old code
-function res = signal_generate(PRN, freq_delta, ca_phase, snr, DumpSize, dummy)
+function res = signal_generate(PRN, freq_delta, ca_phase, snr, DumpSize, traceme)
 
 fd= 16.368e6;		% 16.368 MHz
 fs = 4.092e6;
 N = 16368;
 
-x_ca16 = ca_get(PRN, 0) ;
-x_ca16 = repmat(x_ca16, DumpSize/N + 1, 1);
+res = zeros(DumpSize, 1);
 
-%delta = 199 ;
-x = cos(2*pi*(fs + freq_delta)/fd*(0:length(x_ca16)-1)).' ;
-    
-    %bit_shift = round(abs(rand(1)*(length(x)-1))) ;
-    %x(bit_shift:end)=x(bit_shift:end) * (-1) ;
-    %x(length(x)/2+1000:end)=x(length(x)/2+1000:end) * (-1) ;
-    
-x = x .* x_ca16 ;
-x = x(ca_phase:DumpSize + ca_phase - 1);
+% check for parameters
+if length(PRN) != length(freq_delta) | length(PRN) != length(ca_phase) | length(PRN) != length(snr)
+	fprintf('signal_generate(): [ERR] Wrong incoming parameters: PRN, freq_delta, ca_phase, snr must has similar size\n');
+	return
+end	% if length(PRN)
 
-%wn = (sigma/sqrt(2)) * (randn(DumpSize, 1) + j * randn(DumpSize, 1));
-%res = x + wn ;
+fprintf('signal_generate(): num of sat:%d\n', length(PRN));
 
-res = awgn(x, snr, 'measured', 'dB');
+for k=1:length(PRN)
+	x_ca16 = ca_get(PRN(k), traceme) ;
+	x_ca16 = repmat(x_ca16, DumpSize/N + 1, 1);
+
+	x = cos(2*pi*(fs + freq_delta(k))/fd*(0:length(x_ca16)-1)).' ;
     
-end   % function res = signal_generate(freq_delta, ca_phase, sigma)
+	%bit_shift = round(abs(rand(1)*(length(x)-1))) ;
+	%x(bit_shift:end)=x(bit_shift:end) * (-1) ;
+	%x(length(x)/2+1000:end)=x(length(x)/2+1000:end) * (-1) ;
+    
+	x = x .* x_ca16 ;
+	x = x(ca_phase(k) : DumpSize + ca_phase(k) - 1);
+
+	%wn = (sigma/sqrt(2)) * (randn(DumpSize, 1) + j * randn(DumpSize, 1));
+	%res = x + wn ;
+
+	x = awgn(x, snr(k), 'measured', 'dB');
+	res = res + x;
+end	% for k=1:length(PRN)
+
+end   % function res = signal_generate()
