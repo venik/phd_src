@@ -27,18 +27,23 @@ ts = 1/16.368e6 ;
 
 debug_me = 0;
 time_offs = 100;
-%PRN_range = 1:32 ;
-PRN_range = 31 ;
+PRN_range = 1:32 ;
+%PRN_range = 31 ;
 
-model = 1;				% is it the model?
+model = 0;				% is it the model?
 
 % ========= generate =======================
 if model
-	x = signal_generate(	31,	\  %PRN
-					1,	\  % freq delta in Hz
-					1023,	\  % CA phase
-					10,	\  % snr, dB
-					DumpSize);
+	PRN_mod = 1:5;
+	freq_deltas = [1, 1, 1, 1, 1];
+	ca_deltas = [1, 1, 1, 1, 1 ];
+	SNRs = [10, 10, 10, 10, 10];
+	x = signal_generate(	PRN_mod,	\  %PRN
+			freq_deltas,	\  % freq delta in Hz
+			ca_deltas,	\  % CA phase
+			SNRs,	\  % SNR
+			DumpSize,
+			debug_me);
 	fprintf('Generated\n');
 else
 	%x = readdump_txt('./data/flush.txt', DumpSize);	% create data vector
