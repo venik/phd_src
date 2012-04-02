@@ -17,6 +17,8 @@
 %    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 %
 
+clc; clear all; clf;
+
 PRN_range = 1:32;
 %PRN_range = 14;
 debug_me = 0;
@@ -30,11 +32,16 @@ model = 0;				% is it the model?
 
 % ========= generate =======================
 if model
-	x = signal_generate(	1,	\  %PRN
-					50,	\  % freq delta in Hz
-					1,	\  % CA phase
-					10,	\  % SNR
-					DumpSize);
+	PRN_mod = 1:5;
+	freq_deltas = [1, 1, 1, 1, 1];
+	ca_deltas = [1, 1, 1, 1, 1 ];
+	SNRs = [25, 10, 10, 10, 10];
+	x = signal_generate(	PRN_mod(1),	\  %PRN
+			freq_deltas(1),	\  % freq delta in Hz
+			ca_deltas(1),	\  % CA phase
+			SNRs(1),	\  % SNR
+			DumpSize,
+			debug_me);
 	fprintf('Generated\n');
 else
 	x = readdump_bin_2bsm('./data/flush.bin', DumpSize);
