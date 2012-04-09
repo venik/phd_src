@@ -43,8 +43,8 @@ for sigma = sigma_range
 	end
 	
 	% var(cos())^2 + 2*var(cos())*sigma^2 + (sigma^2)^2
-	predicted_var(sigma) = log10(1 + 2*(sigma^2) + (sigma^2)^2);
-	esimated_var(sigma) = log10(var(signal_dma));
+	predicted_var(sigma) = 10*log10(1 + 2*(sigma^2) + (sigma^2)^2);
+	esimated_var(sigma) = 10*log10(var(signal_dma));
 	fprintf('estimated var(signal_dma) = %.03f predicted var(signal_dma) = %.03f\n', esimated_var, predicted_var);
 	
 	% get new code
@@ -66,10 +66,12 @@ for sigma = sigma_range
 	
 end		% for sigma = 1
 
-plot(sigma_range, predicted_var, '-ro',sigma_range, esimated_var, '-g*'),
+plot(sigma_range, predicted_var, '-ro', sigma_range, esimated_var, '-g*'),
 	grid on,
 	legend('Predicted values', 'Estimated values'),
-	 xlim([sigma_range(1), sigma_range(end)]);
+	 xlim([sigma_range(1), sigma_range(end)]),
+	 xlabel('Real noise'),
+	 ylabel('Noise after DMA procedure (dB)');
 
 %print -djpeg '/tmp/dma_noise.jpg'
 
