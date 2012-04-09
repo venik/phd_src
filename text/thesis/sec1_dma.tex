@@ -4,16 +4,14 @@
 Алгоритм был предаставлен в книге и статье американского ученого Дж.
 Цуя \cite{lin_dma, tsui}
 
-Пусть входной комплексный сигнал описывается формулой \ref{eq:dma_lo_signal}:
-
+Преобразуем модель сигнала \ref{eq:gps_model_1}, взяв 1 сигнал из выборки, тогда индекс $k$ можно опустить:
 \begin{center}
 \begin{equation}
 	\label{eq:dma_lo_signal}
-	s(t)=A(t)e^{j2{\pi}f_{0}t}
+	s(t)=C(t)e^{j2{\pi}f_{0}t}
 \end{equation}
 \end{center}
-
-где $A(t)$ - амплитуда, а $f_{0}$- частота несущей сигнала.
+где $C(t)$ - амплитуда, а $f_{0}$- частота несущей сигнала.
 
 Если входящий комплексный сигнал имеет задержку $\tau$, то данный
 сигнал будет описываться формулой: 
@@ -21,7 +19,7 @@
 \begin{center}
 \begin{equation}
 	\label{eq:dma_signal}
-	s(t-\tau)=A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}
+	s(t-\tau)=C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}
 \end{equation}
 \end{center}
 
@@ -30,15 +28,15 @@
 \begin{center}
 \begin{eqnarray}
 	s_{n}(t) & = & s(t)s(t-\tau)^{*}=\nonumber \\
-	 & = & A(t)A(t-\tau)e^{j2\pi f_{0}t}e^{j2\pi f(t-\tau)}=\label{eq:dma}\\
-	 & = & A(t)A(t-\tau)e^{j2\pi f_{0}\tau}\nonumber 
+	 & = & C(t)C(t-\tau)e^{j2\pi f_{0}t}e^{j2\pi f(t-\tau)}=\label{eq:dma}\\
+	 & = & C(t)C(t-\tau)e^{j2\pi f_{0}\tau}\nonumber 
 \end{eqnarray}
 
 \par\end{center}
 
 Из формулы \ref{eq:dma} видно, что полученный сигнал не зависит от
 задержки $\tau$. Остается найти фазу ПСП. Референсный сигнал
-$A(t)A(t-\tau)$ используется для корреляции с новым кодом, который
+$C(t)C(t-\tau)$ используется для корреляции с новым кодом, который
 получен по формуле \ref{eq:dma} - умножением принятого сигнала и его задержанной
 копии. Когда фаза ПСП найдена, поиск сводится к одномерному поиску
 частоты. Данный метод позволяет уменьшить количество вычислений, путем
@@ -58,16 +56,16 @@ $A(t)A(t-\tau)$ используется для корреляции с новы
 \begin{center}
 \begin{eqnarray}
 	s_{n}(t) & = & (s(t)+n_{1}(t))(s(t-\tau)+n_{2}(t))^{*}=\nonumber \\
-	 & = & A(t)A(t-\tau)e^{j2{\pi}f_{0}{\tau}}+\nonumber \\
-	 & + & A(t)e^{j2{\pi}f_{0}t}n_{2}(t)+\label{eq:dma_noise}\\
-	 & + & A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t)+\nonumber \\
+	 & = & C(t)C(t-\tau)e^{j2{\pi}f_{0}{\tau}}+\nonumber \\
+	 & + & C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+\label{eq:dma_noise_1}\\
+	 & + & C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t)+\nonumber \\
 	 & + & n(t)^{2}\nonumber 
 \end{eqnarray}
 \end{center}
 
 где
-$A(t)A(t-\tau)e^{j2{\pi}f_{0}{\tau}}$ - новая ПСП, а
-$A(t)e^{j2{\pi}f_{0}t}n_{2}(t)+A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^{2}$ -
+$C(t)C(t-\tau)e^{j2{\pi}f_{0}{\tau}}$ - новая ПСП, а
+$C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^{2}$ -
 шумовая компонента.
 
 Свойства дисперсии случайных величин рассмотрены в \cite{ventcel}. Дисперсия суммы 
@@ -97,7 +95,25 @@ $A(t)e^{j2{\pi}f_{0}t}n_{2}(t)+A(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^
 \end{equation}
 \end{center}
 
-Вернемся к рассмотрению формулы \ref{eq:dma_noise}.
+Вернемся к рассмотрению формулы \ref{eq:dma_noise_1}. Известно, что дисперсия ПСП Гоулда равна 1, учитывая \ref{eq:var_mult}
+и тот факт что математическое ожидание ПСП Гоулда равно 0. Математическое ожидаине и дисперсия гармонического сигнала в
+представленном виде так же равны 0 и 1. На основе этого получаем:
+\begin{center}
+\begin{eqnarray}
+	\label{eq:dma_noise_2}
+	C(t)e^{j2{\pi}f_{0}t}n_{2}(t) & = & n_{2}(t) \nonumber \\
+	C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) & = & n_{1}(t)
+\end{eqnarray}
+\end{center}
+
+Учитывая \ref{eq:dma_noise_2}, перепишем \ref{eq:dma_noise_1}:
+\begin{center}
+\begin{eqnarray}
+	s_{n}(t) & = & (s(t)+n_{1}(t))(s(t-\tau)+n_{2}(t))^{*}=\nonumber \\
+	 & = & C(t)C(t-\tau)e^{j2{\pi}f_{0}{\tau}}+\label{eq:dma_noise_3}\\
+	 & + & n_{2}(t) + n_{1}(t) + n(t)^{2}\nonumber
+\end{eqnarray}
+\end{center}
 
 \subsubsection{Результаты моделирования}
 \label{sssec:dma_simulate}
