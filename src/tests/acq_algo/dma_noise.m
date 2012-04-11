@@ -29,7 +29,7 @@ for sigma = sigma_range
 	signal = x + wn ;		% variance = var(x) + sigma
 	%signal = x;
 	
-	fprintf('var(signal) = %.02f, var(x) = %.02f, var(x_ca16) = %.02f, var(wn) = %.02f \n', \
+	fprintf('var(signal) = %.02f, var(x) = %.02f, var(x_ca16) = %.02f, var(wn) = %.02f \n', ...
 		var(signal), var(x), var(x_ca16), var(wn));
 	fprintf('mean(signal) = %.02f\n', mean(signal));
 	% ===================================
@@ -38,14 +38,17 @@ for sigma = sigma_range
 	iteration = 1;
 	signal_dma = zeros(N,1);
 	for k=1:iteration
-		signal_dma(1:N) = signal_dma(1:N) .+ \
-			signal((k-1)*N + 1: k*N) .* conj(signal((k-1)*N + 1 + tau: k*N + tau));
+		signal_dma(1:N) = signal_dma(1:N) + signal((k-1)*N + 1: k*N) .* conj(signal((k-1)*N + 1 + tau: k*N + tau));
 	end
 	
 	% var(cos())^2 + 2*var(cos())*sigma^2 + (sigma^2)^2
 	predicted_var(sigma) = 10*log10(1 + 2*(sigma^2) + (sigma^2)^2);
 	esimated_var(sigma) = 10*log10(var(signal_dma));
-	fprintf('estimated var(signal_dma) = %.03f predicted var(signal_dma) = %.03f\n', esimated_var, predicted_var);
+    
+    if (length(sigma_range) < 2)
+        fprintf('estimated var(signal_dma) = %.03f predicted var(signal_dma) = %.03f\n', ...
+            esimated_var, predicted_var);
+    end
 	
 	% get new code
 	%signal_dma = signal_dma;% ./ iteration;
@@ -66,12 +69,14 @@ for sigma = sigma_range
 	
 end		% for sigma = 1
 
+if 0
 plot(sigma_range, predicted_var, '-ro', sigma_range, esimated_var, '-g*'),
 	grid on,
-	legend('Predicted values', 'Estimated values'),
+	legend('Теоритическое значение дисперсии сигнала', 'Оценка дисперсии сигнала'),
 	 xlim([sigma_range(1), sigma_range(end)]),
-	 xlabel('Real noise'),
-	 ylabel('Noise after DMA procedure (dB)');
+	 xlabel('Дисперсия сигнала на входе алгоритма DMA'),
+	 ylabel('Дисперсия сигнала на выходе алгоритма DMA (дБ)');
+end
 
 %print -djpeg '/tmp/dma_noise.jpg'
 
