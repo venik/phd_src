@@ -35,7 +35,7 @@ res = zeros(DumpSize, 1);
 
 % check for parameters
 assert(	length(PRN) == length(freq_delta) && length(PRN) == length(snr) && length(PRN) == length(ca_phase), ...
-	'signal_generate(): [ERR] Wrong incoming parameters: PRN, freq_delta, ca_phase, snr must has similar size'
+	'signal_generate(): [ERR] Wrong incoming parameters: PRN, freq_delta, ca_phase, snr must has similar size' ...
 );
 
 fprintf('signal_generate(): num of sat:%d\n', length(PRN));
