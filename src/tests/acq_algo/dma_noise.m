@@ -11,20 +11,37 @@ ca_phase = 1000;
 ms = 10;
 DumpSize = ms*N;
 
-PRN = 1;
-sigma_range = 1:10;
-predicted_var = zeros(length(sigma_range), 1) ;
-esimated_var = zeros(length(sigma_range), 1) ;
+% test with 1 and many sat
+num_of_sat = 8;
+PRN = 1:num_of_sat;
+freq_delta_once = 1;
+freq_delta = repmat(freq_delta_once, 1, length(PRN));
+ca_phase_once = 1;
+ca_phase = repmat(ca_phase, 1, length(PRN));
+	
+snr_range = 5:20;
+predicted_var = zeros(length(snr_range), 1) ;
+esimated_var = zeros(length(snr_range), 1) ;
+% for compataplity between 2 version
+sigma_range = 1:length(snr_range);
+
+%sigma_range = 1:10;
+%sigma_range = 1;
+%predicted_var = zeros(length(sigma_range), 1) ;
+%esimated_var = zeros(length(sigma_range), 1) ;
 
 for sigma = sigma_range
 	% generate signal
+if 0
+	% old version	
 	x_ca16 = ca_get(PRN, 0) ;
 	x_ca16 = repmat(x_ca16, ms + 1, 1);
 	
 	x = exp(j*2*pi*(fs + freq_delta)/fd*(0:length(x_ca16)-1)).' ;
-	x = x .* x_ca16 ;		% variance = var(x) * var(x_ca16) = 0.5 * 1 = 0.5
+	p = sum(abs(x(:)) .^ 2) / length(x(:))
+	x = x .* x_ca16 ;
 	x = x(ca_phase:DumpSize + ca_phase - 1);
-	
+		
 	wn = (sigma/sqrt(2)) * (randn(DumpSize, 1) + j * randn(DumpSize, 1));
 	signal = x + wn ;		% variance = var(x) + sigma
 	%signal = x;
@@ -32,6 +49,11 @@ for sigma = sigma_range
 	fprintf('var(signal) = %.02f, var(x) = %.02f, var(x_ca16) = %.02f, var(wn) = %.02f \n', ...
 		var(signal), var(x), var(x_ca16), var(wn));
 	fprintf('mean(signal) = %.02f\n', mean(signal));
+else
+	snr_for_range = repmat(snr_range(sigma), 1, length(PRN));
+	signal = signal_generate(PRN, freq_delta, ca_phase, snr_for_range, DumpSize, 0);
+	fprintf('var(signal) = %.02f\n', var(signal));
+end
 	% ===================================
 	
 	tau = 32;
@@ -41,9 +63,12 @@ for sigma = sigma_range
 		signal_dma(1:N) = signal_dma(1:N) + signal((k-1)*N + 1: k*N) .* conj(signal((k-1)*N + 1 + tau: k*N + tau));
 	end
 	
-	% var(cos())^2 + 2*var(cos())*sigma^2 + (sigma^2)^2
-	predicted_var(sigma) = 10*log10(1 + 2*(sigma^2) + (sigma^2)^2);
-	esimated_var(sigma) = 10*log10(var(signal_dma));
+	%predicted_var(sigma) = 10*log10(2*(sigma^2) + (sigma^2)^2);
+	% var(signal) - var(carrier * C/A)
+	%esimated_var(sigma) = 10*log10(var(signal_dma) - 1);
+	esimated_var(sigma) = var(signal_dma) - 1;
+	noise = 1 / (10^(snr_range(sigma)/10));
+	predicted_var(sigma) = noise^2 + 2*noise;
     
     if (length(sigma_range) < 2)
         fprintf('estimated var(signal_dma) = %.03f predicted var(signal_dma) = %.03f\n', ...
@@ -72,10 +97,18 @@ end		% for sigma = 1
 if 0
 plot(sigma_range, predicted_var, '-ro', sigma_range, esimated_var, '-g*'),
 	grid on,
-	legend('Теоритическое значение дисперсии сигнала', 'Оценка дисперсии сигнала'),
+	legend('   ', '  '),
 	 xlim([sigma_range(1), sigma_range(end)]),
-	 xlabel('Дисперсия сигнала на входе алгоритма DMA'),
-	 ylabel('Дисперсия сигнала на выходе алгоритма DMA (дБ)');
+	 xlabel('     DMA'),
+	 ylabel('     DMA ()');
+else
+	plot(sigma_range, predicted_var, '-ro', sigma_range, esimated_var, '-g*'),
+	grid on;
+	legend('Predicted variance of the noise', 'Estimated variance of the noise'),
+	title(sprintf('DMA noise characteristic for %d satellites', num_of_sat)),
+	xlim([sigma_range(1), sigma_range(end)]),
+	xlabel('SNR'),
+	ylabel('DMA noise characteristic');
 end
 
 %print -djpeg '/tmp/dma_noise.jpg'
