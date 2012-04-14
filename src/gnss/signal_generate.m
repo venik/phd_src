@@ -34,10 +34,9 @@ N = 16368;
 res = zeros(DumpSize, 1);
 
 % check for parameters
-if length(PRN) != length(freq_delta) | length(PRN) != length(ca_phase) | length(PRN) != length(snr)
-	fprintf('signal_generate(): [ERR] Wrong incoming parameters: PRN, freq_delta, ca_phase, snr must has similar size\n');
-	return
-end	% if length(PRN)
+assert(	length(PRN) == length(freq_delta) && length(PRN) == length(snr) && length(PRN) == length(ca_phase), ...
+	'signal_generate(): [ERR] Wrong incoming parameters: PRN, freq_delta, ca_phase, snr must has similar size'
+);
 
 fprintf('signal_generate(): num of sat:%d\n', length(PRN));
 
@@ -45,7 +44,7 @@ for k=1:length(PRN)
 	x_ca16 = ca_get(PRN(k), traceme) ;
 	x_ca16 = repmat(x_ca16, DumpSize/N + 1, 1);
 
-	x = cos(2*pi*(fs + freq_delta(k))/fd*(0:length(x_ca16)-1)).' ;
+	x = exp(j*2*pi*(fs + freq_delta(k))/fd*(0:length(x_ca16)-1)).' ;
     
 	%bit_shift = round(abs(rand(1)*(length(x)-1))) ;
 	%x(bit_shift:end)=x(bit_shift:end) * (-1) ;
