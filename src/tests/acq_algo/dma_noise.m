@@ -12,14 +12,14 @@ ms = 10;
 DumpSize = ms*N;
 
 % test with 1 and many sat
-num_of_sat = 8;
+num_of_sat = 7;
 PRN = 1:num_of_sat;
 freq_delta_once = 1;
 freq_delta = repmat(freq_delta_once, 1, length(PRN));
 ca_phase_once = 1;
 ca_phase = repmat(ca_phase, 1, length(PRN));
 	
-snr_range = 5:20;
+snr_range = 5:25;
 predicted_var = zeros(length(snr_range), 1) ;
 esimated_var = zeros(length(snr_range), 1) ;
 % for compataplity between 2 version
@@ -66,9 +66,13 @@ end
 	%predicted_var(sigma) = 10*log10(2*(sigma^2) + (sigma^2)^2);
 	% var(signal) - var(carrier * C/A)
 	%esimated_var(sigma) = 10*log10(var(signal_dma) - 1);
-	esimated_var(sigma) = var(signal_dma) - 1;
+	esimated_var(sigma) = 10*log10(1 / (var(signal_dma) - 1));
 	noise = 1 / (10^(snr_range(sigma)/10));
-	predicted_var(sigma) = noise^2 + 2*noise;
+	%predicted_var(sigma) = 10*log10(1 / (noise^2 + 2*noise));           % 1
+    %predicted_var(sigma) = 10*log10(1 / (noise^2 + 4*noise + 3));        % 2
+    %predicted_var(sigma) = 10*log10(1 / (noise^2 + 6*noise + 7));       % 3
+    %predicted_var(sigma) = 10*log10(1 / (noise^2 + 8*noise + 14));   %4
+    predicted_var(sigma) = 10*log10(1 / ((noise + num_of_sat)^2 - 1));
     
     if (length(sigma_range) < 2)
         fprintf('estimated var(signal_dma) = %.03f predicted var(signal_dma) = %.03f\n', ...
@@ -102,13 +106,14 @@ plot(sigma_range, predicted_var, '-ro', sigma_range, esimated_var, '-g*'),
 	 xlabel('     DMA'),
 	 ylabel('     DMA ()');
 else
-	plot(sigma_range, predicted_var, '-ro', sigma_range, esimated_var, '-g*'),
-	grid on;
-	legend('Predicted variance of the noise', 'Estimated variance of the noise'),
-	title(sprintf('DMA noise characteristic for %d satellites', num_of_sat)),
-	xlim([sigma_range(1), sigma_range(end)]),
+	plot(snr_range, predicted_var, '-ro', snr_range, esimated_var, '-g*'),
+	grid on,
+	legend('Predicted variance of the noise', 'Estimated variance of the noise', ...
+            'Location', 'SouthEast'),
+	title(sprintf('DMA SNR characteristic for %d satellites', num_of_sat)),
+	xlim([snr_range(1), snr_range(end)]),
 	xlabel('SNR'),
-	ylabel('DMA noise characteristic');
+	ylabel('DMA SNR characteristic');
 end
 
 %print -djpeg '/tmp/dma_noise.jpg'
