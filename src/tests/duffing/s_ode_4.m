@@ -21,4 +21,4 @@ gamma=1 ;
 w0 = 8 ;
 w = 8 ;
 A = 0 ;
-f=[x(2);-gamma*x(2)-w0^2*x(1)+A*cos(w*t)] ;
+f=[x(2);-gamma*x(2) + x(1)^3-x(1)^5 + A*cos(w*t)] ;
