@@ -49,7 +49,7 @@ $C(t)C(t-\tau)$ используется для корреляции с новы
 \label{sssec:dma_noise}
 
 Воспользуемся математическим аппаратом теории вероятностей. Необходимый математический аппарат
-рассотрен в \cite{ventcel}, для более подробного изучения можно ознакомиться с \cite{feller}.
+рассмотрен в \cite{ventcel}, для более подробного изучения можно ознакомиться с \cite{feller}.
 
 Добавим в формулу \ref{eq:dma} АБГШ:
 
@@ -64,7 +64,7 @@ $C(t)C(t-\tau)$ используется для корреляции с новы
 \end{center}
 
 где
-$C(t)C(t-\tau)e^{j2{\pi}f_{0}{\tau}}$ - новая ПСП, а
+$C(t)C(t-\tau)e^{j2{\pi}f_{0}{\tau}}$ - новая ПСП, умноженная на константу, а
 $C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^{2}$ -
 шумовая компонента.
 
@@ -101,17 +101,16 @@ $C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^
 \begin{center}
 \begin{eqnarray}
 	\label{eq:dma_noise_2}
-	C(t)e^{j2{\pi}f_{0}t}n_{2}(t) & = & n_{2}(t) \nonumber \\
-	C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) & = & n_{1}(t)
+	D[C(t)e^{j2{\pi}f_{0}t}n_{2}(t)] & = & D[n_{2}(t)] \nonumber \\
+	D[C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t)] & = & D[n_{1}(t)]
 \end{eqnarray}
 \end{center}
 
-Учитывая \ref{eq:dma_noise_2}, перепишем \ref{eq:dma_noise_1}:
+Учитывая \ref{eq:dma_noise_2} и теоремы о математическом ожидании и дисперсии, перепишем \ref{eq:dma_noise_1}:
 \begin{center}
 \begin{eqnarray}
-	s_{n}(t) & = & (s(t)+n_{1}(t))(s(t-\tau)+n_{2}(t))^{*}=\nonumber \\
-	 & = & C(t)C(t-\tau)e^{j2{\pi}f_{0}{\tau}}+\label{eq:dma_noise_3}\\
-	 & + & n_{2}(t) + n_{1}(t) + n(t)^{2}\nonumber
+	D[s_{n}(t)] & = & D[(s(t)+n_{1}(t))(s(t-\tau)+n_{2}(t))^{*}]=\nonumber \\
+	& = & D[n(t)^{2}] + 2D[n(t)] + 1 \label{eq:dma_noise_3} \\
 \end{eqnarray}
 \end{center}
 
