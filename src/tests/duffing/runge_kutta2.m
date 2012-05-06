@@ -29,21 +29,21 @@ k = 0.5;
 %w = 2 ;
 %k = 1 ;
 
-w_test = w-1:0.1:w+1 ;
+%w_test = w-1:0.1:w+1 ;
 %w_test = 0.1:0.1:3 ;
-%w_test = 2 ;
+w_test = 1 ;
 
 delta_t = 0.01;
 t = 0:delta_t:200;
 vars = zeros(length(w_test), 2);
 
+% convert to SNR 10*log10(0.5/sigma)
+sigma = 0;
+
 for iter=1:length(w_test)
     
     % Incoming signal
     w_x = w_test(iter) ;
-    
-    % convert to SNR 10*log10(0.5/sigma)
-    sigma = 0;
     
     % [x; x']
     x = zeros(length(t) + 1, 2) ;
