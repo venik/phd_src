@@ -1,4 +1,11 @@
-% Duffing with Runge-Kutta
+% Copyright (C)
+%   2012 Alex Nikiforov  nikiforov.alex@rf-lab.org
+%	2012 Alexey Melnikov  melnikov.alexey@rf-lab.org
+%
+% Solve Duffing attractor with Runge-Kutta
+% x'' + kx' - x^3 + x^5 = gamma*cos(wt) + gamma_x*cos(w_x*t) + n
+% (gamma_x*cos(w_x*t) + n) - incominf signal
+% GPLv3
 function runge_kutta()
 clc;
 
@@ -7,12 +14,12 @@ global delta_t;
 global w;
 global k;
 
-gamma = 0.72;
+gamma = 0.77;
 delta_t = 0.01;
 w = 1;
 k = 0.5;
 
-t = 0:delta_t:200;
+t = 0:delta_t:150;
 x = zeros(length(t) + 1, 2) ;
 x(1, 1) = 1;
 x(1, 2) = 1;
