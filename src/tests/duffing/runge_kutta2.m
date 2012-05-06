@@ -3,6 +3,8 @@
 %	2012 Alexey Melnikov  melnikov.alexey@rf-lab.org
 %
 % Solve Duffing attractor with Runge-Kutta
+% x'' + kx' - x^3 + x^5 = gamma*cos(wt) + gamma_x*cos(w_x*t) + n
+% (gamma_x*cos(w_x*t) + n) - incominf signal
 % GPLv3
 
 function runge_kutta()
@@ -16,22 +18,28 @@ global w_x;
 global sigma;
 global k;
 
-w_test = 0:0.1:2 ;
-%w_test = 0.1 ;
-
 % Duffing constants
+gamma_x = 0.385 ;
 gamma = 0.385;
-delta_t = 0.01;
 w = 1  ;
 k = 0.5;
 
+%gamma_x = 3.5 ;
+%gamma = 3.5 ;
+%w = 2 ;
+%k = 1 ;
+
+w_test = w-1:0.1:w+1 ;
+%w_test = 0.1:0.1:3 ;
+%w_test = 2 ;
+
+delta_t = 0.01;
 t = 0:delta_t:200;
 vars = zeros(length(w_test), 2);
 
 for iter=1:length(w_test)
     
     % Incoming signal
-    gamma_x = 0.385 ;
     w_x = w_test(iter) ;
     
     % convert to SNR 10*log10(0.5/sigma)
@@ -52,7 +60,7 @@ for iter=1:length(w_test)
     fprintf('Variance %f\n', vars(iter));
 
     if (length(w_test) < 2) 
-        clf; plot(x(:,1),x(:,2)), 
+        clf; plot(x(:,1),x(:,2)),
             xlabel('x'), ylabel('y'),
             grid on, hold on, comet(x(:,1),x(:,2));
     end
@@ -61,7 +69,7 @@ end % for iter
 
 if (length(w_test) > 2) 
     clf; plot(w_test, vars), 
-        xlabel('\omega'), ylabel('Varian'),
+        xlabel('\omega'), ylabel('Variance'),
         grid on, hold on;
 end
 
