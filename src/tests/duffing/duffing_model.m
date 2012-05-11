@@ -9,11 +9,11 @@ global iter
 % singal constants
 fd = 16.368e6;		% 16.368 MHz
 fs = 4.092e6;
-freq_delta = 0.1:0.1:1.9;
-%freq_delta = 1.4 ;
+%freq_delta = 0.1:0.1:1.9;
+freq_delta = 1 ;
 %freq_delta = 5e3;
 N = 16368;
-sigma = 1;
+sigma = 0;
 
 ms = 10;
 DumpSize = ms*N;
@@ -26,26 +26,31 @@ for iter=1:length(freq_delta)
 
     % duffing constants
     x0=[1;1];
-    tspan=[0 100];
+    tspan=[0 1000];
 
     [t,x]=ode45(@eq1,tspan,x0);
-    %clf; plot(x(:,1),x(:,2)), 
-    %    xlabel('x'), ylabel('y'),
-    %    grid on, hold on, comet(x(:,1),x(:,2));
+    if(length(freq_delta) < 2)
+        clf; plot(x(:,1),x(:,2)), 
+            xlabel('x'), ylabel('y'),
+            grid on, hold on, comet(x(:,1),x(:,2));
     %clf; plot3(x(:,1),x(:,2),t), grid
     %on,xlabel('x_1'),ylabel('x_2'),zlabel('t'), hold on, comet3(x(:,1),x(:,2),t) ;
+    end
 
-    vars(iter, :) = var(x);
-    fprintf('%d from %d\tVariance %f\n', iter, length(freq_delta), vars(iter,2));
-    
+    if(length(freq_delta) > 1)
+        vars(iter, :) = var(x);
+        fprintf('%d from %d\tVariance %f\n', iter, length(freq_delta), vars(iter,2));
+    end
 end     % for k=1
 
 freq_delta = freq_delta - 1;
 
-clf;
-    plot(freq_delta, vars(:,2)),
-    title('Зависимость СКО от \Delta\omega'),
-    xlabel('\omega'), ylabel('\sigma^2'); 
+if(length(freq_delta) > 1)
+    clf;
+        plot(freq_delta, vars(:,2)),
+        title('Зависимость СКО от \Delta\omega'),
+        xlabel('\omega'), ylabel('\sigma^2');
+end;
 
 function f = eq1(t,x)
 

@@ -14,10 +14,16 @@ global delta_t;
 global w;
 global k;
 
-gamma = 0.77;
-delta_t = 0.01;
-w = 1;
-k = 0.5;
+%gamma = 0.77;
+%delta_t = 0.01;
+%w = 1;
+%k = 0.5;
+
+gamma = 120;
+delta_t = 0.001;
+w = 5;
+k = 3.4;
+
 
 t = 0:delta_t:150;
 x = zeros(length(t) + 1, 2) ;

@@ -62,7 +62,7 @@ for iter=1:length(w_test)
     if (length(w_test) < 2) 
         clf; plot(x(:,1),x(:,2)),
             xlabel('x'), ylabel('y'),
-            grid on, hold on, comet(x(:,1),x(:,2));
+            grid on; %, hold on, comet(x(:,1),x(:,2));
     end
     
 end % for iter
