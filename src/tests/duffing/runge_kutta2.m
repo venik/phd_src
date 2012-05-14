@@ -20,7 +20,7 @@ global k;
 
 % Duffing constants
 gamma_x = 0.385 ;
-gamma = 0.385;
+gamma = 0.001;
 w = 1  ;
 k = 0.5;
 
@@ -29,16 +29,21 @@ k = 0.5;
 %w = 2 ;
 %k = 1 ;
 
+%gamma = 110/2;
+%gamma_x = gamma;
+%w = 5;
+%k = 1.1;
+
 %w_test = w-1:0.1:w+1 ;
 %w_test = 0.1:0.1:3 ;
 w_test = 1 ;
 
 delta_t = 0.01;
-t = 0:delta_t:200;
+t = 0:delta_t:500;
 vars = zeros(length(w_test), 2);
 
 % convert to SNR 10*log10(0.5/sigma)
-sigma = 0;
+sigma = 0.00001;
 
 for iter=1:length(w_test)
     
@@ -56,13 +61,18 @@ for iter=1:length(w_test)
         x(duff + 1, :) = step(t(duff), x(duff, :));
     end % for
 
-    vars(iter) = var(x(:,1)) ;
+    vars(iter) = var(x(100:end,1)) ;
     fprintf('Variance %f\n', vars(iter));
 
     if (length(w_test) < 2) 
-        clf; plot(x(:,1),x(:,2)),
+        clf; figure(1), plot(x(:,1),x(:,2)),
             xlabel('x'), ylabel('y'),
             grid on; %, hold on, comet(x(:,1),x(:,2));
+        
+        spectrum = pwelch(x(:, 1)); spectrum = spectrum .* conj(spectrum);
+        [a,b] = max(spectrum);
+        fprintf(' max %f, position %d\n', a, b);
+        figure(2), plot(spectrum(1:200)), grid on, title(sprintf('Max %f, position %d SNR:%2.2f', a,b, 10*log10(0.5/sigma)));
     end
     
 end % for iter
