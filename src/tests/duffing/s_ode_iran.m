@@ -8,7 +8,13 @@ iter = 1000 ;
 varss = zeros(iter, 1) ;
 for i=1:iter
     [t,x]=ode45(@eq1,tspan,x0) ;
-    spectrum = fft(x(:, 2)); spectrum = abs(spectrum) ;:w
+
+    h= firls(30, [ 0  40/(5000*2)   60/(5000*2)  1 ],[ 0 0 1 1  ]) ;
+    %fvtool(h,1) ;
+    y = filter(h,1,x(:, 1)) ;
+    %y=x(:, 1);
+    
+    spectrum = fft(y); spectrum = abs(spectrum) ;    
     
     varss(iter) = var(spectrum) ;
     i
@@ -43,9 +49,9 @@ gamma = 0.825 ;
 w = 100*pi ;
 k = 0.5;
 
-gamma_x = 0.01;
+gamma_x = 0.1;
 w_x = w ;
-sigma = 0.08;
+sigma = 2;
 noise = sigma * randn(1);
 input = gamma_x * cos(w_x*t) + noise;
 
