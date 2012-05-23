@@ -19,12 +19,11 @@ global k;
 %w = 1;
 %k = 0.5;
 
-gamma = 120;
-delta_t = 0.001;
+gamma = 94 ;
 w = 5;
-k = 3.4;
+k = 1.29;
 
-
+delta_t = 0.01;
 t = 0:delta_t:150;
 x = zeros(length(t) + 1, 2) ;
 x(1, 1) = 1;
@@ -36,7 +35,7 @@ end % for
 
 clf; plot(x(:,1),x(:,2)), 
     xlabel('x'), ylabel('y'),
-    grid on, hold on, comet(x(:,1),x(:,2));
+    grid on; %, hold on, comet(x(:,1),x(:,2));
 
 % Incoming parameters:
 %   t - current time
