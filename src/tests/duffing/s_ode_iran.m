@@ -1,58 +1,51 @@
 % http://www.math.tamu.edu/REU/comp/matode.pdf
 % Duffing
-function s_ode_3()
+function s_ode_iran()
+global noise
+
 x0=[0;0];
 tspan=0:0.0002:1;
 
-iter = 1000 ;
+iter = 1 ;
 varss = zeros(iter, 1) ;
 for i=1:iter
-    [t,x]=ode45(@eq1,tspan,x0) ;
+    [t,x]=ode45(@eq1, tspan, x0) ;
 
     h= firls(30, [ 0  40/(5000*2)   60/(5000*2)  1 ],[ 0 0 1 1  ]) ;
     %fvtool(h,1) ;
     y = filter(h,1,x(:, 1)) ;
     %y=x(:, 1);
     
-    spectrum = fft(y); spectrum = abs(spectrum) ;    
-    
-    varss(iter) = var(spectrum) ;
-    i
+    spectrum = pwelch(y); spectrum = abs(spectrum) ;    
+    varss(i) = var(spectrum) ;
+    [energy, freq] = max(spectrum) ;
+    fprintf('%03d: freq:%02d: energy:%5.2f\n', i, freq, energy)
 end ;
 
-hist(varss, 100);
+if iter>1
+    hist(varss, 100);
+end;
 
-%clf; figure(1),
-%    plot(x(:,1),x(:,2)), grid on; %, hold on, comet(x(:,1),x(:,2)) ;
-
-%spectrum = fft(x(:, 2)); spectrum = abs(spectrum);
-%[a,b] = max(spectrum);
-%fprintf(' max %f, position %d\n', a, b);
-
-%figure(2),
-%    plot(spectrum(1:500)), grid on, title(sprintf('Max %f, position %d', a,b));
-
-%a = [0.028  0.053 0.071  0.053 0.028];
-%b = [1.000 -2.026 2.148 -1.159 0.279];
-
-%x_filtered = filter(a, b, x(:, 1));
-%spectrum = fft(x_filtered); spectrum = spectrum .* conj(spectrum);
-%figure(3),
-%    plot(spectrum(1:500)), grid on, title(sprintf('filtered'));
-
-    
-%spectrum(112:132)
+if iter==1
+clf; figure(1),
+    figure(1), plot(x(:,1),x(:,2)), grid on; %, hold on, comet(x(:,1),x(:,2)) ;
+    figure(2), plot(spectrum);
+end
 
 function f = eq1(t,x)
 
-gamma = 0.825 ;
-w = 100*pi ;
+global noise
+
+gamma = 0.826 ;
+%gamma = 0 ;
+w = 50 * 2 * pi ;
 k = 0.5;
 
-gamma_x = 0.1;
+gamma_x = 0.005;
 w_x = w ;
-sigma = 2;
+sigma = 0;
 noise = sigma * randn(1);
-input = gamma_x * cos(w_x*t) + noise;
 
-f=[x(2) * w ; w*(-k*x(2) + x(1) - x(1)^3 + gamma*cos(w*t)) + input] ;
+input = gamma_x * cos(w_x*t - 4*pi) + noise;
+
+f=[x(2) * w ; w*(-k*x(2) + x(1) - x(1)^3 + gamma*cos(w*t) + input)] ;
