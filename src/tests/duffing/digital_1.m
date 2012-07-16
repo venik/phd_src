@@ -101,7 +101,7 @@ mtx_coef = ones(2 * num_eq, length_of_vec) ;
 
 % signal
 for k = 1:num_eq
-    mtx_coef(k, 2:3) = [cos(w*t(k+1)), cos(w*t(k))] ;   x(k+1:-1:k) ;
+    mtx_coef(k, 2:3) = [gamma_x * cos(w*t(k+1)), gamma_x * cos(w*t(k))] ;  % x(k+1:-1:k) ;
     % adjust coef
     mtx_coef(k, 4) = mtx_coef(k, 2)^2 ;
     mtx_coef(k, 5) = mtx_coef(k, 2) * mtx_coef(k, 3) ;
