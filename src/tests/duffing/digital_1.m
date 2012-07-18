@@ -41,21 +41,15 @@ x = zeros(length(t) + 1, 2) ;
 x(1, :) = [1; 1];
 x(1, 2) = 1;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+% WITH signal
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 for duff = 1:length(t)
     x(duff + 1, :) = step(t(duff), x(duff, :), noise(duff));
 end % for
 
 fprintf('Variance %f\n', var(x(100:end,1)));
-
-% plot
-    clf; figure(1), plot(x(:,1),x(:,2)),
-        xlabel('x'), ylabel('y'),
-        grid on; %, hold on, comet(x(:,1),x(:,2));
-
-    [spectrum, f] = pwelch(x(:, 1)); spectrum = spectrum .* conj(spectrum);
-    [a,b] = max(spectrum);
-    fprintf(' max %f, position %d\n', a, b);
-    figure(2), plot(f(1:500), spectrum(1:500)), grid on, title(sprintf('Max %f, position %d SNR:%2.2f', a,b, 10*log10(0.5/sigma)));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
 % absence signal
@@ -77,17 +71,6 @@ x_noise(1, 2) = 1;
 for duff = 1:length(t)
     x_noise(duff + 1, :) = step(t(duff), x_noise(duff, :), noise(duff));
 end % for
-
-% plot
-    clf; figure(3), plot(x_noise(:,1),x_noise(:,2)),
-        xlabel('x'), ylabel('y'),
-        grid on; %, hold on, comet(x(:,1),x(:,2));
-
-    [spectrum, f] = pwelch(x_noise(:, 1)); spectrum = spectrum .* conj(spectrum);
-    [a,b] = max(spectrum);
-    fprintf(' max %f, position %d\n', a, b);
-    figure(4), plot(f(1:500), spectrum(1:500)), grid on, title(sprintf('Max %f, position %d SNR:%2.2f', a,b, 10*log10(0.5/sigma)));
-
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% digital part %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -124,8 +107,38 @@ out_vec = [x(1:end-2, 1); x_noise(1:end-2, 1)] ;
 %size([x(1:end-2, 1); x_noise(1:end-2, 1)])
 %size(mtx_coef)
 
-h = pinv(mtx_coef) * out_vec
-    
+h = pinv(mtx_coef) * out_vec ;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% test filter  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+x_v = gamma_x *  cos(w*t);
+for k = 2:length(t)
+    y_volterra_sig(k) = h(1) + h(2) * x_v(k) + h(3) * x_v(k-1) + h(4) * x_v(k)^2 + h(5) * x_v(k) * x_v(k-1) + h(6) * x_v(k-1)^2;
+end % for
+
+sigma = 2 ;
+x_v = sigma * randn(length(t), 1) ;
+for k = 2:length(t)
+    y_volterra_noise(k) = h(1) + h(2) * x_v(k) + h(3) * x_v(k-1) + h(4) * x_v(k)^2 + h(5) * x_v(k) * x_v(k-1) + h(6) * x_v(k-1)^2;
+end % for
+
+% plot
+    clf; figure(1), plot(t, x(1:end - 1,1), t, y_volterra_sig),
+        xlabel('t'), ylabel('x'),
+        legend('duffing', 'volterra'),
+        title('Signal + noise, in case signal');
+        
+        figure(2), plot(t, x_noise(1:end - 1,1), t, y_volterra_noise),
+        xlabel('t'), ylabel('x'),
+        legend('duffing', 'volterra'),
+        title('Signal + noise, in case noise');
+
+    [spectrum, f] = pwelch(x(:, 1)); spectrum = spectrum .* conj(spectrum);
+    [a,b] = max(spectrum);
+    fprintf(' max %f, position %d\n', a, b);
+    figure(3), plot(f(1:500), spectrum(1:500)), grid on, title(sprintf('Max %f, position %d SNR:%2.2f', a,b, 10*log10(0.5/sigma)));
+
 % Incoming parameters:
 %   t - current time
 %   x(1) - x
