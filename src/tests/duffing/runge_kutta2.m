@@ -19,8 +19,8 @@ global sigma;
 global k;
 
 % Duffing constants
-gamma_x = 0.385 ;
-gamma = 0.001;
+gamma_x = 0.38 ;
+gamma = 0.4;
 w = 1  ;
 k = 0.5;
 
@@ -69,10 +69,10 @@ for iter=1:length(w_test)
             xlabel('x'), ylabel('y'),
             grid on; %, hold on, comet(x(:,1),x(:,2));
         
-        spectrum = pwelch(x(:, 1)); spectrum = spectrum .* conj(spectrum);
+        [spectrum, f] = pwelch(x(:, 1)); spectrum = spectrum .* conj(spectrum);
         [a,b] = max(spectrum);
         fprintf(' max %f, position %d\n', a, b);
-        figure(2), plot(spectrum(1:200)), grid on, title(sprintf('Max %f, position %d SNR:%2.2f', a,b, 10*log10(0.5/sigma)));
+        figure(2), plot(f(1:400), spectrum(1:400)), grid on, title(sprintf('Max %f, position %d SNR:%2.2f', a, f(b), 10*log10(0.5/sigma)));
     end
     
 end % for iter
