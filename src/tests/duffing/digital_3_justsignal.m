@@ -17,15 +17,17 @@ global w_x;
 global sigma;
 global k;
 
-% Duffing constants
-gamma = 0.4;
-gamma_x = 0.385 ;
 w = 1  ;
 k = 0.5;
 
 % presence signal
 delta_t = 0.01;
 t = 0:delta_t:500;
+
+% Duffing constants
+gamma = 0.4;
+%gamma_x = 0.385 ;
+gamma_x = 0:0.76/length(t):0.76 ;
 
 % Incoming signal
 w_x = w ;
@@ -40,7 +42,7 @@ sigma = 0 ;
 noise = sigma * randn(length(t), 1) ;
 
 for duff = 1:length(t)
-    x(duff + 1, :) = step(t(duff), x(duff, :), noise(duff)) ;
+    x(duff + 1, :) = step(t(duff), x(duff, :), gamma_x(duff), noise(duff)) ;
 end % for
 
 fprintf('Variance %f\n', var(x(100:end,1)));
@@ -57,7 +59,7 @@ mtx_coef = ones(num_eq, length_of_vec) ;
 
 % signal
 for k = 1:num_eq
-    mtx_coef(k, 2:3) = [gamma_x * cos(w*t(k+1)), gamma_x * cos(w*t(k))] ;  % x(k+1:-1:k) ;
+    mtx_coef(k, 2:3) = [gamma_x(k) * cos(w*t(k+1)), gamma_x(k) * cos(w*t(k))] ;  % x(k+1:-1:k) ;
     % adjust coef
     mtx_coef(k, 4) = mtx_coef(k, 2)^2 ;
     mtx_coef(k, 5) = mtx_coef(k, 2) * mtx_coef(k, 3) ;
@@ -76,20 +78,20 @@ h = pinv(mtx_coef) * out_vec ;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% test filter  %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-x_v = gamma_x *  cos(w*t);
+x_v = gamma_x(1:length(t)) .*  cos(w*t);
 for k = 2:length(t)
     y_volterra(k) = h(1) + h(2) * x_v(k) + h(3) * x_v(k-1) + h(4) * x_v(k)^2 + h(5) * x_v(k) * x_v(k-1) + h(6) * x_v(k-1)^2;
 end % for
 
-size(y_volterra)
-
 % plot
-    %clf; figure(1), plot(x(:,1),x(:,2)),
-    %    xlabel('x'), ylabel('y'),
-    %    grid on; %, hold on, comet(x(:,1),x(:,2));
-    clf; figure(1), plot(t, x(1:end - 1,1), t, y_volterra),
-        xlabel('t'), ylabel('x'),
-        legend('duffing', 'volterra'),
+    clf; figure(1),
+        hold on
+        plot(gamma_x(1:length(t)), x(1:end - 1,1), 'r', gamma_x(1:length(t)), y_volterra, 'g'),
+        plot([0.38, 0.38, 0.38], [-2:2:2]),
+        hold off, 
+        xlim([0, gamma_x(length(t))]),
+        xlabel('Incoming amplitude'), ylabel('x'),
+        legend('duffing', 'volterra', 'average chaos bound'),
         title('Only signal');
 
     [spectrum, f] = pwelch(x(:, 1)); spectrum = spectrum .* conj(spectrum);
@@ -104,9 +106,8 @@ size(y_volterra)
 % Return parameters:
 %   y(1) - y
 %   y(2) - y'
-function y = step(t, x, noise)
+function y = step(t, x, gamma_x, noise)
 
-global gamma_x;
 global w_x;
 global gamma;
 global w;
