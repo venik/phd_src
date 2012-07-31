@@ -87,7 +87,7 @@ end % for
     clf; figure(1),
         hold on
         plot(gamma_x(1:length(t)), x(1:end - 1,1), 'r', gamma_x(1:length(t)), y_volterra, 'g'),
-        plot([0.38, 0.38, 0.38], [-2:2:2]),
+        plot([0.38, 0.38], [min(y_volterra),max(y_volterra)]),
         hold off, 
         xlim([0, gamma_x(length(t))]),
         xlabel('Incoming amplitude'), ylabel('x'),
