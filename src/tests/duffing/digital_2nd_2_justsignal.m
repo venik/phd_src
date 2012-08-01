@@ -84,9 +84,11 @@ h = pinv(mtx_coef) * out_vec
 %%%%%%%%%%%%%%%%%%%%%%%% test filter  %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 x_v = gamma_x(1:length(t)) .*  cos(w*t);
+y_volterra = zeros(length(t), 1);
 for k = 3:length(t)
-    y_volterra(k) = h(1) + h(2) * x_v(k) + h(3) * x_v(k-1) + h(4) * ...
-                    x_v(k)^2 + h(5) * x_v(k) * x_v(k-1) + h(6) * x_v(k-1)^2 + h(7) * x_v(k-2)^x_v(k) + h(8) * x_v(k-2)*x_v(k) + h(9) * x_v(k-2)*x_v(k-1) + h(10) * x_v(k-2)^2;
+    y_volterra(k) = h(1) + h(2) * x_v(k) + h(3) * x_v(k-1) + h(4) * x_v(k-2) + ...
+                    h(5) * x_v(k)^2 + h(6) * x_v(k) * x_v(k-1) + h(7) * x_v(k-1)^2 + ...
+                        h(7) * x_v(k-2)^2 + h(8) * x_v(k-2)*x_v(k) + h(9) * x_v(k-2)*x_v(k-1) + h(10) * x_v(k-2)^2 ;
 end % for
 
 % plot
