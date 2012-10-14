@@ -74,9 +74,24 @@ def put_line(fd, fd_test, data, new_line = True):
 	fd.write(data)
 	
 # Main program
-#if len(sys.argv) < 3:
-#	print("%s log_name output_name" % sys.argv[0])
-#	sys.exit()
+if len(sys.argv) < 2:
+	print("%s deep of volterra series [deep of order 2] [deep of order 3]" % sys.argv[0])
+	sys.exit()
+elif len(sys.argv) == 2:
+	deep1 = int(sys.argv[1])
+	deep2 = int(sys.argv[1])
+	deep3 = int(sys.argv[1])
+elif len(sys.argv) == 3:
+	deep1 = int(sys.argv[1])
+	deep2 = int(sys.argv[2])
+	deep3 = int(sys.argv[2])
+elif len(sys.argv) == 4:
+	deep1 = int(sys.argv[1])
+	deep2 = int(sys.argv[2])
+	deep3 = int(sys.argv[3])
+else:
+	print("%s deep of volterra series [deep of order 2] [deep of order 3]" % sys.argv[0])
+	sys.exit()
 
 fd_m = open('volterra.m', 'w')
 fd_test_m = open('volterra_test_noise.m', 'w')
@@ -90,39 +105,38 @@ put_line(fd_test_m, None, func_noise)
 put_line(fd_test_m, None, our_func % ('noise'), False)
 
 # volterra
-deep = 3 
 eq_num = 1
-put_line(fd_m, None, volt_cycle_st % (deep-1, deep))
-put_line(fd_m, None, volt_cycle_body % (deep-1, eq_num))
+put_line(fd_m, None, volt_cycle_st % (deep1-1, deep1))
+put_line(fd_m, None, volt_cycle_body % (deep1-1, eq_num))
 eq_num += 1
 
 # 1 order
-for i in range(0, deep):
-	put_line(fd_m, None, volt_cycle_body1 % (deep-1, eq_num, i), False)	
+for i in range(0, deep1):
+	put_line(fd_m, None, volt_cycle_body1 % (deep1-1, eq_num, i), False)	
 	eq_num += 1
 
 put_line(fd_m, None, '')
 
 # 2 order
-for i in range(0, deep):
-	for j in range(0, deep):
+for i in range(0, deep2):
+	for j in range(0, deep2):
 		if (j >= i):
 			#print("i=%d j=%d" % (i,j))
-			put_line(fd_m, None, volt_cycle_body2 % (deep-1, eq_num, i, j), False)
+			put_line(fd_m, None, volt_cycle_body2 % (deep1-1, eq_num, i, j), False)
 			eq_num += 1
 
 put_line(fd_m, None, '')
 
 # 3 order
-for i in range(0, deep):
-	for j in range(0, deep):
-		for k in range(0, deep):
+for i in range(0, deep3):
+	for j in range(0, deep3):
+		for k in range(0, deep3):
 			if (k >= j) and (j >= i):
 				#print("i=%d j=%d k=%d" % (i,j,k))
-				put_line(fd_m, None, volt_cycle_body3 % (deep-1, eq_num, i, j, k), False)
+				put_line(fd_m, None, volt_cycle_body3 % (deep1-1, eq_num, i, j, k), False)
 				eq_num += 1
 
-put_line(fd_m, None, volt_cycle_end % (deep, deep), False)
+put_line(fd_m, None, volt_cycle_end % (deep1, deep1), False)
 
 # save/load .mat file
 put_line(fd_m, fd_test_m, name_mat)
@@ -130,24 +144,25 @@ put_line(fd_m, None, save_mat, False)
 put_line(fd_test_m, None, load_mat, False)
 
 # cycle for plotting
-put_line(fd_m, fd_test_m, volt_cycle2 % (deep))
+put_line(fd_m, fd_test_m, volt_cycle2 % (deep1))
 
 # end of cycle for calculation of the volterra series
 eq_num = 2
 put_line(fd_m, fd_test_m, '  r(n) = h(1) + ', False)
 
 # 1 order
-for i in range(0, deep):
+for i in range(0, deep1):
 	put_line(fd_m, fd_test_m, volt_cycle2_body1 % (eq_num, i), False)	
 	eq_num += 1
 	if (eq_num % 5) == 0:
 		put_line(fd_m, fd_test_m, " ...\n", False)
+		put_line(fd_m, fd_test_m, '  ', False)
 
 # 2 order
 put_line(fd_m, fd_test_m, "  ...\n", False)
 put_line(fd_m, fd_test_m, '  ', False)
-for i in range(0, deep):
-	for j in range(0, deep):
+for i in range(0, deep2):
+	for j in range(0, deep2):
 		if (j >= i):
 			put_line(fd_m, fd_test_m, volt_cycle2_body2 % (eq_num, i, j), False)	
 			eq_num += 1
@@ -156,9 +171,9 @@ for i in range(0, deep):
 				put_line(fd_m, fd_test_m, '  ', False)
 
 # 3 order
-for i in range(0,3):
-	for j in range(0,3):
-		for k in range(0,3):
+for i in range(0,deep3):
+	for j in range(0,deep3):
+		for k in range(0,deep3):
 			if (k >= j) and (j >= i):
 				put_line(fd_m, fd_test_m, volt_cycle2_body3 % (eq_num, i, j, k), False)	
 				eq_num += 1
@@ -174,4 +189,5 @@ put_line(fd_m, fd_test_m, volt_cycle2_end)
 put_line(fd_m, fd_test_m, figure)
 
 # end of file
-put_line(fd_m, fd_test_m, ode_func % ('% nothing here', '0'))
+put_line(fd_m, None, ode_func % ('% nothing here', '0'))
+put_line(fd_test_m, None, ode_func % ('global noise', 'noise(round(t) + 1)'))
