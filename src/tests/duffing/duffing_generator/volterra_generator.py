@@ -44,6 +44,8 @@ volt_cycle_body1='  X(n-%d,%d) = f(n-%d) ;\n'
 volt_cycle_body2='  X(n-%d,%d) = f(n-%d)*f(n-%d) ;\n'
 volt_cycle_body3='  X(n-%d,%d) = f(n-%d)*f(n-%d)*f(n-%d) ;\n'
 
+volt_rec_body1='  X(n-%d,%d) = y(n%d) ;\n'
+
 volt_cycle_end = 'end\n\n'		\
 		 'size(pinv(X))\n'	\
 		 'size(y(%d:end))\n'	\
@@ -64,6 +66,8 @@ volt_cycle2_body1 = 'h(%d)*f(n-%d) + '
 volt_cycle2_body2 = 'h(%d)*f(n-%d)*f(n-%d) + '
 volt_cycle2_body3 = 'h(%d)*f(n-%d)*f(n-%d)*f(n-%d) + '
 
+volt_rec2_body1 = 'h(%d)*r(n%d) + '
+
 def put_line(fd, fd_test, data, new_line = True):
 	if new_line:
 		data = '\n' + data
@@ -74,8 +78,10 @@ def put_line(fd, fd_test, data, new_line = True):
 	fd.write(data)
 	
 # Main program
+Recursive = False
+
 if len(sys.argv) < 2:
-	print("%s deep of volterra series [deep of order 2] [deep of order 3]" % sys.argv[0])
+	print("%s deep of volterra series [deep of order 2] [deep of order 3] [deep of recursive part]" % sys.argv[0])
 	sys.exit()
 elif len(sys.argv) == 2:
 	deep1 = int(sys.argv[1])
@@ -89,9 +95,23 @@ elif len(sys.argv) == 4:
 	deep1 = int(sys.argv[1])
 	deep2 = int(sys.argv[2])
 	deep3 = int(sys.argv[3])
+elif len(sys.argv) == 5:
+	deep1 = int(sys.argv[1])
+	deep2 = int(sys.argv[2])
+	deep3 = int(sys.argv[3])
+	rec_part = deep1 - int(sys.argv[4])
+	Recursive = True
+
+	# check for recursive part
+	if rec_part < 0:
+		print("[ERR] Recursive part cannot be deeper that linear part")
+		sys.exit()
+
 else:
 	print("%s deep of volterra series [deep of order 2] [deep of order 3]" % sys.argv[0])
 	sys.exit()
+
+
 
 fd_m = open('volterra.m', 'w')
 fd_test_m = open('volterra_test_noise.m', 'w')
@@ -111,7 +131,11 @@ eq_num += 1
 
 # 1 order
 for i in range(0, deep1):
-	put_line(fd_m, None, volt_cycle_body1 % (deep1-1, eq_num, i), False)	
+	if i < rec_part:
+		put_line(fd_m, None, volt_cycle_body1 % (deep1-1, eq_num, i), False)	
+	else:
+		put_line(fd_m, None, volt_rec_body1 % (deep1-1, eq_num, rec_part - i - 1), False)	
+
 	eq_num += 1
 
 put_line(fd_m, None, '')
@@ -151,15 +175,20 @@ put_line(fd_m, fd_test_m, '  r(n) = h(1) + ', False)
 
 # 1 order
 for i in range(0, deep1):
-	put_line(fd_m, fd_test_m, volt_cycle2_body1 % (eq_num, i), False)	
+	if i < rec_part:
+		put_line(fd_m, fd_test_m, volt_cycle2_body1 % (eq_num, i), False)	
+	else:
+		put_line(fd_m, fd_test_m, volt_rec2_body1 % (eq_num, rec_part - i - 1), False)	
+
 	eq_num += 1
 	if (eq_num % 5) == 0:
 		put_line(fd_m, fd_test_m, " ...\n", False)
 		put_line(fd_m, fd_test_m, '  ', False)
 
-# 2 order
-put_line(fd_m, fd_test_m, "  ...\n", False)
+put_line(fd_m, fd_test_m, " ...\n", False)
 put_line(fd_m, fd_test_m, '  ', False)
+
+# 2 order
 for i in range(0, deep2):
 	for j in range(0, deep2):
 		if (j >= i):
@@ -168,6 +197,9 @@ for i in range(0, deep2):
 			if (eq_num % 5) == 0:
 				put_line(fd_m, fd_test_m, " ...\n", False)
 				put_line(fd_m, fd_test_m, '  ', False)
+
+put_line(fd_m, fd_test_m, " ...\n", False)
+put_line(fd_m, fd_test_m, '  ', False)
 
 # 3 order
 for i in range(0,deep3):
