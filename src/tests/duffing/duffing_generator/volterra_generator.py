@@ -118,7 +118,7 @@ put_line(fd_m, None, '')
 
 # 2 order
 for i in range(0, deep2):
-	for j in range(0, deep2):
+	for j in range(i, deep2):
 		if (j >= i):
 			#print("i=%d j=%d" % (i,j))
 			put_line(fd_m, None, volt_cycle_body2 % (deep1-1, eq_num, i, j), False)
@@ -128,8 +128,8 @@ put_line(fd_m, None, '')
 
 # 3 order
 for i in range(0, deep3):
-	for j in range(0, deep3):
-		for k in range(0, deep3):
+	for j in range(i, deep3):
+		for k in range(j, deep3):
 			if (k >= j) and (j >= i):
 				#print("i=%d j=%d k=%d" % (i,j,k))
 				put_line(fd_m, None, volt_cycle_body3 % (deep1-1, eq_num, i, j, k), False)
