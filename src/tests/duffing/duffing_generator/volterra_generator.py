@@ -10,7 +10,7 @@ import sys
 #import string
 
 head =	'function s_ode()\n' \
-	'clc;'
+	'clc;\n'
 
 ode_data =	'\nx0=[1;1];\n'				\
 		'tspan=[0:0.01:150];\n'			\
@@ -98,10 +98,10 @@ fd_test_m = open('volterra_test_noise.m', 'w')
 
 # head of file for generating volterra series
 put_line(fd_m, fd_test_m, head, False)
-put_line(fd_m, fd_test_m, ode_data)
+put_line(fd_test_m, None, func_noise)
+put_line(fd_m, fd_test_m, ode_data, False)
 put_line(fd_m, None, our_func % ('0'))
 
-put_line(fd_test_m, None, func_noise)
 put_line(fd_test_m, None, our_func % ('noise'), False)
 
 # volterra
