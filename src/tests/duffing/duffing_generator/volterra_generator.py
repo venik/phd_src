@@ -101,8 +101,7 @@ put_line(fd_m, fd_test_m, head, False)
 put_line(fd_test_m, None, func_noise)
 put_line(fd_m, fd_test_m, ode_data, False)
 put_line(fd_m, None, our_func % ('0'))
-
-put_line(fd_test_m, None, our_func % ('noise'), False)
+put_line(fd_test_m, None, our_func % ('noise'))
 
 # volterra
 eq_num = 1
