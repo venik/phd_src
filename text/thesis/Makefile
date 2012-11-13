@@ -14,8 +14,13 @@ THESIS_ALL = 	\
 		thesis_default.tex	\
 		thesis.tex
 
+SEC2 =	sec2_duffing.tex
+
 thesis: ${THESIS_ALL}
 	${TEX2DVI} ${TEX_FLAGS} thesis.tex
+
+sec2: $(SEC2)
+	${TEX2DVI} ${TEX_FLAGS} sec2.tex
 
 thesis_ps: ${THESIS_ALL} 
 	${TEX2DVI} thesis.tex
