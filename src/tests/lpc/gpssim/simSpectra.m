@@ -10,7 +10,10 @@ x = y.*code ;
 %x = y ;
 [X,omega] = pwelch(x,1024) ;
 [Y] = pwelch(y,1024) ;
+
 hold off, semilogy(omega,X.*conj(X), 'LineWidth',2);
 hold on,semilogy(omega(1:numel(Hjw)),Hjw.*conj(Hjw),'r-','LineWidth',2), grid on
 semilogy(omega,Y.*conj(Y),'k-','LineWidth',2)
-xlabel('Frequency, rad/s','FontSize',14) ;
+xlabel('Частота, рад/с','FontSize',14) ;
+legend('Спектр сигнала', 'АР оценка спектра сигнала', 'Спектр сигнала до снятия ПСП'),
+xlim([omega(1), omega(end)])
