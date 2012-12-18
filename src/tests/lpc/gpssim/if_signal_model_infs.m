@@ -18,11 +18,11 @@ for k=1:numel(sats)
 end
 
 % interference
-c = amp * cos(2*pi*fs(k)/fd*(0:(N+max_delay)*16-1))' ;
-code = get_ca_code16(N+max_delay,1) ;
+c = amp * cos(2*pi*fs(k)/fd*(0:(2*N)*16-1))' ;
+code = get_ca_code16(2*N,1) ;
 code = code(:) ;
 tx = code.*c ;
-delay_int = 320 * rand ;
+delay_int = fd * rand ;
 tx = tx(1 + delay_int : N*16 + delay_int) ;
 y = y + tx ;
     

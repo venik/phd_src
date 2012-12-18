@@ -1,16 +1,21 @@
 clc, clear all ;
 
-infs = 0:0.1:1 ;
+tries = 10 ;
+infs = 0:0.1:0.9 ;
 freq_infs = zeros(numel(infs), 1) ;
 
 for k=1:numel(infs)
-    [y,sats, delays] = if_signal_model_infs(infs(k)) ;
-    code = get_ca_code16(1023+20,sats(1)) ;
-    [freq,E,Hjw] = lpcs(y,code(1:16368),0) ;
-    [p1,ca_shift] = max(E) ;
-    f = freq(ca_shift) ;
-    fprintf('infs: %d freq:%8.2f\n', infs(k), f*16368/2/pi ) ;
-    freq_infs(k) = abs(3800 - f*16368/2/pi) ;
+    for j = 1:tries
+        [y,sats, delays] = if_signal_model_infs(infs(k)) ;
+        code = get_ca_code16(1023+20,sats(1)) ;
+        [freq,E,Hjw] = lpcs(y,code(1:16368),0) ;
+        [p1,ca_shift] = max(E) ;
+        f = freq(ca_shift) ;
+        fprintf('%d:%d\t infs: %d freq:%8.2f\n', k, j, infs(k), f*16368/2/pi ) ;
+        freq_infs(k) = freq_infs(k) + abs(3800 - f*16368/2/pi) ;
+    end
+    
+    freq_infs(k) = freq_infs(k) / tries ;
 end
 
 plot(infs, freq_infs),
