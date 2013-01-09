@@ -139,11 +139,11 @@ $C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^
 \end{equation}
 \end{center}
 
-Произведение форму \ref{eq:dma_real1} и \ref{eq:dma_real2} равно \cite{tsui}:
+Произведение формул \ref{eq:dma_real1} и \ref{eq:dma_real2} равно \cite{tsui}:
 \begin{center}
 \begin{equation}
 	\label{eq:dma_real3}
-	s(t)s(t - \tau) = \frac{C_n(t)}{2}{\cos (2\pi f \tau) - \cos [2 \pi f (2t - \tau)]}
+	s(t)s(t - \tau) = \frac{C_n(t)}{2} \{\cos (2\pi f \tau) - \cos [2 \pi f (2t - \tau)]\}
 \end{equation}
 \end{center}
 
@@ -156,7 +156,8 @@ $C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^
 Одним из основных недостатков является то, что данный алгоритм работает только с комплексным сигналом. Модификации
 для работы с действительным сигналам ведут к дополнительным вычислительным затратам или потере точности. Для
 преобразования Гильберта требуются допольнительные вычислительные затраты, а в формуле \ref{eq:dma_real3}, так
-как ${\tau}$ заранее выбранная константа (${f\tau \approx 1}$), допплеровское смещение частоты будет снижать мощность сигнала, т.е.
+как ${\tau}$ заранее выбранная константа (${f\tau \approx 1}$), допплеровское смещение частоты будет снижать мощность
+сигнала \ref{eq:dma_real3}, т.е.
 \begin{center}
 \begin{equation}
 	\left| \cos (2\pi f \tau) \right| >= \left| \cos (2\pi (f - f_d) \tau) \right|
