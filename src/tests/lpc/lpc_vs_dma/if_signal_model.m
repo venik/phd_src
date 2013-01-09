@@ -1,4 +1,4 @@
-function [y,sats, delays] = if_signal_model()
+function [y,sats, delays] = if_signal_model(snr_db)
 N = 1023 ; % chips
 sats = [1] ;
 fs = [3800,4200,4300,4500] ;
@@ -18,10 +18,10 @@ tx = code.*c ;
 
 %sum(c(1:16368) .^ 2)
 
-snr_db = -3 ; 
+% snr_db = 30 ; 
 signoise = 10^(-snr_db/10)*var(tx) ;
 tx = tx + sqrt(signoise) * randn(size(y)) ;
 y = tx(delays(1):end) ;
 %y = tx ;
 
-var(y) / signoise
+%var(y) / signoise
