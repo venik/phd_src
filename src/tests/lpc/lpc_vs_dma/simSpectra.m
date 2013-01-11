@@ -1,5 +1,5 @@
 clc, clear all ;
-[y,sats, delays] = if_signal_model() ;
+[y,sats, delays] = if_signal_model(0.4) ;
 code = get_ca_code16(1023,sats(1)) ;
 [freq,E,Hjw] = lpcs(y(1:16368), code(1:16368),0) ;
 [p1,ca_shift] = max(E) ;

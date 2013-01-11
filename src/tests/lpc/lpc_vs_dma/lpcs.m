@@ -9,12 +9,12 @@ xx = x.*conj([x(2:end);x(1)]) ;
 cc = ca.*[ca(2:end);ca(1)] ;
 XX = fft(xx) ;
 CC = fft(cc) ;
-rx1 = ifft(XX.*conj(CC))/(length(CC)-1) ;
+rx1 = ifft(CC .* conj(XX))/(length(CC)-1) ;
 xx = x.*conj([x(3:end);x(1:2)]) ;
 cc = ca.*[ca(3:end);ca(1:2)] ;
 XX = fft(xx) ;
 CC = fft(cc) ;
-rx2 = ifft(XX.*conj(CC))/(length(CC)-1) ;
+rx2 = ifft(CC .* conj(XX))/(length(CC)-1) ;
 E = zeros(size(rx1)) ;
 freq = zeros(size(rx1)) ;
 max_E = 0 ;
@@ -37,4 +37,4 @@ for k=1:16368
 end
 
 plot(E) ;
-max_E
+[a, b] = max(E)

@@ -25,3 +25,5 @@ y = tx(delays(1):end) ;
 %y = tx ;
 
 %var(y) / signoise
+fprintf('N = %f\n', signoise) ;
+fprintf('E = %f\n', var(tx)) ;
