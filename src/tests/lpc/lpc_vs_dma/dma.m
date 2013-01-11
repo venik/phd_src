@@ -1,8 +1,8 @@
 clc, clear all ;
 
 % reference -16:5
-snr_db = -17:0.5:6 ;
-tries = 50 ;
+snr_db = 2.2 ;
+tries = 1 ;
 
 % hardcoded sat 1
 code = get_ca_code16(1023, 1) ;
@@ -48,8 +48,10 @@ for kk=1:numel(snr_db)
         % signal = filter(b,a,signal) ;
         % plot(abs(fft(tt)))
         
+        plot(acx) ;
+        
         [energy, phase] = max(acx) ;
-        if energy >= thr && phase == 1024
+        if energy >= thr && ((phase > 1024 - 16) && (phase < 1024 + 16))
             succ(kk) = succ(kk) + 1 ;
             % fprintf('\t\t %02d success %02d\n', kkk, succ(kk)) ;
         end % if
@@ -62,7 +64,6 @@ for kk=1:numel(snr_db)
     
 end % kk
 
-save('result_dma.mat', 'snr_db', 'succ') ;
-
-plot(snr_db, succ, '-gx') ;
+%save('result_dma.mat', 'snr_db', 'succ') ;
+%plot(snr_db, succ, '-gx') ;
 

@@ -4,8 +4,8 @@ N = 16368 ;
 fd = 16368 ;
 
 % reference -16:5
-snr_db = -17:0.5:6 ;
-tries = 100 ;
+snr_db = -30:1:6 ;
+tries = 1000 ;
 
 % hardcoded sat 1
 code = get_ca_code16(1023, 1) ;
@@ -32,13 +32,13 @@ for kk=1:numel(snr_db)
         acx = abs(acx) ;
 
         [energy, phase] = max(acx) ;
-        if energy >= thr && phase == 1024
+        if energy >= thr && ((phase > 1024 - 16) && (phase < 1024 + 16))
             succ(kk) = succ(kk) + 1 ;
             % fprintf('\t\t %02d success %02d\n', kkk, succ(kk)) ;
         end % if
         
         %max(acx)
-        %plot(acx)
+        plot(acx)
     end % kkk
     
     succ(kk) = succ(kk) / tries ;
@@ -46,5 +46,4 @@ for kk=1:numel(snr_db)
 end % kk
 
 save('result_corr.mat', 'snr_db', 'succ') ;
-
 plot(snr_db, succ) ;
