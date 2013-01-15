@@ -40,5 +40,160 @@ $\theta_n$ - остаточная фазовая ошибка от контур�
 \end{center}
 где ${T_{int}}$ - время интегрирования.
 
+\subsubsection{Алгоритм оценки ОСШ
+\textquotedblleftдействительный сигнал - комплексный шум\textquotedblright}
+
+В иностранной литературе он называется "Real Signal - Complex Noise (RSCN)". Введем перевод
+"Действительный сигнал - комлексный шум (ДСКШ)".
+Данный алгоритм рассмотрен в статьях \cite{badke_rscn, presti_insidegnss, presti_ieee}.
+
+Если рассматривать идеально синхронизированный сигнал, тогда в синфазном контуре будет
+находится сигнал и АБГШ, в то время как в квадратурном плече будет находится только шум,
+независимый и одинаково распределенный с шумом в синфазном контуре. Данный факт может
+быть использован для оценки ОСШ в программном приемнике:
+\begin{center}
+\begin{equation}
+	\label{eq:rscn_noise_power}
+	\hat{P_n} = \frac{2}{N}\sum^N_{v=1}|r_{C,Im}[v]|^2
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	\label{eq:rscn_total_power}
+	\hat{P}_{tot} = \frac{1}{N}\sum^N_{v=1}|r_{C}[v]|^2
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	\label{eq:rscn_data_power}
+	\hat{P_d} = \hat{P}_{tot} - \hat{P_n}
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	\label{eq:rscn_snr}
+	\hat{\lambda_C} = \frac{\hat{P_d}}{\hat{P_n}} = \frac{\hat{P}_{tot} - \hat{P_n}}{\hat{P_n}} 
+\end{equation}
+\end{center}
+
+Очевидно, что данный метод является чувствительным к сдвигу фазы, который приводит к переходу энергии
+в квадратурный контур. Любой остаточный сдвиг фазы ведет к возрастанию энергии шума в квадратурном
+контуре (это видно из \ref{eq:rscn_noise_power}).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Алгоритм Signal-to-Noise Variance}
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_data_power}
+	\hat{P_{d}} = (\frac{1}{N} \sum \limits_{v=1}^N \left| r_{C,Re}[v] \right|)^2
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_data_power}
+	\hat P_{tot} = \frac{1}{N} \sum \limits_{v=1}^{N} \left|r_C[v] \right| ^2
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_snr}
+	\hat{\lambda_C} = \frac{\hat P_d}{\hat P_{tot} - \hat P_d}
+\end{equation}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Алгоритм Beaulieu}
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_data_power}
+	\hat{P_{n,v}} = (\left| r_{C,Re}[v] \right| - \left| r_{C,Re}[v-1] \right|)^2
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_data_power}
+	\hat{P_{d,v}} = \frac{1}{2}(r_{C,Re}[v]^2 + r_{C,Re}[v-1]^2)
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_snr}
+	\hat{\lambda_C} = [ \frac{1}{N} \sum \limits_{v=1}^{N} \frac{\hat P_{n,v}}{\hat P_{d,v}} ]^-1
+\end{equation}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Алгоритм основанный на методе моментов}
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_data_power}
+	\hat M_2 = \frac{1}{N} \sum \limits_{v=1}^{N} \left|r_C[v] \right| ^2
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_data_power}
+	\hat M_2 = \frac{1}{N} \sum \limits_{v=1}^{N} \left|r_C[v] \right| ^4
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_data_power}
+	\hat P_d = \sqrt{2 \hat M^2_2 - \hat M_4} 
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_data_power}
+	\hat P_n = \hat M_2 - \hat P_d
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_snr}
+	\hat{\lambda_C} = \frac{\hat P_d}{\hat P_n}
+\end{equation}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Алгоритм Narrowband-Wideband Power Ratio}
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_data_power}
+	WBP_k = \sum \limits_{m=1}^{M} \left|r_C[kM+m] \right| ^2, k=0,1,...(\frac{N}{M}-1)
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_data_power}
+	NBP_k = (\sum \limits_{m=1}^{M} \left|r_{C,Re}[kM+m] \right| )^2 + (\sum \limits_{m=1}^{M} \left|r_{C,Im}[kM+m] \right| )^2
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_data_power}
+	\hat \mu_{NP} = \frac{M}{N} \sum \limits_{k=0}^{N/M-1} \frac{NBP_k}{WBP_k}
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	%\label{eq:rscn_data_power}
+	\gamma = \frac{C}{N_0} = \frac{1}{T_{int}} \frac{\hat \mu_{NP} - 1}{M - \hat \mu_{NP}}
+\end{equation}
+\end{center}
 
 \newpage

@@ -9,7 +9,6 @@ THESIS_ALL = 	\
 		sec1_dma.tex		\
 		sec1_fft.tex		\
 		sec1_noise_est.tex	\
-		sec1_rscn.tex		\
 		sec1_serial.tex		\
 		thesis_default.tex	\
 		thesis.tex
