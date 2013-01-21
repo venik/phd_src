@@ -1,20 +1,49 @@
 % x - received signal x(n) = cos(w*(n+d))*CA(n+d)
 % ca - ca code
 % E - pole's energy
-function [freq,E,Hjw] = lpcs(x, ca, phase, signoise)
+function [freq, Hjw] = lpcs(x, ca, phase, signoise)
 N = 16368 ;
 ca = repmat(ca, 2, 1) ;
 x = x .* ca(phase : N + phase - 1) ;
-rxx = [x'*x; x'*circshift(x,1); x'*circshift(x,2)] ;
+x = x' ;
 
-    Rxx = [rxx(1) rxx(2);rxx(2) rxx(1)] ;
-    b = pinv(Rxx-signoise)*rxx(2:end) ;
-    b = [1;-b] ;
-    poles = roots(b) ;
-    freq = angle(poles(1)) ;
-    Hjw = freqz(1,b) ;
-    E = max(Hjw.*conj(Hjw)) ;    
-    poles(1) * conj(poles(1))
+%plot(fftshift(abs(ifft(fft(x) .* conj(fft(x)))))); pause ;
+
+rxx0 = x * x' / (length(x) - 1) ;
+rxx1 = x * [x(2:end), x(1)]' / (length(x) - 1) ;
+rxx2 = x * [x(3:end), x(1:2)]' / (length(x) - 1) ;
+
+rxx = [rxx0, rxx1, rxx2] ;
+Rxx = [rxx(1) rxx(2); rxx(2) rxx(1)] ;
+
+% calculate coef
+%a = pinv(Rxx) * rxx(2:3)'  ;
+a = pinv(Rxx - signoise) * rxx(2:3)' ;
+a = [1;-a] ;
+poles = roots(a) ; 
+freq = angle(poles(1)) ; 
+
+Hjw = freqz(1,a) ;
+%[E, r_freq] = max(Hjw.*conj(Hjw)) ;
+
+fprintf('freq:%8.2f\n', freq*16368/2/pi ) ;
+
+[X,omega] = pwelch(x, 1000) ;
+hold off, semilogy(omega,X.*conj(X), 'LineWidth',2);
+hold on,semilogy(omega(1:numel(Hjw)),Hjw.*conj(Hjw),'r-','LineWidth',2), grid on
+legend('signal spectrum', 'LPC'),
+hold off; pause;
+
+%     Rxx = [rxx(1) rxx(2);rxx(2) rxx(1)] 
+%     %b = pinv(Rxx - signoise) * rxx(2:3) ;
+%     b = pinv(Rxx) * rxx(2:3) ;
+%     b = [1;-b] ;
+%     poles = roots(b) ;
+%     freq = angle(poles(1)) ;
+%     Hjw = freqz(1,b) ;
+%     E = max(Hjw.*conj(Hjw)) ;    
+%     %poles(1) * conj(poles(1))
+    
 % x = x(:) ;
 % ca = ca(:) ;
 % Dx = x'*x/(length(x)-1) ;

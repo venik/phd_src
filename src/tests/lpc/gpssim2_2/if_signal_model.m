@@ -1,10 +1,10 @@
 function [y, sats, delays, fs, sigma_noise] = if_signal_model(snr_db, A2)
 N = 1023 ; % chips
 sats = [1, 10] ;
-fs = [3800,200,4300,4500] ;
+fs = [3800,1000,4300,4500] ;
 fd = 16368 ;
 len = 5 ;
-delays = [1024,150,200,60] ;
+delays = [1024,1000,200,60] ;
 y = zeros(len*N*16, 1) ;
 tx = zeros(length(y), 1) ;
 
