@@ -70,10 +70,11 @@
 \begin{center}
 \begin{equation}
 	\label{eq:model_signal}
-	s_k(t) = S_i(t - \tau_{i})\cos[\omega_{si}(t - \tau_{i}) + \phi_{si}(t - \tau_{i}) - \phi_{s00}]
+	s_k(t) = S_i(t - \tau_{i})\cos[\omega_{si}(t - \tau_{i}) + \phi_{si}(t - \tau_{i}) - \phi_{s00}] + n(t)
 \end{equation}
 \end{center}
-где: ${\tau_i}$ - задержка, ${\phi_{soo}}$ - начальная фаза сигнала, а ${\phi_{si}}$ - закон изменения фазы сигнала.
+где: ${\tau_i}$ - задержка, ${\phi_{s00}}$ - начальная фаза сигнала, ${n(t)} - шум$,
+а ${\phi_{si}}$ - закон изменения фазы сигнала.
 
 В системе СНС GPS применяется двоичная фазовая манипуляция (ДФМ или в иностранной литературе BPSK).
 В вышеприведенной системе несущее колебание ${\cos(\omega_{c}t})$ модулируется битами данных ${D_k(t)}$ и битами ПСП
@@ -83,7 +84,7 @@ ${\{+1, -1\}}$. Определим входной сигнал как (для п
 \begin{center}
 \begin{equation}
 	\label{eq:gps_signal}
-	s_k(t) = \sqrt{2A}(C_k(t)D_k(t))\cos(\omega_{c}t)
+	s_k(t) = \sqrt{2A}(C_k(t)D_k(t))\cos(\omega_{c}t) + n(t)
 \end{equation}
 \end{center}
 где: ${A}$ - мощность сигнала, ${C_k}$ - ПСП для ${k}$ - сигнала, ${D}$ - данные, а ${\omega_{c}}$ - частота несущей сигнала.
@@ -92,7 +93,7 @@ ${\{+1, -1\}}$. Определим входной сигнал как (для п
 \begin{center}
 \begin{equation}
 	\label{eq:gps_signal_phase}
-	s_k(t) = \sqrt{2A}\cos(\omega_{c}t + \phi_{i}(t))
+	s_k(t) = \sqrt{2A}\cos(\omega_{c}t + \phi_{i}(t)) + n(t)
 \end{equation}
 \end{center}
 где: ${A}$ - мощность (амплитуда) сигнала, ${\omega_{c}t}$ - частота несущей сигнала, а ${\phi_{i}(t)}$ - фаза несущей сигнала.
