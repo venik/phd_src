@@ -1,0 +1,58 @@
+\subsection{Использование метода Ньютона для определения ОСШ}
+В разделе \ref{sssec:sec1_noise_est}, рассмотрены алгоритмы определения ОСШ, но главный недостаток этих алгоритмов в том, что
+рассматривают сигнал на выходе ФАПЧ. Например в системе Navstar GPS на выходе петли Костаса. В алгоритмах, требующих
+корректировку уровня шума, необходимо осуществить оценку ОСШ (иногда мощность шума). Например для для алгоритма, предложенного
+в разделе \ref{ssec:lpc}. Для решения это проблемы можно использовать метод Ньютона решения систем уравнений.
+
+Как и в разделе \ref{ssec:lpc}, при определении мощности шума с помощью алгоритма Ньютона необходимо знать фазу ПСП,
+так же мы работаем в пределах одного чипа, а значит значение ${D_k(t)}$ не изменяется:
+
+\begin{center}
+\begin{equation}
+	\label{eq:newton_gps_signal}
+	s(t) = A \cos(\omega_{c}t) + n(t)
+\end{equation}
+\end{center}
+
+В виду того, что мы хотим определить 3 компоненты сигнала: ${A}$, ${\omega}$ и ${n_(t)}$, необходимо составить 3 уравнения.
+Используем АКФ сигнала приведенного в выражении \ref{eq:newton_gps_signal}:
+\begin{center}
+\begin{equation}
+	\label{eq:newton_gps_system}
+		\begin{cases}
+			r_{xx}(0) = \frac{A^2}{2} + \sigma_n \\
+			r_{xx}(1) = \frac{A^2}{2} \cos(\omega t) \\
+			r_{xx}(2) = \frac{A^2}{2} \cos(2 \omega t)
+		\end{cases}
+\end{equation}
+\end{center}
+
+Приведем \ref{eq:newton_gps_system} к форме выражения \ref{eq:newton_system}:
+\begin{center}
+\begin{equation}
+	\label{eq:newton_gps_system2}
+		\begin{cases}
+			\frac{A^2}{2} + \sigma_n + r_{xx}(0) = 0 \\
+			\frac{A^2}{2} \cos(\omega t) + r_{xx}(1) = 0 \\
+			\frac{A^2}{2} \cos(2 \omega t) + r_{xx}(2) = 0. 
+		\end{cases}
+\end{equation}
+\end{center}
+
+Запишем выражение \ref{eq:newton_system_3} для системы \ref{eq:newton_gps_system2}:
+%    J = [1 1 0;..
+%        cos(z(3)*tau) 0 -tau*z(1)*sin(z(3)*tau);...
+%        cos(2*z(3)*tau) 0 -2*tau*z(1)*sin(2*z(3)*tau)] ;
+%z = [rxx(1)/2;rxx(1)/2;1] ;
+\begin{center}
+\begin{eqnarray}
+	\label{eq:newton_system_3}
+	J(A, \omega, \sigma_n) = 
+		\left[ \begin{array}{ccc}
+		1 & 1 & 0 \\
+		\cos(\tau) & 0 & - \tau r_{xx}(1)/2 \sin(\tau) \\
+		\cos(2\tau) & 0 & -2 \tau r_{xx}(1)/2 \sin(2 \tau)
+		\end{array} \right]
+\end{eqnarray}
+\end{center}
+\newpage
