@@ -34,7 +34,7 @@ ${b(1)}$ и ${b(2)}$ принимают произвольные значени�
 \begin{center}
 \begin{equation}
 	\label{eq:lpc_forecast}
-	\hat{x(m)} = \sum \limits_{i=1}^P a_k x(m-k),
+	\hat{x(m)} = \sum \limits_{k=1}^P a_k x(m-k),
 \end{equation}
 \end{center}
 Где ${\hat{x(m)}}$ - оценка ${x(m)}$ в момент времени ${m}$, а ${a_k}$ - коэффициенты АР модели.
@@ -43,7 +43,7 @@ ${b(1)}$ и ${b(2)}$ принимают произвольные значени�
 \begin{center}
 \begin{equation}
 	\label{eq:lpc_error}
-	e(m) = x(m) - \hat{x(m)} = x(m) - \sum \limits_{i=1}^P a_k x(m-k),
+	e(m) = x(m) - \hat{x(m)} = x(m) - \sum \limits_{k=1}^P a_k x(m-k),
 \end{equation}
 \end{center}
 
@@ -51,7 +51,7 @@ ${b(1)}$ и ${b(2)}$ принимают произвольные значени�
 \begin{center}
 \begin{equation}
 	\label{eq:lpc_signal}
-	x(m) = \sum \limits_{i=1}^P a_k x(m-k) + e(m)
+	x(m) = \sum \limits_{k=1}^P a_k x(m-k) + e(m)
 \end{equation}
 \end{center}
 
@@ -111,10 +111,10 @@ ${r_k}$ и ${\phi_k}$ - радиус и угол ${k}$ - го полюса со�
 \begin{center}
 \begin{eqnarray}
 	\label{eq:lpc_rms}
-		E[e^2(m)]	& = & E[(x(m) - \sum \limits_{i=1}^P a_k x(m-k))^2] =\nonumber \\
+		E[e^2(m)]	& = & E[(x(m) - \sum \limits_{k=1}^P a_k x(m-k))^2] =\nonumber \\
 				& = & E[x^2(m)] - \nonumber \\
-				& &  - 2\sum \limits_{i=1}^P a_k E[x(m-k)x(m)] + \nonumber \\
-				& &  + \sum \limits_{i=1}^P a_k \sum \limits_{j=1}^P a_j E[x(m-k)x(m-j)] = \nonumber \\
+				& &  - 2\sum \limits_{k=1}^P a_k E[x(m-k)x(m)] + \nonumber \\
+				& &  + \sum \limits_{k=1}^P a_k \sum \limits_{j=1}^P a_j E[x(m-k)x(m-j)] = \nonumber \\
 				& = & r_{xx}(0) - 2{\bf r}^T_{xx}{bf a} + {\bf a}^T {\bf R_{xx}a}
 \end{eqnarray}
 \end{center}
