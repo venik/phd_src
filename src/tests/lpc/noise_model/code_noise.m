@@ -8,20 +8,20 @@ fd = 16368 ;
 N = 1023 ; % chips
 max_delay = 20 ; % chips
 
-pts1 = [] ;
-pts2 = [] ;
-pts3 = [] ;
-
-c = get_ca_code16(N+max_delay,prn2) ;
+c = get_ca_code16(1023,prn2) ;
 n = randn(numel(c), 1) ;
 
 cn = c .* n ;
 CN = fft(cn) ;
 
-cn = ifft(CN .* conj(CN)) ;
+cn = ifft(CN .* conj(CN)) ./ 16 / 1023;
 %cn = ifft(fft(n) .* conj(fft(n))) ;
 
-cn = cn .* conj(cn) ;
-
 % check for delta func
-plot(cn(1:end)) ;
+bt = [ cn(round(numel(cn) / 2) : end) ; cn(1:round(numel(cn) / 2) - 1)] ;
+
+plot(-fd/2:fd/2-1, bt(1:end))
+    title('¿ ‘ n(t)C(t)'),
+    xlim([-fd/2 fd/2-1]),
+    xlabel('\tau'),
+    ylabel('r_n(\tau)') ;
