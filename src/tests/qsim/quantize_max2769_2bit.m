@@ -1,7 +1,8 @@
-function y = quantize_max2769_2bit(x)
+function [y,scale_y] = quantize_max2769_2bit(x)
 % AGC
 max_x = max(abs(x)) ;
-x = x / max_x * 5 ;
+scale_y = 3/ max_x ;
+x = x * scale_y ;
 % Quantizer
 y = zeros(size(x)) ;
 y_values = [-3,-1,1,3] ;
