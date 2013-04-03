@@ -3,9 +3,9 @@ clc, clear all ;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Parameters for define
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-n2 = 0:15 ; % !!! in SNR dB
+n2 = -5:15 ; % !!! in SNR dB
 A = 1 ;     % sine amplitude
-times = 10 ;% number of simulation times
+times = 100 ;% number of simulation times
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 N = 16368 ;
@@ -45,8 +45,8 @@ for i=1:numel(n2)
         %fprintf('Frequency: %f\n', mod(z(2)*16368/2/pi,16368/2)) ;
         %fprintf('Signl Enr: %f\n', z(1)/N) ;
         
-        w_delta(i) = w_delta(i) + mod(z(2)*16368/2/pi,16368/2) ;
-        A_delta(i) = A_delta(i) + z(1)/N ;
+        w_delta(i) = w_delta(i) + (fsig - mod(z(2)*16368/2/pi,16368/2))^2 ;
+        A_delta(i) = A_delta(i) + (z(1)/N - A^2/2)^2;
     end
     
     % normalie
@@ -55,21 +55,28 @@ for i=1:numel(n2)
     
 end % for i=n(1):n(end)
 
-w_line = ones(numel(n2), 2) .* fsig ;
-A_line = ones(numel(n2), 2) .* (A^2/2) ;
-
 if A>0
-    figure(1)
-        subplot(2,1,1), title('With signal'),
-            plot(n2, w_line, '-bx', n2, w_delta, '-mo'),
-            %legend('Freq', 'Est freq'),
-        subplot(2,1,2), plot(n2, A_line, '-bx', n2, A_delta, '-mo'),
+    figure(1), grid on,
+        subplot(2,1,1),
+            plot(n2, w_delta, '-mo'),
+            title('freq estimation variance with signal'),
+            grid on, xlabel('SNR'), ylabel('Variance'),        
+        subplot(2,1,2),
+            plot(n2, A_delta, '-bx'),
+            title('Energy estimation variance with signal'),
+            grid on, xlabel('SNR'), ylabel('Variance'),
             %legend('E', 'Est E'),
 else
     figure(1)
-        title('With signal'),
-        subplot(2,1,1), plot(n2, w_delta, '-mo'),
+
+        subplot(2,1,1),
+            plot(n2, w_delta, '-mo'),
+            title('freq estimation variance without signal'),
+            grid on, xlabel('SNR'), ylabel('Variance'),        
             %legend('Freq', 'Est freq'),
-        subplot(2,1,2), plot(n2, A_delta, '-mo'),
+        subplot(2,1,2), 
+            plot(n2, A_delta, '-bx'),
+            title('Energy estimation variance without signal'),
+            grid on, xlabel('SNR'), ylabel('Variance'),
             %legend('E', 'Est E'),    
 end
