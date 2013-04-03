@@ -4,7 +4,7 @@ clc, clear all ;
 % Parameters for define
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 n2 = -5:15 ; % !!! in SNR dB
-A = 1 ;     % sine amplitude
+A = 0 ;     % sine amplitude
 times = 10 ;% number of simulation times
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -89,15 +89,14 @@ if A>0
             legend('2 terms', '3 terms'),
 else
     figure(1)
-
         subplot(2,1,1),
-            plot(n2, w_delta, '-mo'),
-            title('freq estimation variance without signal'),
-            grid on, xlabel('SNR'), ylabel('Variance'),        
-            %legend('Freq', 'Est freq'),
-        subplot(2,1,2), 
-            plot(n2, A_delta, '-bx'),
-            title('Energy estimation variance without signal'),
+            plot(n2, w_delta, '-mo', n2, w_3_delta, '-bx'),
+            title('freq estimation variance withOUT signal'),
             grid on, xlabel('SNR'), ylabel('Variance'),
-            %legend('E', 'Est E'),    
+            legend('2 terms', '3 terms'),
+        subplot(2,1,2),
+            plot(n2, A_delta, '-mo', n2, A_3_delta, '-bx'),
+            title('Energy estimation variance withOUT signal'),
+            grid on, xlabel('SNR'), ylabel('Variance'),
+            legend('2 terms', '3 terms'), 
 end
