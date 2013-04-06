@@ -9,9 +9,9 @@ times = 1 ;% number of simulation times
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 N = 16368 ;
-fsig = 3000 ;
+fsig = 2000 ;
 
-fsig_int = 4000 ;
+fsig_int = 2000 ;
 A_int = 1 ;     % sine amplitude
 phase_int = 0 ;
 
@@ -22,8 +22,8 @@ A_delta = zeros(numel(n2), 1) ;
 w_3_delta = zeros(numel(n2), 1) ;
 A_3_delta = zeros(numel(n2), 1) ;
 
-tau1 = 5 ;
-tau2 = 8 ;
+tau1 = 1 ;
+tau2 = 2 ;
 tau3 = 23 ;
 tau4 = 24 ;
 
