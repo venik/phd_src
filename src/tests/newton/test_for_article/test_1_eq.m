@@ -3,9 +3,9 @@ clc, clear all ;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Parameters for define
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-n2 = -5:1:15 ; % !!! in SNR dB
+n2 = 15000 ; % !!! in SNR dB
 A = 1 ;     % sine amplitude
-times = 100 ;% number of simulation times
+times = 1 ;% number of simulation times
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 N = 16368 ;
@@ -15,13 +15,16 @@ fsig = 3000 ;
 w_delta = zeros(numel(n2), 1) ;
 A_delta = zeros(numel(n2), 1) ;
 
+tau1 = 1 ;
+tau2 = 2 ;
+
 for i=1:numel(n2)
     fprintf('Stage %d dB\n', n2) ;
     for j=1:times
         x = A*cos(2*pi*fsig/16368*(0:N-1));
         signoise = 10^(-n2(i)/10)*var(x) ;
         x = x + randn(1,N)*sqrt(signoise) ;
-        rxx = [x*circshift(x,0)';x*circshift(x',1);x*circshift(x',2)] ;
+        rxx = [x*circshift(x',tau1) ; x*circshift(x',tau2)] ;
         
         % Utilize Newton iterations to compute 
         % Signal Energy, Noise Energy and Frequency        
@@ -31,14 +34,14 @@ for i=1:numel(n2)
         
         tau = 1 ;
         for n=1:10
-            num = rxx(2)*cos(z2(2)*2) - rxx(3)*cos(z2(2)) ;
-            denom = -2*rxx(2)*sin(z2(2)*2) + rxx(3)*sin(z2(2));
+            num = rxx(1)*cos(z2(2)*tau2) - rxx(2)*cos(z2(2)*tau1) ;
+            denom = -tau2*rxx(1)*sin(z2(2)*tau2) + tau1*rxx(2)*sin(z2(2)*tau1);
             
             z2(2) = z2(2) - num/denom ;
         end
 
         freq = mod(z2(2)*16368/2/pi,16368/2);
-        fprintf('Frequency: %.2f E=%.2f\n', freq, rxx(2) / cos(z2(2)) / N) ;        
+        fprintf('Frequency: %.2f E=%.2f\n', freq, rxx(1) / cos(z2(2)*tau1) / N) ;        
         
         w_delta(i) = w_delta(i) + (fsig - mod(z2(2)*16368/2/pi,16368/2))^2 ;
         A_delta(i) = A_delta(i) + (rxx(2) / cos(z2(2)) / N - A^2/2)^2;
