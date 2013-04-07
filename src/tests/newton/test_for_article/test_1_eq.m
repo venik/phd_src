@@ -3,13 +3,13 @@ clc, clear all ;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Parameters for define
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-n2 = 15000 ; % !!! in SNR dB
+n2 = -5:1:15 ; % !!! in SNR dB
 A = 1 ;     % sine amplitude
-times = 1 ;% number of simulation times
+times = 100 ;% number of simulation times
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 N = 16368 ;
-fsig = 4000 ;
+fsig = 3000 ;
 
 % storage for variance
 w_delta = zeros(numel(n2), 1) ;
@@ -30,8 +30,8 @@ for i=1:numel(n2)
         % Signal Energy, Noise Energy and Frequency        
         
         % for 2 terms
-        % z2 = [1000/16368*2*pi] ;
-        z2 = [1] ;
+         z2 = [1000/16368*2*pi] ;
+        %z2 = [1] ;
         
         tau = 1 ;
         for n=1:10
@@ -45,7 +45,7 @@ for i=1:numel(n2)
         fprintf('Frequency: %.2f E=%.2f\n', freq, rxx(1) / cos(z2(1)*tau1) / N) ;        
         
         w_delta(i) = w_delta(i) + (fsig - mod(z2(1)*16368/2/pi,16368/2))^2 ;
-        A_delta(i) = A_delta(i) + (rxx(2) / cos(z2(1)*tau1) / N - A^2/2)^2;
+        A_delta(i) = A_delta(i) + (rxx(1) / cos(z2(1)*tau1) / N - A^2/2)^2;
     end
     
     % normalie
