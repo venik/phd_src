@@ -6,16 +6,13 @@ modelPath = pwd() ;
 cd( curPath );
 addpath(modelPath) ;
 
-n1 = 21 ;
-n2 = 22 ;
+n1 = 11 ;
+n2 = 12 ;
 
-fs = 4500 ;
-Pwr = 1.0 ; 
+fs = 3823 ;
+Pwr = 1.75 ; 
 r1 = Pwr*cos(n1*2*pi*fs/16368) ;
 r2 = Pwr*cos(n2*2*pi*fs/16368) ;
-
-%n2 = n2/n1 ;
-%n1 = 1 ;
 
 alpha0 = n1*2*pi*0/16368 ;
 alpha1 = n1*2*pi*16368/16368 ;
@@ -27,18 +24,24 @@ gamma2 = r2./cos(n2/n1*alpha) ; gamma2(abs(gamma2)>6) = NaN ;
 % newton iterations
 Nnw = 15 ;
 z = zeros(2,Nnw) ;
-z(:,1) = [0.8 2*pi*2000/16368] ;
+InitialPwr = 1.0 ;
+InitialAlpha = 2*pi*4092/16368*n1 ;
+z(:,1) = [InitialPwr InitialAlpha] ;
 for n=2:Nnw
     N_gamma = z(1,n-1) ;
     N_alpha = z(2,n-1) ;
     F = [N_gamma*cos(N_alpha)-r1; N_gamma*cos(n2/n1*N_alpha)-r2] ;
     z(:,n) = z(:,n-1) - ...
         pinv([cos(N_alpha)        -N_gamma*sin(N_alpha); ...
-              cos(n2/n1*N_alpha)  -N_gamma*sin(n2/n1*N_alpha)])*F ;
+              cos(n2/n1*N_alpha)  -n2/n1*N_gamma*sin(n2/n1*N_alpha)])*F ;
+%     if (z(1,n)<0)
+%         z(1,n) = 0.0 ; % correct the power
+%     end
 end
 
 fprintf('power: %5.3f\n', z(1,end) ) ;
-fprintf('alpha: %5.3f\n', z(2,end) ) ;
+%fprintf('alpha: %5.3f\n', z(2,end) ) ;
+fprintf('Freq : %5.3f\n', z(2,end)/2/pi/n1*16368 ) ;
 
 hold off, plot( alpha/2/pi*16368/n1, gamma1, 'LineWidth', 2 ) ;
 hold on, plot( alpha/2/pi*16368/n1, gamma2, 'm-', 'LineWidth', 2,'Color',[0 0.7 0.6] ) ;
