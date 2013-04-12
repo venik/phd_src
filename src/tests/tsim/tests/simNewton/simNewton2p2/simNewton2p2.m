@@ -8,8 +8,8 @@ addpath(modelPath) ;
 
 n1 = 1 ;
 n2 = 2 ;
-n3 = 21 ;
-n4 = 22 ;
+n3 = 11 ;
+n4 = 12 ;
 
 fs = 4000 ;
 Pwr = 1.0 ; 
@@ -30,7 +30,7 @@ z(:,1) = [0.8; 2*pi*4092/16368*(n1-1)+2*pi*4092/16368] ;
 
 z4 = zeros(4,Nnw) ;
 InitialPwr = .5 ;
-InitialAlpha = 2*pi*3700/16368*n1 ;
+InitialAlpha = 2*pi*3600/16368*n1 ;
 z4(:,1) = [InitialPwr; InitialAlpha; 0.1; 0.1] ;
 for n=2:Nnw
     % frequency-energy solver 

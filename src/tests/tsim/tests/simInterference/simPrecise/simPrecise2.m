@@ -21,7 +21,7 @@ x1 = x1.*code1(1+delays(1):16368*2+delays(1)) ;
 x = y.*code1(1+code_off:16368*2+code_off) ;
 
 % get precise frequency and power
-roughFreq(n) = 3900+rand()*200 ;
+roughFreq(n) = 3800+rand()*400 ;
 [preciseFreq(n), precisePower] = get_precise_frequency2(x(1:16368*2), roughFreq(n), 16368.0 ) ;
 
 %fprintf('Frequency: %5.2f\n', preciseFreq ) ;
