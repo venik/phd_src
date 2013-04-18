@@ -31,6 +31,8 @@ for i=1:numel(n2)
         
         % Utilize Newton iterations to compute 
         % Signal Energy, Noise Energy and Frequency        
+        r1 = A*cos(tau1*2*pi*fsig/16368) ;
+        r2 = A*cos(tau2*2*pi*fsig/16368) ;
         
         % for 2 terms
          z2(1) = [1000/16368*2*pi] ;
@@ -57,10 +59,27 @@ for i=1:numel(n2)
 
 end % for i=n(1):n(end)
 
+alpha0 = tau1*2*pi*0/16368 ;
+alpha1 = tau2*2*pi*16368/16368 ;
+alpha = alpha0 : 0.01 : alpha1 ;
+
+gamma1 = r1./cos(alpha) ; gamma1(abs(gamma1)>6) = NaN ;
+gamma2 = r2./cos(tau2/tau1*alpha) ; gamma2(abs(gamma2)>6) = NaN ;
+
+% FIXME - hack bcoz A^2 / 2 for A = 1 => Energy * 2
+A_vals = rxx(1) ./ cos(z2(:)*tau1) ./ N .* 2 ;
+
+hold off, plot( alpha/2/pi*16368/tau1, gamma1, 'LineWidth', 2 ) ;
+hold on, plot( alpha/2/pi*16368/tau1, gamma2, 'm-', 'LineWidth', 2,'Color',[0 0.7 0.6] ) ;
+hold on, plot(z2(:)/2/pi*16368/tau1, A_vals, 'g-+','Color',[.8 0.1 0.1],'LineWidth',1) ;
+xlim([0 8000]) ;
+grid on ;
+
 % dont want to plot a point
 if numel(n2) == 1
     return;
 end
+
 
 if A>0
     figure(1), grid on,
