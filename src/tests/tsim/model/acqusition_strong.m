@@ -1,0 +1,1 @@
+function acqusition_strong()

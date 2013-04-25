@@ -26,12 +26,12 @@ r4 = Pwr*cos(n4*2*pi*fs/16368) ;
 % newton iterations
 Nnw = 15 ;
 z = zeros(2,Nnw) ;
-z(:,1) = [0.8; 2*pi*4092/16368*(n1-1)+2*pi*4092/16368] ;
+z(:,1) = [0.8; 2*pi*4092/16368] ;
 
 z4 = zeros(4,Nnw) ;
-InitialPwr = .5 ;
-InitialAlpha = 2*pi*3600/16368*n1 ;
-z4(:,1) = [InitialPwr; InitialAlpha; 0.1; 0.1] ;
+InitialPwr = 1.0 ;
+InitialAlpha = 2*pi*3700/16368*n1 ;
+z4(:,1) = [InitialPwr; InitialAlpha; 0.5; 0.1] ;
 for n=2:Nnw
     % frequency-energy solver 
     N_gamma = z(1,n-1) ;
