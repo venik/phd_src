@@ -4,7 +4,7 @@ clc, clear all ;
 % Parameters for define
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 n2 = -5:15 ; % !!! in SNR dB
-A = 0 ;     % sine amplitude
+A = 1 ;     % sine amplitude
 times = 10 ;% number of simulation times
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -32,10 +32,12 @@ for i=1:numel(n2)
         % for 2 terms
         z2 = [rxx(1)/2;1] ;
         % for 3 terms
-        z = [rxx(1)/2;rxx(1)/2;1] ;
+        z3 = [rxx(1)/2;rxx(1)/2;1] ;
 
         tau = 1 ;
         for n=1:5
+            % one term
+            
             % Get Jacobian for 2 terms
             J = [cos(z2(2)*tau) -tau*z2(1)*sin(z2(2)*tau);...
                 cos(2*z2(2)*tau) -2*tau*z2(1)*sin(2*z2(2)*tau)] ;
@@ -44,14 +46,14 @@ for i=1:numel(n2)
             z2 = z2 + pinv(J)* ...
                 (-[z2(1)*cos(z2(2)*tau)-rxx(2);z2(1)*cos(2*z2(2)*tau)-rxx(3)]) ;
 
-            % Get Jacobian
+            % Get Jacobian for 3 terms
             J1 = [1 1 0;...
-                cos(z(3)*tau) 0 -tau*z(1)*sin(z(3)*tau);...
-                cos(2*z(3)*tau) 0 -2*tau*z(1)*sin(2*z(3)*tau)] ;
+                cos(z3(3)*tau) 0 -tau*z3(1)*sin(z3(3)*tau);...
+                cos(2*z3(3)*tau) 0 -2*tau*z3(1)*sin(2*z3(3)*tau)] ;
 
             % Update solution
-            z = z + pinv(J1)* ...
-                (-[z(1)+z(2)-rxx(1);z(1)*cos(z(3)*tau)-rxx(2);z(1)*cos(2*z(3)*tau)-rxx(3)]) ;
+            z3 = z3 + pinv(J1)* ...
+                (-[z3(1)+z3(2)-rxx(1) ; z3(1)*cos(z3(3)*tau)-rxx(2) ; z3(1)*cos(2*z3(3)*tau)-rxx(3)]) ;
         end
 
         %fprintf('Frequency: %f\n', mod(z(2)*16368/2/pi,16368/2)) ;
@@ -61,9 +63,9 @@ for i=1:numel(n2)
         w_delta(i) = w_delta(i) + (fsig - mod(z2(2)*16368/2/pi,16368/2))^2 ;
         A_delta(i) = A_delta(i) + (z2(1)/N - A^2/2)^2;
         
-        mod(z(3)*16368/2/pi,16368/2)
-        w_3_delta(i) = w_3_delta(i) + (fsig - mod(z(3)*16368/2/pi,16368/2))^2 ;
-        A_3_delta(i) = A_3_delta(i) + (z(1)/N - A^2/2)^2;
+        mod(z3(3)*16368/2/pi,16368/2)
+        w_3_delta(i) = w_3_delta(i) + (fsig - mod(z3(3)*16368/2/pi,16368/2))^2 ;
+        A_3_delta(i) = A_3_delta(i) + (z3(1)/N - A^2/2)^2;
     end
     
     % normalie
