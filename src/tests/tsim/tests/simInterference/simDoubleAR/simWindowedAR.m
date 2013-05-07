@@ -23,6 +23,7 @@ for testNum=1:totalNumTests
     % tune model
     code_error = 0 ;
     [~,y,sats, delays, signoise] = get_if_signal( ifsmp ) ;
+    y = y(1:16368*2) ;
     code_off = delays(1) + code_error ;
     code1 = get_ca_code16(1023*2+20,sats(1)) ;
     x = y.*code1(1+code_off:16368*2+code_off) ;
@@ -32,7 +33,7 @@ for testNum=1:totalNumTests
     IdealIfsmp.sats = 1 ;
     IdealIfsmp.snr_db = 110 ;
     IdealSignal = get_if_signal( IdealIfsmp ) ;
-    IdealSignal = IdealSignal.*code1(1+code_off:16368*2+code_off) ;
+    IdealSignal = IdealSignal(1:16368*2).*code1(1+code_off:16368*2+code_off) ;
 
     % get snr
     if testNum<5
@@ -66,6 +67,9 @@ clf; plot(freqList), hold on, plot([1 numel(freqList)], [ifsmp.fs(1) ifsmp.fs(1)
 strSats = sprintf('%d,',ifsmp.sats) ;
 title(sprintf('SNR: %5.2fdB, Satellites: %s', Snrdb, strSats),'FontSize',14) ;
 set(gca,'FontSize',14);
+xlabel('test #') ;
+ylabel('Frequency estimation') ;
+
 
 % remove model path
 rmpath(modelPath) ;

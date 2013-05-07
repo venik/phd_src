@@ -15,14 +15,28 @@ for testNum=1:totalNumTests
     % get default parameters
     ifsmp = get_ifsmp() ;
     % tune model
-    ifsmp.snr_db = -20 ;
+    ifsmp.snr_db = -17 ;
     ifsmp.fs(1) = 4150 ;
-    ifsmp.sats = 1 ;
+    ifsmp.sats = [1,2] ;
     code_error = 0 ;
     [~,y,sats, delays, signoise] = get_if_signal( ifsmp ) ;
     code_off = delays(1) + code_error ;
     code1 = get_ca_code16(1023*2+20,sats(1)) ;
     x = y.*code1(1+code_off:16368*2+code_off) ;
+
+    % get ideal signal
+    IdealIfsmp = ifsmp ;
+    IdealIfsmp.sats = 1 ;
+    IdealIfsmp.snr_db = 110 ;
+    IdealSignal = get_if_signal( IdealIfsmp ) ;
+    IdealSignal = IdealSignal.*code1(1+code_off:16368*2+code_off) ;
+
+    % get snr
+    signalEnergy = sum(IdealSignal.*conj(IdealSignal))/numel(IdealSignal) ;
+    noiseEnergy = sum((x-IdealSignal).*conj(x-IdealSignal))/numel(IdealSignal) ;
+    Snrdb = 10*log10(signalEnergy/noiseEnergy) ;
+    %disp(ifsmp) ;
+    %fprintf('actual SNR: %6.2fdB\n', Snrdb ) ;
 
     msSamples = 16368 ;
     X = fft(x(1:msSamples)) ;
@@ -37,7 +51,7 @@ for testNum=1:totalNumTests
     freqList(testNum) = omega0/2/pi*ifsmp.fd ;
 end
 clf; plot(freqList), hold on, plot([1 numel(freqList)], [ifsmp.fs(1) ifsmp.fs(1)],'k-.')
-strSats = sprintf('%d',ifsmp.sats) ;
+strSats = sprintf('%d,',ifsmp.sats) ;
 title(sprintf('SNR: %5.2fdB, Satellites: %s', ifsmp.snr_db, strSats),'FontSize',14) ;
 set(gca,'FontSize',14);
 

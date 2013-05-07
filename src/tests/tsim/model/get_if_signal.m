@@ -1,5 +1,5 @@
 function [x,y,sats, delays, signoise] = get_if_signal(ifsmp)
-N = 1023*2 ; % chips
+N = 1023*15 ; % chips
 max_delay = 20 ; % chips
 
 % IF signal model parameters
