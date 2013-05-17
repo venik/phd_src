@@ -88,6 +88,8 @@ frqBins     = zeros(1, numberOfFrqBins);
 %--- Initialize acqResults ------------------------------------------------
 % Carrier frequencies of detected signals
 acqResults.carrFreq     = zeros(1, 32);
+% Coarse carrier frequencies of detected signals
+acqResults.coarseCarrFreq     = zeros(1, 32);
 % C/A code phases of detected signals
 acqResults.codePhase    = zeros(1, 32);
 % Correlation peak ratios of the detected signals
@@ -230,7 +232,9 @@ for PRN = settings.acqSatelliteList
         end
         
         acqResults.codePhase(PRN) = codePhase;
-    
+        
+        acqResults.coarseCarrFreq(PRN) = frqBins(frequencyBinIndex) ;
+        
     else
         %--- No signal with this PRN --------------------------------------
         fprintf('. ');

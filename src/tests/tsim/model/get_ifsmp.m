@@ -1,5 +1,7 @@
 function ifsmp = get_ifsmp()
 ifsmp.maxSats = 10 ;
+ifsmp.maxDelayMsec = 0.1 ; % milliseconds
+ifsmp.sigLengthMsec = 15 ; % ms
 ifsmp.sats   = 1:ifsmp.maxSats ;
 ifsmp.snr_db = -5 ;
 ifsmp.vars   = [1,1,1,0.7,0.6,0.6,0.3,0.3,0.3,0.1] ;
