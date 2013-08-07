@@ -15,6 +15,9 @@ THESIS_ALL = 	\
 
 SEC2 = sec2_duffing.tex  sec2_lpc.tex  sec2_newton.tex  sec2.tex
 SEC3 = sec3_lpc.tex  sec3_newton.tex  sec3.tex
+SEC4 = sec4_lpc.tex
+
+SEC34 = ${SEC3} ${SEC4}
 
 thesis: ${THESIS_ALL}
 	${TEX2DVI} ${TEX_FLAGS} thesis.tex
@@ -24,6 +27,9 @@ sec2: $(SEC2)
 
 sec3: $(SEC3)
 	${TEX2DVI} ${TEX_FLAGS} sec3.tex
+
+sec34: $(SEC34)
+	${TEX2DVI} ${TEX_FLAGS} sec34.tex
 
 thesis_ps: ${THESIS_ALL} 
 	${TEX2DVI} thesis.tex
