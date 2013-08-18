@@ -66,7 +66,6 @@ acx = acx .* conj(acx);
 %fprintf('E = %.2f\t pos=%d\n', peak, pos);
 %plot(acx);
 
-
 ca_dma = circshift(x_ca16(1:N), pos) ;
 sig_after_dma = sig(1:N) .* ca_dma ;
 %plot(sig_after_dma(1:100))
@@ -84,7 +83,8 @@ X2(4, :) = X2(3, :).*X2(3, :)/length(X) ;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % AR model
 freq = zeros(length(X2(:,1)), 1) ;
-hold off, plot((1:0.0001:length(freq)), fs) ;
+
+hold off, plot(repmat(fs, 1, length(freq))) ;
 
 for k=1:length(freq)
     rxx = ifft(X2(k, :)) ;
