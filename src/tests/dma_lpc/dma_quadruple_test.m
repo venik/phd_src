@@ -5,7 +5,7 @@ addpath('../tsim/model/');
 
 fd= 16.368e6;		% 16.368 MHz
 fs = 4.092e6;
-freq_delta = 0;
+freq_delta = 2e3;
 N = 16368;
 ca_phase = 8184;
 
@@ -79,12 +79,11 @@ X2(2, :) = X2(1, :).*X2(1, :)/length(X) ;
 X2(3, :) = X2(2, :).*X2(2, :)/length(X) ;
 X2(4, :) = X2(3, :).*X2(3, :)/length(X) ;
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % AR model
 freq = zeros(length(X2(:,1)), 1) ;
 
-hold off, plot(repmat(fs, 1, length(freq))) ;
+hold off, plot(repmat(fs + freq_delta, 1, length(freq))) ;
 
 for k=1:length(freq)
     rxx = ifft(X2(k, :)) ;
@@ -97,8 +96,10 @@ end; % for
 
 hold on, plot((1:k), freq, '-go') ;
 title(sprintf('ОСШ: %d дБ', snr)) ;
-xlabel('Квадрупле') ;
-ylabel('Частота') ;
+xlabel('Оценка АКФ на шаге') ;
+ylabel('Частота Гц') ;
+legend('Частота сигнала', 'Оценка частоты')
+phd_figure_style(gcf) ;
 
 freq
 %plot([freq, fs])
