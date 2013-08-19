@@ -5,29 +5,42 @@ addpath('../tsim/model/');
 
 fd= 16.368e6;		% 16.368 MHz
 fs = 4.092e6;
-freq_delta = 2e3;
 N = 16368;
-ca_phase = 8184;
+freq_delta = [2e3, 1e3, -1.5e3];
+ca_phase = [8184, 160, 320];
+prn = [1, 2, 3] ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % prepare data
 
 ms = 10;
 DumpSize = ms*N;
-snr = -10 ;
+snr = -14 ;
 
-x_ca16 = ca_get(1, 0) ;
+% Main satellite
+x_ca16 = ca_get(prn(1), 0) ;
 x_ca16 = repmat(x_ca16, ms + 1, 1);
 
-base_sig = sin(2*pi*(fs + freq_delta)/fd*(0:length(x_ca16)-1)).' ;
+base_sig = sin(2*pi*(fs + freq_delta(1))/fd*(0:length(x_ca16)-1)).' ;
 Es = sum(base_sig .^ 2) / length(base_sig(:)) ; 
 x = base_sig .* x_ca16 ;
-x = x(ca_phase:DumpSize + ca_phase - 1);
+x = x(ca_phase(1):DumpSize + ca_phase(1) - 1);
+
+intf_error = zeros(length(x) , 1) ;
+
+% interference
+for k=2:3
+    x_ca16_intf = ca_get(prn(k), 0) ;
+    x_ca16_intf = repmat(x_ca16_intf, ms + 1, 1);
+    base_sig_intf = 0.5 * sin(2*pi*(fs + freq_delta(k))/fd*(0:length(x_ca16)-1)).' ;
+    intf = base_sig_intf .* x_ca16_intf ;
+    intf_error = intf_error + intf(ca_phase(k):DumpSize + ca_phase(k) - 1);
+end % k
 
 En = Es * 10^(-snr/10) ;
 wn = sqrt(En) * randn(DumpSize, 1);
 
-sig = x + wn ;		% variance = var(x) + sigma
+sig = x + wn + intf_error ;		% variance = var(x) + sigma
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DMA
@@ -62,9 +75,10 @@ acx = acx .* conj(acx);
 
 % [acx, ca_phase]
 [peak, pos] = max(sqrt(acx)) ;
+fprintf('E = %.2f\t pos=%d\n', peak, pos) ;
 
-%fprintf('E = %.2f\t pos=%d\n', peak, pos);
 %plot(acx);
+%return ;
 
 ca_dma = circshift(x_ca16(1:N), pos) ;
 sig_after_dma = sig(1:N) .* ca_dma ;
@@ -83,7 +97,7 @@ X2(4, :) = X2(3, :).*X2(3, :)/length(X) ;
 % AR model
 freq = zeros(length(X2(:,1)), 1) ;
 
-hold off, plot(repmat(fs + freq_delta, 1, length(freq))) ;
+hold off, plot(repmat(fs + freq_delta(1), 1, length(freq))) ;
 
 for k=1:length(freq)
     rxx = ifft(X2(k, :)) ;
