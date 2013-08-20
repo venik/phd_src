@@ -118,6 +118,7 @@ $C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^
 \label{sssec:dma_simulate}
 
 \subparagraph{Действительный сигнал}
+\label{sec1:dma_real}
 
 Данный подход является достаточно интересным, но работает только с комплексным сигналом. Это ограничение можно
 обойти, преобразуя входной сигнал из действительного в комплексный, используя преобразование Гильберта.
@@ -127,7 +128,7 @@ $C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^
 \begin{center}
 \begin{equation}
 	\label{eq:dma_real1}
-	s(t) = C_s(t) \sin{2\pi ft}
+	s(t) = C_s(t) \sin{(2\pi ft)}
 \end{equation}
 \end{center}
 
@@ -135,7 +136,7 @@ $C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^
 \begin{center}
 \begin{equation}
 	\label{eq:dma_real2}
-	s(t - \tau) = C_s(t-\tau) \sin{[2\pi f(t-\tau)]}
+	s(t - \tau) = C_s(t-\tau) \sin{\left[2\pi f(t-\tau)\right]}
 \end{equation}
 \end{center}
 
@@ -143,7 +144,7 @@ $C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^
 \begin{center}
 \begin{equation}
 	\label{eq:dma_real3}
-	s(t)s(t - \tau) = \frac{C_n(t)}{2} \{\cos (2\pi f \tau) - \cos [2 \pi f (2t - \tau)]\}
+	s(t)s(t - \tau) = \frac{C_n(t)}{2} \left(\cos (2\pi f \tau) - \cos \left[2 \pi f (2t - \tau)\right]\right)
 \end{equation}
 \end{center}
 
