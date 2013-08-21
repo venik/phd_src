@@ -15,8 +15,8 @@ prn = [1, 2, 3, 4] ;
 
 ms = 10;
 DumpSize = ms*N;
-snr = -30:2:1 ;
-times = 100 ;
+snr = -30:2:-8 ;
+times = 1000 ;
 
 % Main satellite
 x_ca16 = ca_get(prn(1), 0) ;
@@ -45,6 +45,7 @@ corr_false = zeros(length(snr), 1) ;
 dma_miss = zeros(length(snr), 1) ;
 dma_false = zeros(length(snr), 1) ;
 
+init_rand(1) ;
 
 for kk=1:length(snr)
     fprintf('current SNR:%d\n', snr(kk)); 
@@ -128,16 +129,15 @@ end % for kk=1:length(snr)
 figure(1),
     plot(snr, corr_false, snr, dma_false),
     legend('Correlator', 'DMA'),
-    title('False detection') ;
-    
+    title('False detection') ,
+    xlabel('SNR dB'),
+    ylabel('Probability'),
+    phd_figure_style(gcf) ;
+
 figure(2),
     plot(snr, corr_miss, snr, dma_miss),
     legend('Correlator', 'DMA'),
-    title('Miss signal') ;
-    
-%hold off,   plot(repmat(N/2, 1, length(snr))) ,
-%hold on,    plot(sqrt(var_corr), '-rx') ,
-%            plot(sqrt(var_dma), '-go') ,
-    %xlabel('SNR dB'),
-    %ylabel('var(acx)'),
-    %legend('Ideal correlation', 'Correlator', 'DMA') ;
+    title('Miss signal') ,
+    xlabel('SNR dB'),
+    ylabel('Probability'),
+    phd_figure_style(gcf) ;
