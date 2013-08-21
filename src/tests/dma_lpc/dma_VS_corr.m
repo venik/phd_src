@@ -15,7 +15,7 @@ prn = [1, 2, 3, 4] ;
 
 ms = 10;
 DumpSize = ms*N;
-snr = -50 ;
+snr = -25 ;
 times = 100 ;
 
 % Main satellite
@@ -61,13 +61,13 @@ for kk=1:length(snr)
         
         acx_corr_sig = sum(sig(1:N) .* (base_sig(1:N) .* x_ca16(1:N))) / N ;
         % miss
-        if acx_corr_sig <= thr
+        if abs(acx_corr_sig) <= thr
             corr_miss = corr_miss + 1 ;
         end ;
             
         acx_corr_noise = sum(wn(1:N) .* (base_sig(1:N) .* x_ca16(1:N))) / N ;
         % false
-        if acx_corr_noise > thr
+        if abs(acx_corr_noise) > thr
             corr_false = corr_false + 1 ;
         end ;
 
@@ -94,18 +94,21 @@ for kk=1:length(snr)
         Fc=Fnyq/2 ;                 % cut-off freq [Hz]
         [b,a]=butter(2, Fc/Fnyq);
 
+        ca_new_tmp = x_ca16(1:N) .* x_ca16(1+tau : N+tau);
+
+        
         sig_filt_dma = filter(b, a, sig_dma) ;
         noise_filt_dma = filter(b, a, noise_dma) ;
 
-        acx_dma_sig = sum(sig_filt_dma(1:N) .* (base_sig(1:N) .* x_ca16(1:N))) / N ;
+        acx_dma_sig = sum(sig_filt_dma(1:N) .* ca_new_tmp(1:N)) / N ;
         % miss
-        if acx_dma_sig <= thr
+        if abs(acx_dma_sig) <= thr
             dma_miss = dma_miss + 1 ;
         end ;
         
-        acx_dma_noise = sum(noise_filt_dma(1:N) .* (base_sig(1:N) .* x_ca16(1:N))) / N ;
+        acx_dma_noise = sum(noise_filt_dma(1:N) .* ca_new_tmp(1:N)) / N ;
         % false
-        if acx_dma_noise > thr
+        if abs(acx_dma_noise) > thr
             dma_false = dma_false + 1 ;
         end ;
 
