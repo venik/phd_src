@@ -15,7 +15,7 @@ prn = [1, 2, 3, 4] ;
 
 ms = 10;
 DumpSize = ms*N;
-snr = -25 ;
+snr = -30:2:1 ;
 times = 100 ;
 
 % Main satellite
@@ -40,11 +40,11 @@ for k=2:-1
     intf_error = intf_error + intf(ca_phase(k):DumpSize + ca_phase(k) - 1);
 end % k
 
+corr_miss = zeros(length(snr), 1) ;
+corr_false = zeros(length(snr), 1) ;
+dma_miss = zeros(length(snr), 1) ;
+dma_false = zeros(length(snr), 1) ;
 
-corr_miss = 0 ;
-corr_false = 0 ;
-dma_miss = 0 ;
-dma_false = 0 ;
 
 for kk=1:length(snr)
     fprintf('current SNR:%d\n', snr(kk)); 
@@ -62,13 +62,13 @@ for kk=1:length(snr)
         acx_corr_sig = sum(sig(1:N) .* (base_sig(1:N) .* x_ca16(1:N))) / N ;
         % miss
         if abs(acx_corr_sig) <= thr
-            corr_miss = corr_miss + 1 ;
+            corr_miss(kk) = corr_miss(kk) + 1 ;
         end ;
             
         acx_corr_noise = sum(wn(1:N) .* (base_sig(1:N) .* x_ca16(1:N))) / N ;
         % false
         if abs(acx_corr_noise) > thr
-            corr_false = corr_false + 1 ;
+            corr_false(kk) = corr_false(kk) + 1 ;
         end ;
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -103,27 +103,38 @@ for kk=1:length(snr)
         acx_dma_sig = sum(sig_filt_dma(1:N) .* ca_new_tmp(1:N)) / N ;
         % miss
         if abs(acx_dma_sig) <= thr
-            dma_miss = dma_miss + 1 ;
+            dma_miss(kk) = dma_miss(kk) + 1 ;
         end ;
         
         acx_dma_noise = sum(noise_filt_dma(1:N) .* ca_new_tmp(1:N)) / N ;
         % false
         if abs(acx_dma_noise) > thr
-            dma_false = dma_false + 1 ;
+            dma_false(kk) = dma_false(kk) + 1 ;
         end ;
 
     end ;
     
-    corr_false = corr_false / times ;
-    corr_miss = corr_miss / times ;
-    dma_false = dma_false / times ;
-    dma_miss = dma_miss / times ;
+    corr_false(kk) = corr_false(kk) / times ;
+    corr_miss(kk) = corr_miss(kk) / times ;
+    dma_false(kk) = dma_false(kk) / times ;
+    dma_miss(kk) = dma_miss(kk) / times ;
     
-    fprintf('CORR:\tMiss:%.3f\tFalse:%.3f\n', corr_miss, corr_false) ;
-    fprintf('DMA:\tMiss:%.3f\tFalse:%.3f\n', dma_miss, dma_false) ;
+    fprintf('snr = %d\n', snr(kk)) ;
+    fprintf('CORR:\tMiss:%.3f\tFalse:%.3f\n', corr_miss(kk), corr_false(kk)) ;
+    fprintf('DMA:\tMiss:%.3f\tFalse:%.3f\n', dma_miss(kk), dma_false(kk)) ;
     
 end % for kk=1:length(snr)
 
+figure(1),
+    plot(snr, corr_false, snr, dma_false),
+    legend('Correlator', 'DMA'),
+    title('False detection') ;
+    
+figure(2),
+    plot(snr, corr_miss, snr, dma_miss),
+    legend('Correlator', 'DMA'),
+    title('Miss signal') ;
+    
 %hold off,   plot(repmat(N/2, 1, length(snr))) ,
 %hold on,    plot(sqrt(var_corr), '-rx') ,
 %            plot(sqrt(var_dma), '-go') ,
