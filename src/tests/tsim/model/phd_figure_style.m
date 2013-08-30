@@ -13,7 +13,8 @@ set(figAxes(1),'XGrid','on') ;
 set(figAxes(1),'YGrid','on') ;
 set(figAxes(1),'FontSize',14) ;
 
-colorTbl = [.75 0.33 0.33 ; .33 0.33 0.75 ; .4 0.7 0.55  ] ;
+colorTbl = [.75 0.33 0.33 ; .33 0.33 0.75 ; .4 0.7 0.55 ; ...
+            .7 0.7 0.2] ;
 
 figLines = findobj(figAxes(1),'Type','line') ;
 for n=1:length(figLines)
