@@ -3,12 +3,19 @@ clc, clear all, clf ;
 f = 30 ;
 fd = 100 ;
 N = 1000 ;
-times = 1000 ;
+times = 10000 ;
 
-sigma = 0.005:0.005:0.5 ;
+%sigma = 0.005:0.005:0.5 ;
+sigma = 1 ;
 
-marple_delta = zeros(length(sigma), 1) ;
-actual_delta = zeros(length(sigma), 1) ;
+%marple_delta = zeros(length(sigma), 1) ;
+%actual_delta = zeros(length(sigma), 1) ;
+
+% a vector for NON noise case
+real_a = [0.6180; 1] ;
+
+var_a = zeros(2, length(sigma)) ;
+cov_a = zeros(2, length(sigma)) ;
 
 for k=1:length(sigma)
     fprintf('iteration %d\n', k) ;
@@ -27,24 +34,49 @@ for k=1:length(sigma)
         Rxx = [rxx(1) , rxx(2); rxx(2), rxx(1)] ;
 
         % calculate coef
-        a = pinv(Rxx) * rxx(2:3)'  ;
+        a = pinv(Rxx) * rxx(2:3)' ;
         a = [1;-a] ;
         poles = roots(a) ;
         freq = angle(poles(1)) ;
         
-        actual_delta(k) = actual_delta(k) + abs(f - freq*fd/2/pi) ;
+        %actual_delta(k) = actual_delta(k) + abs(f - freq*fd/2/pi) ;
+        var_a(:, k) = var_a(:, k) + (a(2:3) - real_a).^2 ;
     end ;  % tt
     
-    actual_delta(k) = actual_delta(k) / times;
-    marple_delta(k) = 1.03/(2*(0.5/sigma(k))*(2+1)^0.31) ;
+    %actual_delta(k) = actual_delta(k) / times ;
+    % marple eq 7.35 in Marple book
+    %marple_delta(k) = 1.03/(2*(0.5/sigma(k))*(2+1 )^0.31) ;
+    
+    var_a(:, k) = var_a(:, k) / times ;
+    
+    % 11a equation in
+    % Noise Compensation for AR Spectral Estimates
+    cov_matrix = sigma(k) / N * Rxx^-1 ;
+    cov_a(:, k) = cov_matrix(:, 1) ;
 end ;   %for k=1:length(sigma)
 
-snr = 10*log(0.5./sigma) ;
 
-plot(snr, actual_delta, snr, marple_delta)
-    legend('Actual', 'Marple') ,
-    xlabel('SNR dB') ,
-    ylabel('delta in Hz') ;
+if length(sigma > 1)
+    snr = 10*log(0.5./sigma) ;
+
+    figure(1),
+    plot(snr, est_a(1,:), snr, cov_a(1,:))
+        legend('Estimated', 'Calculated') ,
+        xlabel('SNR dB') ,
+        ylabel('delta in Hz') ;
+
+    figure(2),
+    plot(snr, est_a(2,:), snr, cov_a(2,:))
+        legend('Estimated', 'Calculated') ,
+        xlabel('SNR dB') ,
+        ylabel('delta in Hz') ;
+end ;
+    
+
+%plot(snr, actual_delta, snr, marple_delta)
+%    legend('Actual', 'Marple') ,
+%    xlabel('SNR dB') ,
+%    ylabel('delta in Hz') ;
 
 % 1.03 / (p*SNR*(p+1)^0.31)
 %fprintf('Error estimation %.02f\n', 1.03/(2*(0.5/sigma)*(2+1)^0.31) ) ;
