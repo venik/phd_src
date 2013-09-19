@@ -1,12 +1,13 @@
-clc, clear all, clf ;
+clc, clear all;
 
 f = 30 ;
 fd = 100 ;
 N = 1000 ;
-times = 10000 ;
+% FIXME - make me 10000 for PHD, 1000 only for tests
+times = 1000 ;
 
-%sigma = 0.005:0.005:0.5 ;
-sigma = 1 ;
+sigma = 0.005:0.005:0.5 ;
+%sigma = 0.0000000005 ;
 
 %marple_delta = zeros(length(sigma), 1) ;
 %actual_delta = zeros(length(sigma), 1) ;
@@ -16,6 +17,9 @@ real_a = [0.6180; 1] ;
 
 var_a = zeros(2, length(sigma)) ;
 cov_a = zeros(2, length(sigma)) ;
+real_var_a = zeros(2, length(sigma)) ;
+
+est_a = zeros(2, times) ;
 
 for k=1:length(sigma)
     fprintf('iteration %d\n', k) ;
@@ -40,34 +44,49 @@ for k=1:length(sigma)
         freq = angle(poles(1)) ;
         
         %actual_delta(k) = actual_delta(k) + abs(f - freq*fd/2/pi) ;
-        var_a(:, k) = var_a(:, k) + (a(2:3) - real_a).^2 ;
+        est_a(:, tt) = a(2:3) ;
+        real_var_a(:, k) = var_a(:, k) + (a(2:3) - real_a).^2 ;
     end ;  % tt
     
     %actual_delta(k) = actual_delta(k) / times ;
     % marple eq 7.35 in Marple book
     %marple_delta(k) = 1.03/(2*(0.5/sigma(k))*(2+1 )^0.31) ;
     
-    var_a(:, k) = var_a(:, k) / times ;
+    hat_a(1) = sum(est_a(1,:)) / times ;
+    hat_a(2) = sum(est_a(2,:)) / times ;
+    %fprintf('a1: real: %.4f, estimated: %.4f\n', real_a(1), hat_a(1)) ;
+    %fprintf('a2: real: %.4f, estimated: %.4f\n', real_a(2), hat_a(2)) ;
+    
+    var_a(1, k) = sum((est_a(1,:) - hat_a(1)).^ 2) / times ;
+    var_a(2, k) = sum((est_a(2,:) - hat_a(2)).^ 2) / times ;
+    
+    %fprintf('var: a1: %.8f a2:%.8f\n', var_a(1, k), var_a(2, k)) ;
+    
+    real_var_a(:, k) = real_var_a(:, k) / times ;
     
     % 11a equation in
     % Noise Compensation for AR Spectral Estimates
-    cov_matrix = sigma(k) / N * Rxx^-1 ;
+    cov_matrix = sigma(k) / N * pinv(Rxx) ;
     cov_a(:, k) = cov_matrix(:, 1) ;
+    %fprintf('cov: a1: %.8f a2:%.8f\n', cov_a(1, k), cov_a(2, k)) ;
 end ;   %for k=1:length(sigma)
 
 
-if length(sigma > 1)
+if length(sigma) > 1
+    clf ;
     snr = 10*log(0.5./sigma) ;
 
     figure(1),
-    plot(snr, est_a(1,:), snr, cov_a(1,:))
-        legend('Estimated', 'Calculated') ,
+    plot(snr, var_a(1,:), snr, cov_a(1,:), snr, real_var_a(1, :));
+        title('ќценка a1'),
+        legend('Estimated', 'Calculated', 'Real variance') ,
         xlabel('SNR dB') ,
         ylabel('delta in Hz') ;
 
     figure(2),
-    plot(snr, est_a(2,:), snr, cov_a(2,:))
-        legend('Estimated', 'Calculated') ,
+    plot(snr, var_a(2,:), snr, cov_a(2,:), snr, real_var_a(2, :))
+        title('ќценка a2'),
+        legend('Estimated', 'Calculated', 'Real variance') ,
         xlabel('SNR dB') ,
         ylabel('delta in Hz') ;
 end ;
