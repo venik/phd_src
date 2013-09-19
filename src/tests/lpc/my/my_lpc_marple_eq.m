@@ -1,6 +1,8 @@
 clc, clear all;
 
-f = 30 ;
+%f = 30 ; real_a = [0.6180; 1] ;
+f = 5 ; real_a = [-1.9021; 1] ;
+
 fd = 100 ;
 N = 1000 ;
 % FIXME - make me 10000 for PHD, 1000 only for tests
@@ -10,16 +12,17 @@ sigma = 0.005:0.005:0.5 ;
 %sigma = 0.0000000005 ;
 
 %marple_delta = zeros(length(sigma), 1) ;
-%actual_delta = zeros(length(sigma), 1) ;
+actual_delta = zeros(length(sigma), 1) ;
 
 % a vector for NON noise case
-real_a = [0.6180; 1] ;
+%real_a = [1.9021; 1] ;
 
 var_a = zeros(2, length(sigma)) ;
 cov_a = zeros(2, length(sigma)) ;
 real_var_a = zeros(2, length(sigma)) ;
 
 est_a = zeros(2, times) ;
+var_poles = zeros(length(sigma), 1) ;
 
 for k=1:length(sigma)
     fprintf('iteration %d\n', k) ;
@@ -43,12 +46,16 @@ for k=1:length(sigma)
         poles = roots(a) ;
         freq = angle(poles(1)) ;
         
-        %actual_delta(k) = actual_delta(k) + abs(f - freq*fd/2/pi) ;
+        var_poles(k) = var_poles(k) + (abs(poles(1)) - 1).^2 ;
+        
+        actual_delta(k) = actual_delta(k) + (f - freq*fd/2/pi).^2 ;
         est_a(:, tt) = a(2:3) ;
         real_var_a(:, k) = var_a(:, k) + (a(2:3) - real_a).^2 ;
     end ;  % tt
     
-    %actual_delta(k) = actual_delta(k) / times ;
+    var_poles(k) = var_poles(k) / times ;
+    
+    actual_delta(k) = actual_delta(k) / times ;
     % marple eq 7.35 in Marple book
     %marple_delta(k) = 1.03/(2*(0.5/sigma(k))*(2+1 )^0.31) ;
     
@@ -89,6 +96,17 @@ if length(sigma) > 1
         legend('Estimated', 'Calculated', 'Real variance') ,
         xlabel('SNR dB') ,
         ylabel('delta in Hz') ;
+        
+    figure(3),
+    
+    plot(snr, var_poles ./ var_poles(end) , '-r', ...
+         snr, actual_delta ./ actual_delta(end), '-g',  ...
+         snr, var_a(1,:) ./ var_a(1,end), '-b',  ...
+         snr, var_a(2,:) ./ var_a(2,end), '-c');
+     
+     legend('poles', 'freq', 'var a1', 'var a2');
+     xlabel('SNR dB');
+    
 end ;
     
 
