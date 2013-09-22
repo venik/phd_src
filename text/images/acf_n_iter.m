@@ -20,7 +20,7 @@ X2(2, :) = X2(1, :).*X2(1, :)/length(X) ;
 X2(3, :) = X2(2, :).*X2(2, :)/length(X) ;
 X2(4, :) = X2(3, :).*X2(3, :)/length(X) ;
 
-sig = zeros(length(X2(:,1)), length(X)) ;
+sig = zeros(length(X2(:,1)), length(X)) ;   
 
 sig(1, :) = ifft(X2(1, :)) ;
 sig(2, :) = ifft(X2(2, :)) ;
@@ -28,7 +28,7 @@ sig(3, :) = ifft(X2(3, :)) ;
 sig(4, :) = ifft(X2(4, :)) ;
 
 
-plot((sig(3,(2:120)))) ;
+plot((sig(1,(2:120)))) ;
     xlabel('n') ;
     ylabel('r_{xx}(n)') ;
     phd_figure_style(gcf) ;
