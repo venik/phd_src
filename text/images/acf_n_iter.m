@@ -10,7 +10,8 @@ addpath(modelPath) ;
 init_rand(1) ;
 phase_arg = 2*pi*(0:0.05:30) ;
 s = 1*cos(phase_arg) ;
-x = s + 4*(randn(size(s))) ;
+sigma = 16 ;
+x = s + sqrt(sigma)*(randn(size(s))) ;
 
 X = fft(x) ; 
 
@@ -33,5 +34,8 @@ plot((sig(1,(2:120)))) ;
     ylabel('r_{xx}(n)') ;
     phd_figure_style(gcf) ;
 
+var(s)
+var(sig(1,:))    
+    
 % remove model path
 rmpath(modelPath) ;
