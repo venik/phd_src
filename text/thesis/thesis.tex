@@ -1,8 +1,10 @@
 \input{thesis_default} % main tamplate
 
 \begin{document}
-%\input{title} % это титульный лист
+\input{title_page} % это титульный лист
 %\input{diplom_task}
+
+\pagenumbering{arabic}
 \tableofcontents % это оглавление, которое генерируется автоматически
 \newpage
 
@@ -31,16 +33,19 @@
 \input{sec1_noise_est}		% постановка вопроса оценки шума
 
 \section{Глава 2}
+\input{sec2_correlator}
 \input{sec2_duffing}
-\input{sec2_newton}
+%\input{sec2_newton}
 \input{sec2_lpc}
 
 \section{Глава 3}
 \input{sec3_lpc}
 \input{sec3_newton}
 
-\section{Глава 4. ффективная реализация алгоритмов детектирования и оценки параметров ШПС}
+%\section{Глава 4. Эффективная реализация алгоритмов детектирования и оценки параметров ШПС}
 \input{sec4_lpc}
+
+\input{outro}
 
 \input{bibl} %
 \end{document}
