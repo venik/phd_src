@@ -1,4 +1,4 @@
-\paragraph{Оптимизация области поиска - алгоритм Delay and Multiply Approach}
+\subsubsection{Алгоритм Delay and Multiply Approach}
 \label{ssec:dma}
 
 Алгоритм был предаставлен в книге и статье американского ученого Дж.
@@ -50,9 +50,9 @@ $C(t)C(t-\tau)$ используется для корреляции с новы
 
 Воспользуемся математическим аппаратом теории вероятностей. Необходимый математический аппарат
 рассмотрен в \cite{ventcel}, для более подробного изучения можно ознакомиться с \cite{feller}.
+Для упрощения можно принять, что в эфире только 1 сигнал (интерференция будет создавать окрашенный шум).
 
 Добавим в формулу \ref{eq:dma} АБГШ:
-
 \begin{center}
 \begin{eqnarray}
 	s_{n}(t) & = & (s(t)+n_{1}(t))(s(t-\tau)+n_{2}(t))^{*}=\nonumber \\
@@ -62,15 +62,12 @@ $C(t)C(t-\tau)$ используется для корреляции с новы
 	 & + & n(t)^{2}\nonumber 
 \end{eqnarray}
 \end{center}
-
-где
-$C(t)C(t-\tau)e^{j2{\pi}f_{0}{\tau}}$ - новая ПСП, умноженная на константу, а
+где $C(t)C(t-\tau)e^{j2{\pi}f_{0}{\tau}}$ - новая ПСП, умноженная на константу, а
 $C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^{2}$ -
 шумовая компонента.
 
 Свойства дисперсии случайных величин рассмотрены в \cite{ventcel}. Дисперсия суммы 
 независимых случайных величин приведена на формуле \ref{eq:var_add_full}:
-
 \begin{center}
 \begin{equation}
 	\label{eq:var_add_full}
@@ -79,7 +76,6 @@ $C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^
 \end{center}
 
 Для некореллированных случайных величин можно формулу \ref{eq:var_add_full} переписать как \ref{eq:var_add}:
-
 \begin{center}
 \begin{equation}
 	\label{eq:var_add}
@@ -95,7 +91,7 @@ $C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^
 \end{equation}
 \end{center}
 
-Вернемся к рассмотрению формулы \ref{eq:dma_noise_1}. Известно, что дисперсия ПСП Гоулда равна 1, учитывая \ref{eq:var_mult}
+Вернемся к рассмотрению формулы \ref{eq:dma_noise_1}. Известно, что дисперсия ПСП Голда равна 1, учитывая \ref{eq:var_mult}
 и тот факт что математическое ожидание ПСП Гоулда равно 0. Математическое ожидаине и дисперсия гармонического сигнала в
 представленном виде так же равны 0 и 1. На основе этого получаем:
 \begin{center}
@@ -109,13 +105,13 @@ $C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^
 Учитывая \ref{eq:dma_noise_2} и теоремы о математическом ожидании и дисперсии, перепишем \ref{eq:dma_noise_1}:
 \begin{center}
 \begin{eqnarray}
+	\label{eq:dma_finish_noise}
 	D[s_{n}(t)] & = & D[(s(t)+n_{1}(t))(s(t-\tau)+n_{2}(t))^{*}]=\nonumber \\
-	& = & D[n(t)^{2}] + 2D[n(t)] + 1 \label{eq:dma_noise_3} \\
+	& = & D[n(t)^{2}] + 2D[n(t)] + 1 \label{eq:dma_noise_3}
 \end{eqnarray}
 \end{center}
 
-\subparagraph{Результаты моделирования}
-\label{sssec:dma_simulate}
+Из \ref{eq:dma_finish_noise}, что уровень ОСШ сильно падает.
 
 \subparagraph{Действительный сигнал}
 \label{sec1:dma_real}
