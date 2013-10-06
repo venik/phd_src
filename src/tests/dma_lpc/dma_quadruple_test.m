@@ -1,21 +1,23 @@
-clear all, clc;
+clear all, clc, clf;
 
-addpath('../../gnss/');
-addpath('../tsim/model/');
+path_gnss = '../../gnss/' ;
+path_model = '../tsim/model/' ;
+addpath(path_gnss);
+addpath(path_model);
 
 fd= 16.368e6;		% 16.368 MHz
 fs = 4.092e6;
 N = 16368;
-freq_delta = [2e3, 1e3, -1.5e3];
-ca_phase = [8184, 160, 320];
-prn = [1, 2, 3] ;
+freq_delta = [2e3, 1e3, -1.5e3, 0.5e3];
+ca_phase = [8184, 160, 320, 500];
+prn = [1, 2, 3, 4] ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % prepare data
 
 ms = 10;
 DumpSize = ms*N;
-snr = -14 ;
+snr = 1 ;
 
 % Main satellite
 x_ca16 = ca_get(prn(1), 0) ;
@@ -71,14 +73,15 @@ CA_NEW_TMP = fft(ca_new_tmp);
 
 % correlate
 acx = ifft(CA_NEW_TMP .* conj(SIG_FILT_DMA));
-acx = acx .* conj(acx);
+acx = sqrt(acx .* conj(acx));
 
 % [acx, ca_phase]
-[peak, pos] = max(sqrt(acx)) ;
+[peak, pos] = max(acx) ;
 fprintf('E = %.2f\t pos=%d\n', peak, pos) ;
+fprintf('var=%.2f std %.2f\n', var(acx), std(acx)) ;
 
-%plot(acx);
-%return ;
+plot(acx);
+return ;
 
 ca_dma = circshift(x_ca16(1:N), pos) ;
 sig_after_dma = sig(1:N) .* ca_dma ;
@@ -124,5 +127,5 @@ freq
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % END
-rmpath('../../gnss/');
-rmpath('../tsim/model/');
+rmpath(path_gnss);
+rmpath(path_model);
