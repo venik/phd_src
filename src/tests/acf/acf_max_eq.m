@@ -19,6 +19,8 @@ phase_arg = 2*pi*1/Fs*(0:N-1) ;
 s = A * cos(phase_arg) ;
 x = s + sqrt(sigma)*(randn(size(s))) ;
 
+fprintf('before SNR: %.2f dB Energy: %.4f\n', 10*log10(E/sigma), SNR);
+
 X = fft(x) ; 
 
 X2 = zeros(4, length(X)) ;
@@ -62,16 +64,17 @@ real_noise_var = var(real_noise) ;
 SNR_est = (est_sig_e - real_noise_var) / real_noise_var ; 
 
 fprintf('Noise real: %.7f\n', real_noise_var) ;
-fprintf('Theoretical gain %.2f Real gain: %.2f\n', ...
+fprintf('Theoretical gain %.3f Real gain: %.3f\n', ...
         G, (est_sig_e - real_noise_var) / E) ;
 
-plot(   2:120, sig(k, 2:120), ...
-        2:120, tt(2:120)) ,
-    legend('Signal', 'r_{xx}')
+plot(   2:120, sig(3, 2:120))
+    %legend('Signal', 'r_{xx}')
     xlabel('n') ;
     ylabel('r_{xx}(n)') ;
     phd_figure_style(gcf) ;
 
+fprintf('after SNR: %.2f\n', SNR_est);
 
+    
 % remove model path
 rmpath(modelPath) ;
