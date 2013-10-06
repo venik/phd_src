@@ -10,8 +10,10 @@ addpath(modelPath) ;
 init_rand(1) ;
 phase_arg = 2*pi*(0:0.05:30) ;
 s = 1*cos(phase_arg) ;
-sigma = 16 ;
+sigma = 40 ;
 x = s + sqrt(sigma)*(randn(size(s))) ;
+
+fprintf('SNR %.02f\n', 10*log(0.5/sigma)) ;
 
 X = fft(x) ; 
 
@@ -28,14 +30,27 @@ sig(2, :) = ifft(X2(2, :)) ;
 sig(3, :) = ifft(X2(3, :)) ;
 sig(4, :) = ifft(X2(4, :)) ;
 
+k = 1 ;
 
-plot((sig(1,(2:120)))) ;
+figure(1),
+subplot(1,2,1),
+    plot(sig(k,(2:120))) ;
+    %plot(x(2:120)) ;
     xlabel('n') ;
     ylabel('r_{xx}(n)') ;
+    xlim([1 120]) ,
     phd_figure_style(gcf) ;
 
-var(s)
-var(sig(1,:))    
+subplot(1,2,2),
+    plot(pwelch(sig(k,:), [], [], [], 20) ) ;
+    %plot(pwelch(x, [], [], [], 20) ) ;
+    ylabel('PSD') ;
+    xlabel('F, Hz') ;
+    xlim([1 129])
+    phd_figure_style(gcf) ;
+
+%var(s)
+%var(sig(1,:))    
     
 % remove model path
 rmpath(modelPath) ;
