@@ -11,7 +11,7 @@ figAxes = get(figHandle,'CurrentAxes') ;
 set(figAxes(1),'LineWidth',2) ;
 set(figAxes(1),'XGrid','on') ;
 set(figAxes(1),'YGrid','on') ;
-set(figAxes(1),'FontSize',14) ;
+set(figAxes(1),'FontSize',18) ;
 
 colorTbl = [.75 0.33 0.33 ; .33 0.33 0.75 ; .4 0.7 0.55 ; ...
             .7 0.7 0.2; .7 0.5 0.2] ;
@@ -27,7 +27,7 @@ obj_list = findall(gca) ;
 for n=1:length(obj_list)
     type = get(obj_list(n),'Type') ;
     if strcmpi(type,'text')
-        set(obj_list(n),'FontSize',14) ;
+        set(obj_list(n),'FontSize',18) ;
     end
 end
 
