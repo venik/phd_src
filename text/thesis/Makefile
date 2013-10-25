@@ -7,15 +7,14 @@ THESIS_ALL = 	\
 		sec1_acq_algo.tex	\
 		sec1_chaos.tex		\
 		sec1_dma.tex		\
-		sec1_fft.tex		\
 		sec1_noise_est.tex	\
 		sec1_serial.tex		\
 		thesis_default.tex	\
 		thesis.tex
 
-SEC2 = sec2_duffing.tex  sec2_lpc.tex  sec2_newton.tex  sec2.tex
-SEC3 = sec3_lpc.tex  sec3_newton.tex  sec3.tex
-SEC4 = sec4_lpc.tex
+SEC2 = sec2_lpc.tex  sec2_acf.tex  sec2.tex
+SEC3 = sec3_lpc.tex sec3_lpc_dma.tex sec3_newton.tex  sec3.tex
+SEC4 = sec4_model.tex
 
 SEC34 = ${SEC3} ${SEC4}
 
