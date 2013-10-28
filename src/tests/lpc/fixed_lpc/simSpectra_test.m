@@ -6,7 +6,7 @@ addpath('../../tsim/model/');
 N = 1023*15 ;
 times = 10 ;
 
-interference = 0 ; 
+interference = 1 ; 
 
 if interference == 0 
     ifsmp.sats = [1] ;
@@ -16,11 +16,11 @@ if interference == 0
     ifsmp.delays = [200] ;
     SNR_db = [20:2.5:40] ;
 else
-    ifsmp.sats = [1, 2] ;
-    ifsmp.vars = [1, 1] ;
-    ifsmp.fs = [4.092e6, 4.095e6] ;
+    ifsmp.sats = [1, 2, 3] ;
+    ifsmp.vars = [1, 1, 1] ;
+    ifsmp.fs = [4.092e6, 4.095e6, 4.090e6] ;
     ifsmp.fd = 16.368e6 ;
-    ifsmp.delays = [200, 300] ;
+    ifsmp.delays = [200, 300, 100] ;
     SNR_db = [20:2.5:40] ;
 end ;
 
@@ -51,7 +51,7 @@ end % for k
 pll_base = repmat(18, length(SNR_db), 1) ;
 
 figure(1) ,
-    plot(SNR_db, marple_eq, SNR_db, real_delta, SNR_db, pll_base) ,
+    semilogy(SNR_db, marple_eq, SNR_db, real_delta, SNR_db, pll_base) ,
     xlabel('ОСШ, дБ') ,
     ylabel('F, Гц') ,
     legend('ф. Марпла', 'Алгоритм', 'Уровень допустимой входной расстройки'),
