@@ -21,12 +21,12 @@ ifsmp.sigLengthMsec = 12 ;
 code = get_gps_ca_code(ifsmp.sats(1),ifsmp.fd,length(x)+delays(1)) ;
 y = x.*code(1+delays(1):length(x)+delays(1)) ;
 
-%hold off, pwelch(x,4096) ;
-%hold on, pwelch(y,4096) ;
-%legend('СПМ сигнала','СПМ сигнала после снятия ПСП') ;
+hold off, pwelch(x,4096) ;
+hold on, pwelch(y,4096) ;
+legend('СПМ сигнала','СПМ сигнала после снятия ПСП') ;
 
-pwelch(y,4096) ;
-legend('СПМ сигнала после снятия ПСП') ;
+%pwelch(y,4096) ;
+%legend('СПМ сигнала после снятия ПСП') ;
 
 
 ylabel('Спектральная плотность dB/rad/отсчет') ;
