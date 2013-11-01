@@ -18,7 +18,11 @@ SEC4 = sec4_model.tex
 
 SEC34 = ${SEC3} ${SEC4}
 
+DATE = `date +%d.%m.%y`
+STR = "s/DATE/$(DATE)/"
+
 thesis: ${THESIS_ALL}
+	@sed -i $(STR) title_page.tex
 	${TEX2DVI} ${TEX_FLAGS} thesis.tex
 
 sec2: $(SEC2)
