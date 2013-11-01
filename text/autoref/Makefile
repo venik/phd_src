@@ -2,11 +2,15 @@ TEX2DVI = texi2dvi
 
 TEX_FLAGS = --dvipdf
 
-THESIS_ALL = 	\
+AUTOREF_ALL = 	\
 		general.tex		\
 		autoref.tex
 
-thesis: ${THESIS_ALL}
+DATE = `date +%d.%m.%y`
+STR = "s/{..\...\...}/{$(DATE)}/"
+
+autoref: ${AUTOREF_ALL}
+	@sed -i $(STR) general.tex
 	${TEX2DVI} ${TEX_FLAGS} autoref.tex
 
 .PHONY: clean
