@@ -6,7 +6,7 @@
 \begin{center}
 \begin{equation}
 	\label{eq:lpc_signal_model1}
-	x(k) = AC(k)D(k)\cos(\omega k) + n(k)
+	x(k) = AC(k)D(k)\cos(\omega k + \phi(k)) + n(k)
 \end{equation}
 \end{center}
 где: ${A}$ - мощность сигнала, ${C}$ - ПСП, ${D}$ - данные, а ${\omega_{c}}$ - частота несущей сигнала.
@@ -23,7 +23,6 @@
 Поскольку ${n(k)}$ - случайный процесс, то ${z(k) = n(k)C(k)}$ также является
 случайным процессом. Определим числовые характеристики ${z(k)}$.
 В виду того что ${C(k)}$ и ${n(k)}$ - независимы, а ${D[C] = 1}$,можно записать:
-
 \begin{center}
 \begin{equation}
 	%\label{}
