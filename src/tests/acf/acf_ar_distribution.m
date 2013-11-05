@@ -8,12 +8,12 @@ addpath(modelPath) ;
 
 %init_rand(1) ;
 
-num_of_tests = 100 ;
+num_of_tests = 10000 ;
 
 % A = 1, E = 0.5
 % [0:0.05:30] => 1/20 * [0:1:600] => Fs = 20 Hz, N = 600
 A = 1 ; E = A^2 / 2 ;
-SNR_dB = -30 ;
+SNR_dB = -25 ;
 sigma = E / (10 ^ (SNR_dB/10)) ;
 SNR = E / sigma ;
 N = 16368 ;
