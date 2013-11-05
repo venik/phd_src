@@ -13,7 +13,7 @@ num_of_tests = 10000 ;
 % A = 1, E = 0.5
 % [0:0.05:30] => 1/20 * [0:1:600] => Fs = 20 Hz, N = 600
 A = 1 ; E = A^2 / 2 ;
-SNR_dB = -25 ;
+SNR_dB = -20 ;
 sigma = E / (10 ^ (SNR_dB/10)) ;
 SNR = E / sigma ;
 N = 16368 ;
@@ -52,6 +52,9 @@ for k=1:num_of_tests
 end ;
 
 hist(freq3)
+    title(sprintf('SNR %.2f dB', SNR_dB)),
+    phd_figure_style(gcf) ;
+
 
 % remove model path
 rmpath(modelPath) ;
