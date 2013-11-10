@@ -1,0 +1,112 @@
+\subsection{Неравенство Крамера-Рао в задаче оценки частоты гармонического сигнала}
+
+В разделе \ref{s2:crlb} было рассмотрено неравенство Крамера-Рао для оценки нижней границы среднеквадратической ошибки
+при использовании любых оценок параметра.
+В данном разделе будет приведено данное неравенство в задаче оценки среднеквадратической ошибки оценки частоты
+гармонического сигнала. Приведенный вывод был взят из \cite{skon-clrb-report}.
+
+Пусть сигнал представлен как
+\begin{center}
+\begin{equation}
+	\label{eq:crlb3_signal}
+	s(m) = ss(m) + n(m) = A\cos(\omega_{c}m + \phi(m)) + n(m)
+\end{equation}
+\end{center}
+${A}$ - амплитуда, ${\omega_c}$ - частота несущей сигнала, ${\phi(m)}$ - фаза несущей сигнала, ${n(m)}$ - аддитивный белый гауссов шум
+с дисперсией ${\sigma_R^2}$, ${m}$ - индекс времени.
+
+Так как ${n(m) = ss(m) - s(m)}$ функция плотности вероятности может быть записана как
+\begin{center}
+\begin{equation}
+	\label{eq:crlb3_gauss}
+	p({\bf s}|{\bf ss}) = \frac{1}{2\pi^{N/2}\sigma_R^N}
+		exp\left[ -\frac{1}{2} \sum \limits_{m=1}^N(s(m)-ss(m))^2 / \sigma_R^2 \right]
+\end{equation}
+\end{center}
+
+Тогда информационную матрицу Фишера можно записать как
+\begin{center}
+\begin{equation}
+	\label{eq:crlb3_fisher_matrix}
+	E \left[ \left( \frac{d \ln L({\bf s}|{\bf ss})}{d {\bf \alpha}} \right)\right]
+\end{equation}
+\end{center}
+где ${\ln L({\bf s}|{\bf ss})}$ - логарифм функции правдоподобия, а вектор ${{\bf \alpha}}$ определяется как
+\begin{center}
+\begin{eqnarray}
+	\label{eq:crlb3_alpha}
+		\alpha =
+		\left[ \begin{array}{c}
+		A \nonumber	\\
+		f 		\\
+		\phi		\\
+		\end{array} \right]
+\end{eqnarray}
+\end{center}
+
+\begin{center}
+\begin{eqnarray}
+	\label{eq:crlb3_likehood}
+	\ln L({\bf s}|{\bf ss}) = -\frac{1}{2} \sum \limits_{m=1}^{N}(s(m)-ss(m)^2 / \sigma_R^2
+\end{eqnarray}
+\end{center}
+
+\begin{center}
+\begin{eqnarray}
+	%\label{eq:crlb3_}
+	\frac{d \ln L({\bf s}|{\bf ss})}{d {\bf \alpha}} = \sum \limits_{m=1}^{N}(s(m)-ss(m)^2 \frac{d ss(m)}{d \alpha} \frac{1}{\sigma_R^2}
+\end{eqnarray}
+\end{center}
+
+\begin{center}
+\begin{eqnarray}
+	%\label{eq:crlb3_}
+	E \left[ \left( \frac{d \ln L({\bf s}|{\bf ss})}{d {\bf \alpha}} \right)^2 \right] = \\
+	E \left[ \sum \limits_{m=1}^{N}\sum \limits_{k=1}^{N} \frac{(s(m)-ss(m)(s(k)-ss(k)}{\sigma_R^4} \frac{d ss(m)}{d \alpha} \frac{d ss(k)^T}{d \alpha} \right]
+\end{eqnarray}
+\end{center}
+
+${E[(s(m)-ss(m))(s(k)-ss(k))]=0}$
+
+\begin{center}
+\begin{eqnarray}
+	%\label{eq:crlb3_}
+	E \left[  \frac{d \ln L({\bf s}|{\bf ss})}{d {\bf \alpha}} \right]^2 =
+	\sum \limits_{m=1}^{N} \frac{1}{\sigma_R^2} \frac{d ss(m)}{d \alpha} \frac{d ss(m)^T}{d \alpha}
+\end{eqnarray}
+\end{center}
+
+
+\begin{center}
+\begin{eqnarray}
+	%\label{eq:crlb3_}
+		\frac{d ss(m)}{d \alpha} = 
+		\left[ \begin{array}{c}
+		\frac{\partial ss(m)}{\partial A} \nonumber	\\
+		\frac{\partial ss(m)}{\partial f} 		\\
+		\frac{\partial ss(m)}{\partial \phi} \nonumber	\\
+		\end{array} \right]
+\end{eqnarray}
+\end{center}
+
+\begin{center}
+\begin{eqnarray}
+	\label{eq:crlb3_alpha}
+		\left[ \begin{array}{ccc}
+		B_{11} & B_{12} & B_{13}  \\
+		B_{21} & B_{22} & B_{23}  \\
+		B_{31} & B_{32} & B_{33}  \\
+		\end{array} \right]
+\end{eqnarray}
+\end{center}
+
+\begin{center}
+\begin{eqnarray}
+	%\label{eq:crlb3_}
+	B_{11} = \sum \limits_{m=1}^N \frac{1}{\sigma_R^2}(\sin(\omega_c(m)+\phi))^2 \\
+	B_{22} = \sum \limits_{m=1}^N \frac{1}{\sigma_R^2}(2\pi \Delta m A \cos(\omega_c(m)+\phi))^2 \\
+	B_{11} = \sum \limits_{m=1}^N \frac{1}{\sigma_R^2}(A\cos(\omega_c(m)+\phi))^2 \\
+	B_{12} =  B_{21} = \sum \limits_{m=1}^N \frac{1}{\sigma_R^2}(2\pi \Delta m A\sin(\omega_c(m)+\phi)\cos(\omega_c(m)+\phi)) \\
+	B_{13} =  B_{31} = \sum \limits_{m=1}^N \frac{1}{\sigma_R^2}(2\pi \Delta m A\sin(\omega_c(m)+\phi)\cos(\omega_c(m)+\phi)) \\
+\end{eqnarray}
+\end{center}
