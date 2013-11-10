@@ -1,17 +1,18 @@
 clc; clear all;
 
-sigma = 0.001 ;
+sigma = 1 ;
 %Delta = 0.008 ;
 %Fd = 1/Delta ;
 Fd = 16.368e6 ;
 Delta = 1/Fd ;
 A = 1 ;
 phi = 0 ;
-N = 16 ;
-%N = 16368 ;
+%N = 16 ;
+N = 16368 ;
 i = 1:N ;
 %f = 0:0.1:125 ;
-f = 0:1e3:Fd ;
+%f = 0:1e3:Fd ;
+f = 4.092e6 ;
 
 SNR = 1/sigma^2 ;
 b22_parameter = zeros(length(f), 1) ;
@@ -29,4 +30,5 @@ for ff = 1:length(f)
     b22_parameter(ff) = B(2,2) ;
 end ;
 
-semilogy(sqrt(b22_parameter))
+%semilogy(sqrt(b22_parameter))
+fprintf('crlb: %f\n', b22_parameter) ;

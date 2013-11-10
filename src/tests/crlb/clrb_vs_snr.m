@@ -6,8 +6,8 @@ sigma = 1 ;
 Fd = 16.368e6 ;
 Delta = 1/Fd ;
 
-SNR_db = -25:1:25 ;
-SNR_range = 10.^(SNR_db ./ 10) ;
+SNR_dB = -30:1:30 ;
+SNR_range = 10.^(SNR_dB ./ 10) ;
 
 E = sqrt(SNR_range);
 phi = 0 ;
@@ -36,8 +36,14 @@ for ff = 1:length(E)
     b22_parameter(ff) = B(2,2) ;
 end ;
 
-plot(SNR_db, sqrt(b22_parameter))
-    phd_figure_style(gcf) ;
+load('../acf/freq_sko_ar.mat')
+%plot(SNR_db, sqrt(b22_parameter))
+%    phd_figure_style(gcf) ;
+
+figure(1)
+hold off, semilogy(SNR_dB, sqrt(b22_parameter), '-mx')
+hold on, semilogy(SNR_dB, freq1, '-go', SNR_dB, freq2, '-b*', SNR_dB, freq3, '-r+') ,
+    phd_figure_style(gcf) ;    
 
 
 rmpath('../tsim/model/');
