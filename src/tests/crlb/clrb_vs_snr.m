@@ -9,12 +9,25 @@ Delta = 1/Fd ;
 SNR_dB = -30:1:30 ;
 SNR_range = 10.^(SNR_dB ./ 10) ;
 
-E = sqrt(SNR_range);
-phi = 0 ;
-%N = 16 ;
+%%%%%%%%%%%%%%%%%%%%%%%%
+% ACF boost
 N = 16368 ;
+Fs = 4 ;    
+BT = N / Fs ;
+
+SNR3 = zeros(length(SNR_dB), 1) ;
+
+for kk=1:length(SNR_range)
+    SNR1 = 2 * BT * SNR_range(kk) / (2 + 1/SNR_range(kk) ) ;
+    SNR2 = 2 * BT * SNR1 / (2 + 1/SNR1 ) ;
+    SNR3(kk) = 2 * BT * SNR2 / (2 + 1/SNR2 ) ;
+end ;
+
+SNR3_dB = 10 * log10(SNR3) ;
+
+E = sqrt(SNR3);
+phi = 0 ;
 i = 1:N ;
-%f = 0:0.1:125 ;
 f = 4.092e6 ;
 
 SNR = 1/sigma^2 ;
