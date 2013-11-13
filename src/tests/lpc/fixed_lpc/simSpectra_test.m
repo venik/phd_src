@@ -4,7 +4,7 @@ clc, clear all ;
 addpath('../../tsim/model/');
 
 N = 1023*15 ;
-times = 10 ;
+times = 100 ;
 
 interference = 1 ; 
 
@@ -51,10 +51,10 @@ end % for k
 pll_base = repmat(18, length(SNR_db), 1) ;
 
 figure(1) ,
-    semilogy(SNR_db, marple_eq, SNR_db, real_delta, SNR_db, pll_base) ,
-    xlabel('ОСШ, дБ') ,
-    ylabel('F, Гц') ,
-    legend('ф. Марпла', 'Алгоритм', 'Уровень допустимой входной расстройки'),
+    semilogy(SNR_db, real_delta, SNR_db, pll_base) ,
+    xlabel('SNR, dB') ,
+    ylabel('F, Hz') ,
+    legend('Algorithm', 'Max frequency offset'),
     phd_figure_style(gcf) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -9,7 +9,7 @@ addpath(modelPath) ;
 % get default parameters
 init_rand(1) ;
 ifsmp = get_ifsmp() ;
-ifsmp.snr_db = -33 ;
+ifsmp.snr_db = -20 ;
 ifsmp.sats = [1,2] ;
 ifsmp.vars = [1.0 1.0] ;
 ifsmp.fs = [4670000 4100000 4093000  4092400] ;
@@ -23,36 +23,37 @@ y = x.*code(1+delays(1):length(x)+delays(1)) ;
 
 Y = fft(y) ; 
 YY = Y .* conj(Y) ;
-YYYY = YY .^ 4 ;
+%YYYY = YY .^ 4 ;
 rss1 = ifft(YY) ;
-rss2 = ifft(YY .^ 4) ;
-rss3 = ifft(YY .^ 8) ;
+rss2 = ifft(YY .^ 4) / 16368 ;
+rss3 = ifft(YY .^ 8) / 16368 ;
 
-subplot(3,1,1),
-    pwelch(x, 4096) ;
-ylabel('СПМ dB/rad/отсчет') ;
-xlabel('Нормализованная частота \pi/rad/отсчет') ;
-title('')
-legend('СПМ входного сигнала') ;
-phd_figure_style(gcf) ;
+rss3 = rss3 / max(rss3) ;
 
+%subplot(3,1,1),
+%    pwelch(x, 4096) ;
+%ylabel('СПМ dB/rad/отсчет') ;
+%xlabel('Нормализованная частота \pi/rad/отсчет') ;
+%title('')
+%legend('СПМ входного сигнала') ;
+%phd_figure_style(gcf) ;
 
-subplot(3,1,2),
-    pwelch(y, 4096) ;
-ylabel('СПМ dB/rad/отсчет') ;
-xlabel('Нормализованная частота \pi/rad/отсчет') ;
-title('')
-legend('СПМ сигнала после повторной модуляции ПСП') ;
-phd_figure_style(gcf) ;
+%subplot(3,1,2),
+%    pwelch(y, 4096) ;
+%ylabel('СПМ dB/rad/отсчет') ;
+%xlabel('Нормализованная частота \pi/rad/отсчет') ;
+%title('')
+%legend('СПМ сигнала после повторной модуляции ПСП') ;
+%phd_figure_style(gcf) ;
 
-subplot(3,1,3),
-    pwelch(rss3, 4096) ;
+%subplot(3,1,3),
+pwelch(rss3, 4096) ;
+%semilogy(log10(sp ./ max(sp)))
 %hold on, pwelch(rss2,4096) ;
-
-ylabel('СПМ dB/rad/отсчет') ;
+ylabel('dB') ;
 xlabel('Нормализованная частота \pi/rad/отсчет') ;
 title('')
-legend('СПМ сигнала на 3 итерации') ;
+%legend('СПМ сигнала на 3 итерации') ;
 phd_figure_style(gcf) ;
 
 

@@ -12,8 +12,9 @@ num_of_tests = 1000 ;
 
 % A = 1, E = 0.5
 % [0:0.05:30] => 1/20 * [0:1:600] => Fs = 20 Hz, N = 600
-A = 1 ; E = 0.5 ;
-sigma = 0.5 ;
+A = 1 ; E = A^2 / 2 ;
+SNR_dB = -30 ;
+sigma = E / (10 ^ (SNR_dB/10)) ;
 SNR = E / sigma ;
 N = 16368 ;
 Fs = 4 ;
@@ -30,7 +31,7 @@ est_SNR1 = 0 ;
 est_SNR2 = 0 ;
 est_SNR3 = 0 ;
 
-fprintf('Actual: %.4f  dB\n', 10*log10(SNR));
+fprintf('Actual: %.4f  dB\n', SNR_dB);
 
 for k=1:num_of_tests 
     x = s + sqrt(sigma)*(randn(size(s))) ;

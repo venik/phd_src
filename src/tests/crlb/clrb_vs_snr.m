@@ -56,6 +56,7 @@ load('../acf/freq_sko_ar.mat')
 figure(1)
 hold off, semilogy(SNR_dB, sqrt(b22_parameter), '-mx')
 hold on, semilogy(SNR_dB, freq1, '-go', SNR_dB, freq2, '-b*', SNR_dB, freq3, '-r+') ,
+    legend('CRLB', '1','2','3') ,
     phd_figure_style(gcf) ;    
 
 
