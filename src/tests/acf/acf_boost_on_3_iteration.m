@@ -21,7 +21,7 @@ for kk=1:length(SNR)
     SNR3(kk) = 2 * BT * SNR2 / (2 + 1/SNR2 ) ;
 end ;
 
-plot(SNR, SNR3, '-gx'),
+plot(SNR_dB, 10*log10(SNR3), '-gx'),
     xlabel('Base SNR'),
     ylabel('SNR after ACF boost') ,
     xlim([SNR(1) SNR(end)]),

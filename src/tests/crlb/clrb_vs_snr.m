@@ -25,7 +25,7 @@ end ;
 
 SNR3_dB = 10 * log10(SNR3) ;
 
-E = sqrt(SNR3);
+E = SNR3;
 phi = 0 ;
 i = 1:N ;
 f = 4.092e6 ;
@@ -34,7 +34,7 @@ SNR = 1/sigma^2 ;
 b22_parameter = zeros(length(E), 1) ;
 
 for ff = 1:length(E)
-    A = sqrt(E(ff)) ;
+    A = sqrt(2*E(ff)) ;
     
     phase = 2*pi*f*Delta.*i + phi ;
     B11 = sum(SNR .* (sin(phase)).^2) ;
@@ -49,12 +49,13 @@ for ff = 1:length(E)
     b22_parameter(ff) = B(2,2) ;
 end ;
 
-load('../acf/freq_sko_ar.mat')
+%load('../acf/freq_sko_ar.mat')
+load('../acf/freq_sko_ar_10000.mat')
 %plot(SNR_db, sqrt(b22_parameter))
 %    phd_figure_style(gcf) ;
 
 figure(1)
-hold off, semilogy(SNR_dB, sqrt(b22_parameter), '-mx')
+hold off, semilogy(SNR_dB, sqrt(b22_parameter) / 10000, '-mx')
 hold on, semilogy(SNR_dB, freq1, '-go', SNR_dB, freq2, '-b*', SNR_dB, freq3, '-r+') ,
     legend('CRLB', '1','2','3') ,
     phd_figure_style(gcf) ;    
