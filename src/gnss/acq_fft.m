@@ -52,9 +52,9 @@ for k = 1:length(FR)
 		fprintf('PRN:%d FR:%d \t acx=%d\t shift_ca=%05d\n', PRN, FR(k), result(k,1), result(k,2));
 		corr_sss = [ abs(ca(N-50:N)) abs(ca(1:51))];
 		
-		plot(ca), \
-			grid on, \
-			title(sprintf('PRN=%d, F_0=%d Hz',PRN,FR(k)), 'Fontsize', 18),  \
+		plot(ca), ...
+			grid on, ...
+			title(sprintf('PRN=%d, F_0=%d Hz',PRN,FR(k)), 'Fontsize', 18),  ...
 			xlim([0,16368]);
 			
 		%pause;

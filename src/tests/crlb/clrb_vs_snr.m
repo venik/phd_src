@@ -50,14 +50,19 @@ for ff = 1:length(E)
 end ;
 
 %load('../acf/freq_sko_ar.mat')
-load('../acf/freq_sko_ar_10000.mat')
+load('../acf/acf_ar_sko_300000.mat')
 %plot(SNR_db, sqrt(b22_parameter))
 %    phd_figure_style(gcf) ;
 
+%var_omega = 6 ./ (SNR3 .* N * (N^2-1)) ;
+var_omega = 12 ./ (SNR3 .* N * (N^2-1)) ;
+
 figure(1)
-hold off, semilogy(SNR_dB, sqrt(b22_parameter) / 10000, '-mx')
+hold off, semilogy(SNR_dB, sqrt(var_omega), '-mx')
 hold on, semilogy(SNR_dB, freq1, '-go', SNR_dB, freq2, '-b*', SNR_dB, freq3, '-r+') ,
     legend('CRLB', '1','2','3') ,
+    xlabel('dB') ,
+    ylabel('SKO, Hz') ,
     phd_figure_style(gcf) ;    
 
 
