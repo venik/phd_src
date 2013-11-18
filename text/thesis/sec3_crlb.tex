@@ -2,120 +2,72 @@
 
 В разделе \ref{s2:crlb} было рассмотрено неравенство Крамера-Рао для оценки нижней границы среднеквадратической ошибки
 при использовании любых оценок параметра.
-В данном разделе будет приведено данное неравенство в задаче оценки среднеквадратической ошибки оценки частоты
-гармонического сигнала. Приведенный вывод был взят из \cite{skon-clrb-report, rife-crlb-article}.
+В данном разделе будет приведено данное неравенство в задаче оценки частоты
+гармонического сигнала для получения границы максимально возможно точности. Приведенный вывод был взят из \cite{skon-clrb-report, rife-crlb-article}.
 
-Пусть сигнал представлен как
+Пусть действительный сигнал ${s(m)}$ представлен как
 \begin{center}
 \begin{equation}
 	\label{eq:crlb3_signal}
-	Y(m) = S(m) + W(m) ,
-	S(m) = A\cos(\omega_{c}m + \phi(m)),
-	W(m) = n(m)
+	s(t) = b_0 \cos(\omega_0 t + \theta_0),
+	X_m = s(t_n) + W(t_m),
+	Y_m = \check(s)(t_m) + \check(W)(t_m)
 \end{equation}
 \end{center}
-${A}$ - амплитуда, ${\omega_c}$ - частота несущей сигнала, ${\phi(m)}$ - фаза несущей сигнала, ${n(m)}$ - аддитивный белый гауссов шум
-с дисперсией ${\sigma_R^2}$, ${m}$ - индекс времени.
+${b_0}$ - амплитуда, ${\omega_0}$ - частота несущей сигнала, ${\theta_0}$ - фаза несущей сигнала, ${W(t_m)}$ - аддитивный белый гауссов шум
+с дисперсией ${\sigma_R^2}$, ${t_m = t_0 + mT}$ - индекс времени, ${1/T}$ - период дескритизации,
+${\check{s}(t) = b_0 \cos(\omega_0 t + \theta_0)}$, а ${\check{W}(t_m)}$ - преобразование Гильберта ${W(m)}$
 
-Так как ${W(m) = Y(m) - S(m)}$, функция плотности вероятности может быть записана как
+Тогда если записать ${{\bf Z} = {\bf X} + j {\bf Y}}$, совместная плотность вероятности будет равна 
 \begin{center}
 \begin{equation}
 	\label{eq:crlb3_gauss}
-	p({\bf Y}|{\bf S}) = \frac{1}{2\pi^{N/2}\sigma_R^N}
-		exp\left[ -\frac{1}{2} \sum \limits_{m=1}^N(Y(m) - S(m))^2 / \sigma_R^2 \right]
+	f({\bf Z}; {\bf \alpha}) = \left( \frac{1}{\sigma^2 2 \pi} \right) ^M
+		exp \left[ - \frac{1}{2 \sigma^2} \sum \limits_{m=0}^{M-1} (X_m - \mu_m)^2 (Y_m) - \nu_m \right]
 \end{equation}
 \end{center}
 
-Тогда информационную матрицу Фишера можно записать как
+для вектора неизвестных параметров ${\bf \alpha}$ при условии, что все параметры сигнала неизвестны
 \begin{center}
 \begin{equation}
-	\label{eq:crlb3_fisher_matrix}
-	E \left[ \left( \frac{d \ln L({\bf Y}|{\bf S})}{d {\bf \alpha}} \right)\right]
+	\label{eq:crlb3_alpha}
+	{\bf \alpha} = [\omega, b, \theta]^T,
+	\mu_m = b \cos (\omega t_m + \theta),
+	\nu_m = b \sin (\omega t_m + \theta)
 \end{equation}
 \end{center}
-где ${\ln L({\bf Y}|{\bf S})}$ - логарифм функции правдоподобия, а вектор ${{\bf \alpha}}$ определяется как
+
+Для получения границы Крамера-Рао для несмещенной оценки параметра нужно взять соответствующий диагональный элемент
+матрицы, обратной информационной матрице Фишера. Для ${f({\bf Z}; {\bf \alpha})}$ элемент матрицы будет равен
 \begin{center}
 \begin{eqnarray}
-	\label{eq:crlb3_alpha}
-		\alpha =
-		\left[ \begin{array}{c}
-		A \nonumber	\\
-		f 		\\
-		\phi		\\
-		\end{array} \right]
+	\label{eq:crlb3_jacobi_ij}
+	J_{ij} = \frac{1}{\sigma^2} \sum \limits_{m=0}^{M-1} 
+	\left[
+	\frac{\partial \mu_m}{\partial \alpha_i} \frac{\partial \mu_m}{\partial \alpha_j} \frac{\partial \mu_m}{\partial \alpha_i} \frac{\partial \mu_m}{\partial \alpha_j}
+	\right]
 \end{eqnarray}
 \end{center}
 
-Логарифм функции правдоподобия может быть получен из функции плотности вероятности \ref{eq:crlb3_gauss}. Без учета констант он равен:
+Для общего случая, когда все параметры сигнала неизвестны матрица ${J}$ может быть записана как
 \begin{center}
 \begin{eqnarray}
-	\label{eq:crlb3_likehood}
-	\ln L({\bf Y}|{\bf S}) = -\frac{1}{2} \sum \limits_{m=1}^{N}(Y(m) - S(m))^2 / \sigma_R^2
-\end{eqnarray}
-\end{center}
-
-Производная логарифма функции правдоподобия с учетом параметров гармонического сигнала ${\alpha}$:
-\begin{center}
-\begin{eqnarray}
-	\label{eq:crlb3_likehood_derivative}
-	\frac{d \ln L({\bf Y}|{\bf S})}{d {\bf \alpha}} = \sum \limits_{m=1}^{N}(Y(m) - S(m)) \frac{d S(m)}{d \alpha} \frac{1}{\sigma_R^2}
-\end{eqnarray}
-\end{center}
-
-После возведения в квадрат и взятия математического ожидания от \ref{eq:crlb3_likehood_derivative}:
-\begin{center}
-\begin{eqnarray}
-	%\label{eq:crlb3_}
-	E \left[ \left( \frac{d \ln L({\bf Y}|{\bf S})}{d {\bf \alpha}} \right)^2 \right]  =  \\
-	 = E \left[ \sum \limits_{m=1}^{N}\sum \limits_{k=1}^{N} \frac{(Y(m) - S(m))(Y(k) - S(k))}{\sigma_R^4} \frac{d S(m)}{d \alpha} \frac{d S(k)^T}{d \alpha} \right]
-\end{eqnarray}
-\end{center}
-
-Учитывая, что шум белый ${E \left[ (Y(m) - S(m))(Y(k) - S(k)) \right]=0}$ для всех значений, кроме ${i=k}$, где значение равно ${\sigma_R^2}$.
-Таким образом
-\begin{center}
-\begin{eqnarray}
-	%\label{eq:crlb3_}
-	E \left[  \frac{d \ln L({\bf Y}|{\bf S})}{d {\bf \alpha}} \right]^2 =
-	\sum \limits_{m=1}^{N} \frac{1}{\sigma_R^2} \frac{d S(m)}{d \alpha} \frac{d S(m)^T}{d \alpha}
-\end{eqnarray}
-\end{center}
-где
-\begin{center}
-\begin{eqnarray}
-	%\label{eq:crlb3_}
-		\frac{d S(m)}{d \alpha} = 
-		\left[ \begin{array}{c}
-		\frac{\partial S(m)}{\partial A} \nonumber	\\
-		\frac{\partial S(m)}{\partial f} 		\\
-		\frac{\partial S(m)}{\partial \phi} \nonumber - 	\\
-		\end{array} \right]
-\end{eqnarray}
-\end{center}
-Информационная матрица Фишера может быть записана как
-\begin{center}
-\begin{eqnarray}
-	\label{eq:crlb3_alpha}
+	\label{eq:crlb3_fisher}
+	J = \frac{1}{\sigma^2}
 		\left[ \begin{array}{ccc}
-		B_{11} & B_{12} & B_{13}  \\
-		B_{21} & B_{22} & B_{23}  \\
-		B_{31} & B_{32} & B_{33}  \\
+		b_0^2 T^2 (m_0 M +2 m_0 P + Q) & 0 & b_0 T (m_0 M+P) \\
+		0 & M & 0  \\
+		b_0 T (m_0 M+P) & 0 & b_0^2 M  \\
 		\end{array} \right]
 \end{eqnarray}
 \end{center}
-где
+где ${P=\sum \limits_{m=0}^{M-1}m = \frac{M(M-1)}{2}}$, а ${Q = \sum \limits_{m=0}^{M-1}m^2 = \frac{N(N-1)(2N-1)}{6}}$
+
+Таким образом граница Крамера-Рао для оценки частоты гармонического сигнала записывается неравенством \cite{skon-clrb-report, rife-crlb-article}:
 \begin{center}
 \begin{eqnarray}
-	%\label{eq:crlb3_}
-	B_{11} & = & \sum \limits_{m=1}^N \frac{1}{\sigma_R^2}(\sin(\omega_c(m)+\phi))^2 \\
-	B_{22} & = & \sum \limits_{m=1}^N \frac{1}{\sigma_R^2}(2\pi \Delta m A \cos(\omega_c(m)+\phi))^2 \\
-	B_{11} & = & \sum \limits_{m=1}^N \frac{1}{\sigma_R^2}(A\cos(\omega_c(m)+\phi))^2 \\
-	B_{12} & = & B_{21} = \sum \limits_{m=1}^N \frac{1}{\sigma_R^2}(2\pi \Delta m A\sin(\omega_c(m)+\phi)\cos(\omega_c(m)+\phi)) \\
-	B_{13} & = & B_{31} = \sum \limits_{m=1}^N \frac{1}{\sigma_R^2}(2\pi \Delta m A\sin(\omega_c(m)+\phi)\cos(\omega_c(m)+\phi)) \\
+	\label{eq:crlb3_omega}
+	D[\hat \omega] = \frac{12 \sigma^2}{b_0 T^2 M (M^2 - 1)}
 \end{eqnarray}
 \end{center}
 
-Матрица обратная матрице ${\bf B}$ содержит границы неравенств Крамера-Рао для каждого неизвестного элемента вектора ${\alpha}$. Например
-оценка частоты удовлетворяет неравенству ${E[\omega_c - \hat{\omega}_c] \ge \sqrt{B^{22}}}$.
-
-Используя данные оценки можно получить базу оценки, которую улучшить невозможно.
