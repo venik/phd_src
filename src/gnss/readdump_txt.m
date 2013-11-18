@@ -33,7 +33,7 @@ f = fopen(fname,'r+t') ;
 %for n=1:nDumpSize
 n = 1;
 
-while( n != nDumpSize)
+while( n ~= nDumpSize)
 
     if feof(f)
         fprintf('[readdump], Warning: End of file detected at sample %d\n',n) ;

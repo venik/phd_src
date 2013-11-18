@@ -38,16 +38,16 @@ if model
 	freq_deltas = [1, 1, 1, 1, 1];
 	ca_deltas = [1, 1, 1, 1, 1 ];
 	SNRs = [10, 10, 10, 10, 10];
-	x = signal_generate(	PRN_mod,	\  %PRN
-			freq_deltas,	\  % freq delta in Hz
-			ca_deltas,	\  % CA phase
-			SNRs,	\  % SNR
-			DumpSize,
+	x = signal_generate(	PRN_mod,	...  %PRN
+			freq_deltas,	...  % freq delta in Hz
+			ca_deltas,	...  % CA phase
+			SNRs,	...  % SNR
+			DumpSize, ...
 			debug_me);
 	fprintf('Generated\n');
 else
-	%x = readdump_txt('./data/flush.txt', DumpSize);	% create data vector
-	x = readdump_bin_2bsm('./data/flush.bin', DumpSize);
+	x = readdump_txt('../tests/dma_lpc/data/flush.txt', DumpSize);	% create data vector
+	%x = readdump_bin_2bsm('./data/flush.bin', DumpSize);
 	fprintf('Real\n');
 end
 % ========= generate =======================
@@ -59,11 +59,11 @@ sat_acx_val = zeros(length(PRN_range), 4) ;
 for k=PRN_range
 	sat_acx_val(k, :) = acq_fft(x, k, fs, debug_me);
 	%sat_acx_val(k, :) = acq_fft(x, k, 4.092e6, t);
-	fprintf('%02d: acx=%15.5f shift_ca=%05d freq:%4.1f \n', \
-		k,
-		sat_acx_val(k, 1),
-		sat_acx_val(k, 2),
-		sat_acx_val(k, 3)
+	fprintf('%02d: acx=%15.5f shift_ca=%05d freq:%4.1f \n', ...
+		k, ...
+		sat_acx_val(k, 1), ...
+		sat_acx_val(k, 2), ...
+		sat_acx_val(k, 3)  ...
 	);
 end
 
@@ -75,16 +75,16 @@ if length(PRN_range) > 1
 		title('Correlation with DFT', 'Fontsize', 18),
 		ylim([0 ,33]);
 	return;
-endif;
+end;
 
 return
 	
 % need proper phase estimation
-fr_fine = acq_fine_freq_estimation( x,			
-				PRN_range,		
-				sat_acx_val(PRN_range, 3),			% freq
-				sat_acx_val(PRN_range, 2),			% CA phase
-				0);						% trace me
+fr_fine = acq_fine_freq_estimation( x,	...		
+				PRN_range,	...	
+				sat_acx_val(PRN_range, 3), ...			% freq
+				sat_acx_val(PRN_range, 2), ...			% CA phase
+				0);                                     % trace me
 %x_lo = x(6:end);
 %acq_serial(x_lo, 1, sat_acx_val(1, 3), 1);
 
