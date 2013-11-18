@@ -6,9 +6,7 @@ modelPath = pwd() ;
 cd( curPath ) ;
 addpath(modelPath) ;
 
-%init_rand(1) ;
-
-num_of_tests = 30000 ;
+num_of_tests = 300000 ;
 
 fd= 16.368e6 ;		% 16.368 MHz
 fs = 4.092e6 ;
@@ -28,10 +26,11 @@ freq1 = zeros(length(SNR_dB), 1) ;
 freq2 = zeros(length(SNR_dB), 1) ;
 freq3 = zeros(length(SNR_dB), 1) ;
 
-matlabpool open 8 ;
+matlabpool open 11 ;
 
 parfor jj=1:length(SNR_dB)
     
+    init_rand(1) ;
     fprintf('Actual: %.4f  dB\n', SNR_dB(jj));
 
     for k=1:num_of_tests 
