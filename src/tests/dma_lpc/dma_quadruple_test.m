@@ -77,11 +77,10 @@ acx = sqrt(acx .* conj(acx));
 
 % [acx, ca_phase]
 [peak, pos] = max(acx) ;
-fprintf('E = %.2f\t pos=%d\n', peak, pos) ;
-fprintf('var=%.2f std %.2f\n', var(acx), std(acx)) ;
-
-plot(acx);
-return ;
+%fprintf('E = %.2f\t pos=%d\n', peak, pos) ;
+%fprintf('var=%.2f std %.2f\n', var(acx), std(acx)) ;
+%plot(acx);
+%return ;
 
 ca_dma = circshift(x_ca16(1:N), pos) ;
 sig_after_dma = sig(1:N) .* ca_dma ;
@@ -100,7 +99,7 @@ X2(4, :) = X2(3, :).*X2(3, :)/length(X) ;
 % AR model
 freq = zeros(length(X2(:,1)), 1) ;
 
-hold off, plot(repmat(fs + freq_delta(1), 1, length(freq))) ;
+%hold off, plot(repmat(fs + freq_delta(1), 1, length(freq))) ;
 
 for k=1:length(freq)
     rxx = ifft(X2(k, :)) ;
