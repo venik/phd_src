@@ -20,6 +20,7 @@ ifsmp.sigLengthMsec = 12 ;
 [~, x ,sats, delays, signoise] = get_gps_if_signal( ifsmp ) ;
 code = get_gps_ca_code(ifsmp.sats(1),ifsmp.fd,length(x)+delays(1)) ;
 y = x.*code(1+delays(1):length(x)+delays(1)) ;
+%y = 40 * randn(length(x), 1) ;
 
 Y = fft(y) ; 
 YY = Y .* conj(Y) ;
