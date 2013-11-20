@@ -5,7 +5,7 @@ path_model = '../tsim/model/' ;
 addpath(path_gnss);
 addpath(path_model);
 
-data_model = 1 ;
+data_model = 0 ;
 ms = 3 ;
 N = 16368 ;
 rays = 3 ;
@@ -77,20 +77,20 @@ sig_cos = real(sig .* ca_dma(1:length(sig))) ;
 %plot(sig_after_dma(1:100))
 sig_after_dma = sig_cos(1:3*N) ;
 
-[b,a]=butter(2, [0.4994, 0.5006]); sig_after_dma = filter(b, a, sig_after_dma) ;
+% [b,a]=butter(2, [0.4994, 0.5006]); sig_after_dma = filter(b, a, sig_after_dma) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Make me quadruple
-acf_iteration = 3 ;
+acf_iteration = 10 ;
 X = fft(sig_after_dma) ;
 XX(1, :) = X.*conj(X) ;
 rxx = ifft(XX .^ acf_iteration) ;
 rxx = rxx ./ max(rxx) ;
 
-X = fft(rxx) ;
-XX(1, :) = X.*conj(X) ;
-rxx = ifft(XX .^ acf_iteration) ;
-rxx = rxx ./ max(rxx) ;
+%X = fft(rxx) ;
+%XX(1, :) = X.*conj(X) ;
+%rxx = ifft(XX .^ acf_iteration) ;
+%rxx = rxx ./ max(rxx) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % AR model
