@@ -15,15 +15,18 @@ if data_model == 1
     ifsmp.vars = [1, 1, 1] ;
     ifsmp.fs = [4.092e6, 4.095e6, 4.090e6] ;
     ifsmp.fd = 16.368e6 ;
-    ifsmp.delays = [5000, 300, 100] ;
-    ifsmp.snr_db = -10 ;
+    ifsmp.delays = [2506, 300, 100] ;
+    ifsmp.snr_db = 30 ;
     
     [x, sig, sats, delays, signoise] = get_if_signal(ifsmp, ms) ;
+    fprintf('Model\n');
 else
     ifsmp.sats = 31 ;
     ifsmp.fd = 16.368e6 ;
     
-    sig = readdump_txt('./data/flush.txt', ms*N);	% create data vector
+    %sig = readdump_txt('./data/flush.txt', ms*N);	% create data vector
+    %save('./data/flush.txt.mat', 'sig') ;
+    load('./data/flush.txt.mat') ;
 	fprintf('Real\n');
 end ; % if model
 
@@ -66,31 +69,26 @@ fprintf('E = %.2f\t pos=%d\n', peak, pos) ;
 %fprintf('var=%.2f std %.2f\n', var(acx), std(acx)) ;
 %plot(acx); return ;
 
-ca_dma = circshift(x_ca16(1:N), 2506) ;
-%ca_dma = circshift(x_ca16(1:N), pos) ;
-sig_after_dma = real(sig(1:N) .* ca_dma) ;
+ca_dma = circshift(x_ca16, 2506) ;
+%ca_dma = circshift(x_ca16, pos) ;
+sig_cos = real(sig .* ca_dma(1:length(sig))) ;
 %plot(sig_after_dma(1:100))
+sig_after_dma = sig_cos(1:10*N) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Make me quadruple
 X = fft(sig_after_dma) ;
-%X2 = zeros(4, length(X)) ;
-X2(1, :) = X.*conj(X)/length(X) ;
-X2(2, :) = X2(1, :).*X2(1, :)/length(X) ;
-X2(3, :) = X2(2, :).*X2(2, :)/length(X) ;
-X2(4, :) = X2(3, :).*X2(3, :)/length(X) ;
-X2(5, :) = X2(4, :).*X2(3, :)/length(X) ;
-X2(6, :) = X2(5, :).*X2(3, :)/length(X) ;
-
+XX(1, :) = X.*conj(X) ;
+rxx = ifft(XX .^ 35) ;
+rxx = rxx ./ max(rxx) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % AR model
-rxx = ifft(X2(4, :)) ;
 b = ar_model([rxx(1); rxx(2); rxx(3)]) ;
 [poles, omega0, Hjw0] = get_ar_pole(b) ;
 freq = omega0*ifsmp.fd/2/pi 
 
-pwelch(ifft(X2(6, :)), 4092) ;
+pwelch(rxx, 4092) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % END
