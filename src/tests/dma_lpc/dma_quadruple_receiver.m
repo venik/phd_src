@@ -68,7 +68,7 @@ fprintf('E = %.2f\t pos=%d\n', peak, pos) ;
 
 ca_dma = circshift(x_ca16(1:N), 2506) ;
 %ca_dma = circshift(x_ca16(1:N), pos) ;
-sig_after_dma = sig(1:N) .* ca_dma ;
+sig_after_dma = real(sig(1:N) .* ca_dma) ;
 %plot(sig_after_dma(1:100))
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
