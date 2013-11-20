@@ -24,9 +24,10 @@ else
     ifsmp.sats = 31 ;
     ifsmp.fd = 16.368e6 ;
     
-    %sig = readdump_txt('./data/flush.txt', ms*N);	% create data vector
-    %save('./data/flush.txt.mat', 'sig') ;
+    %sig_from_file = readdump_txt('./data/flush.txt', ms*N);	% create data vector
+    %save('./data/flush.txt.mat', 'sig_from_file') ;
     load('./data/flush.txt.mat') ;
+    sig = sig_from_file(1:ms*N) ;
 	fprintf('Real\n');
 end ; % if model
 
@@ -73,13 +74,13 @@ ca_dma = circshift(x_ca16, 2506) ;
 %ca_dma = circshift(x_ca16, pos) ;
 sig_cos = real(sig .* ca_dma(1:length(sig))) ;
 %plot(sig_after_dma(1:100))
-sig_after_dma = sig_cos(1:10*N) ;
+sig_after_dma = sig_cos(1:end) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Make me quadruple
 X = fft(sig_after_dma) ;
 XX(1, :) = X.*conj(X) ;
-rxx = ifft(XX .^ 35) ;
+rxx = ifft(XX .^ 25) ;
 rxx = rxx ./ max(rxx) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
