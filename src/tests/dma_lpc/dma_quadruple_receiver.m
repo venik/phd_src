@@ -5,20 +5,21 @@ path_model = '../tsim/model/' ;
 addpath(path_gnss);
 addpath(path_model);
 
-data_model = 0 ;
+data_model = 1 ;
 ms = 3 ;
 N = 16368 ;
+rays = 3 ;
 
 % get the data
 if data_model == 1
     ifsmp.sats = [31, 2, 3] ;
     ifsmp.vars = [1, 1, 1] ;
-    ifsmp.fs = [4.092e6, 4.095e6, 4.090e6] ;
+    ifsmp.fs = [4.0923e6, 4.095e6, 4.090e6] ;
     ifsmp.fd = 16.368e6 ;
     ifsmp.delays = [2506, 300, 100] ;
-    ifsmp.snr_db = 30 ;
+    ifsmp.snr_db = -25 ;
     
-    [x, sig, sats, delays, signoise] = get_if_signal(ifsmp, ms) ;
+    [x, sig, sats, delays, signoise] = get_if_signal(ifsmp, ms, rays) ;
     fprintf('Model\n');
 else
     ifsmp.sats = 31 ;
@@ -74,11 +75,13 @@ ca_dma = circshift(x_ca16, 2506) ;
 %ca_dma = circshift(x_ca16, pos) ;
 sig_cos = real(sig .* ca_dma(1:length(sig))) ;
 %plot(sig_after_dma(1:100))
-sig_after_dma = sig_cos(1:end) ;
+sig_after_dma = sig_cos(1:3*N) ;
+
+[b,a]=butter(2, [0.4994, 0.5006]); sig_after_dma = filter(b, a, sig_after_dma) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Make me quadruple
-acf_iteration = 10 ;
+acf_iteration = 3 ;
 X = fft(sig_after_dma) ;
 XX(1, :) = X.*conj(X) ;
 rxx = ifft(XX .^ acf_iteration) ;
