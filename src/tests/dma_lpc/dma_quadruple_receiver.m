@@ -78,8 +78,13 @@ sig_after_dma = sig_cos(1:end) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Make me quadruple
-acf_iteration = 30 ;
+acf_iteration = 10 ;
 X = fft(sig_after_dma) ;
+XX(1, :) = X.*conj(X) ;
+rxx = ifft(XX .^ acf_iteration) ;
+rxx = rxx ./ max(rxx) ;
+
+X = fft(rxx) ;
 XX(1, :) = X.*conj(X) ;
 rxx = ifft(XX .^ acf_iteration) ;
 rxx = rxx ./ max(rxx) ;
