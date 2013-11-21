@@ -17,7 +17,7 @@ if data_model == 1
     ifsmp.fs = [4.0923e6, 4.095e6, 4.090e6] ;
     ifsmp.fd = 16.368e6 ;
     ifsmp.delays = [2506, 300, 100] ;
-    ifsmp.snr_db = -25 ;
+    ifsmp.snr_db = -20 ;
     
     [x, sig, sats, delays, signoise] = get_if_signal(ifsmp, ms, rays) ;
     fprintf('Model\n');
@@ -74,10 +74,17 @@ fprintf('E = %.2f\t pos=%d\n', peak, pos) ;
 ca_dma = circshift(x_ca16, 2506) ;
 %ca_dma = circshift(x_ca16, pos) ;
 sig_cos = real(sig .* ca_dma(1:length(sig))) ;
+%sig_cos = real(sig) ;
 %plot(sig_after_dma(1:100))
 sig_after_dma = sig_cos(1:3*N) ;
 
-% [b,a]=butter(2, [0.4994, 0.5006]); sig_after_dma = filter(b, a, sig_after_dma) ;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Filter incomig signal
+doppler_delta = 25e3 ;
+left_side = (4.092e6 - doppler_delta) / (ifsmp.fd/2) ;
+right_side = (4.092e6 + doppler_delta) / (ifsmp.fd/2) ;
+[b,a]=butter(2, [left_side, right_side]);
+%sig_after_dma = filter(b, a, sig_after_dma) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Make me quadruple
@@ -98,10 +105,12 @@ b = ar_model([rxx(1); rxx(2); rxx(3)]) ;
 [poles, omega0, Hjw0] = get_ar_pole(b) ;
 freq = omega0*ifsmp.fd/2/pi 
 
-%pwelch(rxx, 4092) ;
-semilogy(abs(fft(rxx(1:N))))
-    title(sprintf('ms: %d, ACF iteration: %d estimated freq: %.0f \n', ...
-        length(sig_after_dma) / N, acf_iteration, freq)) ;
+pwelch(sig_after_dma, 3*N), phd_figure_style(gcf) ;
+
+%semilogy(abs(fft(rxx(1:N))))
+%    title(sprintf('ms: %d, ACF iteration: %d estimated freq: %.0f \n', ...
+%        length(sig_after_dma) / N, acf_iteration, freq)) ;
+    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % END
 rmpath(path_gnss);
