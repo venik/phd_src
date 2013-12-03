@@ -1,7 +1,7 @@
 % x - received signal x(n) = cos(w*(n+d))*CA(n+d)
 % ca - ca code
 % E - pole's energy
-function [omega, ca_shift, E, Hjw_max] = lpcs(x,ca,signoise)
+function [omega, ca_shift, E, Hjw_max] = lpcs(x, ca, signoise)
 x = x(:) ;
 ca = ca(:) ;
 Dx = x'*x/(length(x)-1) ;

@@ -3,7 +3,7 @@ clc, clear all ;
 %addpath('../../../gnss/');
 addpath('../../tsim/model/');
 
-N = 1023*15 ;
+N = 1023 ;
 times = 10 ;
 SNR_dB = [10:1:40] ;
 %SNR_dB = 40 ;
