@@ -10,10 +10,10 @@ load prob1e6 ;
 
 figure(1) ,
     semilogy(SNR_dB, freq1_match, '-go', SNR_dB, freq2_match, '-b*', SNR_dB, freq3_match, '-r+') ,
-    title('Probability') ,
-    legend('1', '2', '3') ;
-    xlabel('SNR, dB') ;
-    ylabel('P(f\in[f_0-18Hz...f_0+18Hz])') ;
+    title('') ,
+    legend('1 итерация', '2 итерации', '3 итерации') ;
+    xlabel('ОСШ, дБ') ;
+    ylabel('P(f\in[f_0-18 Гц...f_0+18 Гц])') ;
     phd_figure_style(gcf) ;
 
 

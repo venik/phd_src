@@ -1,7 +1,7 @@
 function [y,sats, delays] = if_signal_model()
 N = 1023 ; % chips
 max_delay = 20 ; % chips
-sats = [1] ;
+sats = 1:2 ;
 fs = [3800,4200,4300,4500] ;
 fd = 16368 ;
 delays = [100,150,200,60] ;

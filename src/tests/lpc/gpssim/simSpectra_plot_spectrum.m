@@ -15,8 +15,8 @@ x = y.*code ;
 [X,omega] = pwelch(x,1024) ;
 [Y] = pwelch(y,1024) ;
 
-hold off, semilogy(omega,X.*conj(X), 'LineWidth',2);
-    hold on,semilogy(omega(1:numel(Hjw)),Hjw.*conj(Hjw),'r-','LineWidth',2), grid on
+hold off, semilogy(omega,X.*conj(X), 'LineWidth',5);
+    hold on,semilogy(omega(1:numel(Hjw)),Hjw.*conj(Hjw),'r-','LineWidth',2),
     xlabel('Частота, рад/с','FontSize',14) ;
     legend('Спектр сигнала', 'АР оценка спектра сигнала'),
     xlim([omega(1), omega(end)])

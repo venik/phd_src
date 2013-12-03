@@ -9,7 +9,7 @@ addpath(modelPath) ;
 % get default parameters
 init_rand(1) ;
 ifsmp = get_ifsmp() ;
-ifsmp.snr_db = -20 ;
+ifsmp.snr_db = 10 ;
 ifsmp.sats = [1,2] ;
 ifsmp.vars = [1.0 1.0] ;
 ifsmp.fs = [4670000 4100000 4093000  4092400] ;
@@ -48,10 +48,10 @@ rss3 = rss3 / max(rss3) ;
 %phd_figure_style(gcf) ;
 
 %subplot(3,1,3),
-pwelch(rss3, 4096) ;
+pwelch(y, 4096) ;
 %semilogy(log10(sp ./ max(sp)))
 %hold on, pwelch(rss2,4096) ;
-ylabel('dB') ;
+ylabel('дБ') ;
 xlabel('Нормализованная частота \pi/rad/отсчет') ;
 title('')
 %legend('СПМ сигнала на 3 итерации') ;
