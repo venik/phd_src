@@ -8,7 +8,7 @@ addpath(modelPath) ;
 
 N = 1024 ;
 phase0 = 2*pi*(0:N-1) ;
-x = cos(phase0(:)*4092300/16368000) ;
+x = cos(phase0(:)*4092333/16368000) ;
 x = x.*hann(N,'periodic') ;
 
 lin_rxx = zeros(N,1) ;

@@ -15,7 +15,7 @@ R = 1000 ;
 for r=1:R
     clc ;
 
-    freq0 = 4092000-100+randi(200) ;
+    freq0 = 4092000-100+randi(300) ;
 
     x = cos(phase0(:)*freq0/16368000) ;
 
@@ -38,21 +38,21 @@ for r=1:R
     [hann_pole, hann_omega0, hann_Hjw0] = get_ar_pole(hann_c) ;
     [blackman_pole, blackman_omega0, blackman_Hjw0] = get_ar_pole(blackman_c) ;
 
-    disp('Rect/Hamming/Hann/Blackman/') ;
+    fprintf('\t\tRect/\t\tHamming/\tHann/\t\tBlackman/\n') ;
     freq1 = [round(omega0/2/pi*16368000), round(hamming_omega0/2/pi*16368000), ...
         round(hann_omega0/2/pi*16368000), round(blackman_omega0/2/pi*16368000)] ;
-    fprintf('%10d/',repmat(freq0,1,4)) ;
+    fprintf('\t%10d/',repmat(freq0,1,4)) ;
     fprintf('\n');
-    fprintf('%10d/',freq1) ;
+    fprintf('\t%10d/',freq1) ;
     fprintf('\n');
-    fprintf('%10d/',freq1-freq0) ;
+    fprintf('\t%10d/',freq1-freq0) ;
     fprintf('\n');
     
     mse = mse + (freq1-freq0).^2 ;
 end
 
 fprintf('Mean square error:\n') ;
-fprintf('%10.2f/', mse/R) ;
+fprintf('\t%10.2f/', mse/R) ;
     fprintf('\n');
 
 % remove model path
