@@ -31,15 +31,15 @@ for jj=1:length(SNR_dB)
     
     ifsmp = get_ifsmp() ;
     ifsmp.snr_db = SNR_dB(jj) ;
-    ifsmp.sats = [1] ;
+    ifsmp.sats = [1 2 3 4] ;
     ifsmp.sigLengthMsec = 1 ;
 
     for k=1:num_of_tests
 
         fs = f_int + randi(f_doppler) ;
         
-        ifsmp.vars = [E E E] ;            % FIXME - can't be the same
-        ifsmp.fs = [fs, f_int + randi(2 * f_doppler), f_int + randi(2 * f_doppler)] ;
+        ifsmp.vars = [E E E E] ;            % FIXME - can't be the same
+        ifsmp.fs = [fs, f_int + randi(2 * f_doppler), f_int + randi(2 * f_doppler), f_int + randi(2 * f_doppler)] ;
         ifsmp.fd = 16.368e6 ;
         ifsmp.delays = [100, 150, 230, 10] ;
     
@@ -47,7 +47,7 @@ for jj=1:length(SNR_dB)
         code = get_gps_ca_code(ifsmp.sats(1), ifsmp.fd, length(y) + delays(1)) ;
         x = y.*code(1+delays(1):length(y)+delays(1)) ;
         
-        x = x(1:ceil(N/2)) ;
+        %x = x(1:ceil(N)) ;
         
         %%%%%%%%%%%%%%%%%%%
         % signal + noise
@@ -55,6 +55,7 @@ for jj=1:length(SNR_dB)
         x_blackman = x.*blackman(length(x)) ;
         x_hann = x.*hann(length(x), 'periodic') ;
 
+        % interpolation
         fourier_length = 4*N ;
         
         X = fft(x, fourier_length) ;
@@ -107,10 +108,11 @@ for jj=1:length(SNR_dB)
 
         %%%%%%%%%%%%
         % 3 
-        c = ar_model(ifft(XX .^ 8) / N) ;
-        hamming_c = ar_model(ifft(XX_hamming .^ 8)/N) ;
-        blackman_c = ar_model(ifft(XX_blackman .^ 8)/N) ;
-        hann_c = ar_model(ifft(XX_hann .^ 8) / N) ;
+        power_3 = 8 ;
+        c = ar_model(ifft(XX .^ power_3) / N) ;
+        hamming_c = ar_model(ifft(XX_hamming .^ power_3)/N) ;
+        blackman_c = ar_model(ifft(XX_blackman .^ power_3)/N) ;
+        hann_c = ar_model(ifft(XX_hann .^ power_3) / N) ;
 
         [pole, omega0, Hjw0] = get_ar_pole(c) ;
         freq3(jj, 1) = freq3(jj, 1) + round((omega0*ifsmp.fd/2/pi - fs))^2 ;
@@ -135,7 +137,7 @@ for jj=1:length(SNR_dB)
 %SNR_dB_acf = SNR_dB ;
 %save('freq_sko_ar_win', 'freq1', 'freq2', 'freq3', 'SNR_dB_acf')
 
-freq_plot = freq1 ;
+freq_plot = freq3 ;
 
 % figure(1) ,
 %     subplot(3, 1, 1), semilogy(SNR_dB, freq_plot(:,1), '-go', SNR_dB, freq_plot(:,2), '-b*', ...
@@ -157,8 +159,8 @@ freq_plot = freq1 ;
 %         phd_figure_style(gcf) ;          
 
     semilogy(SNR_dB, pll_line, '-m*', ...
-            SNR_dB, freq3(:,1), '-go', SNR_dB, freq3(:,2), '-b*', ...
-            SNR_dB, freq3(:,3), '-r+', SNR_dB, freq3(:,4), '-y+') ;        
+            SNR_dB, freq_plot(:,1), '-go', SNR_dB, freq_plot(:,2), '-b*', ...
+            SNR_dB, freq_plot(:,3), '-r+', SNR_dB, freq_plot(:,4), '-y+') ;        
         title('SKO') ,
         legend('Rect', 'Hamming', 'Blackman', 'Hann') ;
         phd_figure_style(gcf) ;
