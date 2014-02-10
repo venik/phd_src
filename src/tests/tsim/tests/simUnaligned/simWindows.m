@@ -15,13 +15,15 @@ R = 1000 ;
 for r=1:R
     clc ;
 
-    freq0 = 4092000-100+randi(300) ;
+    freq0 = 4087000 + randi(10000) ;
 
-    x = cos(phase0(:)*freq0/16368000) ;
+    sig = cos(phase0(:)*freq0/16368000) + 0*randn(length(phase0), 1) ;
 
-    x_hamming = x.*hamming(N) ;
-    x_blackman = x.*blackman(N) ;
-    x_hann = x.*hann(N,'periodic') ;
+    x = sig(1:ceil(length(sig)/10)) ;
+    
+    x_hamming = x.*hamming(length(x)) ;
+    x_blackman = x.*blackman(length(x)) ;
+    x_hann = x.*hann(length(x), 'periodic') ;
 
     X = fft(x) ;
     X_hamming = fft(x_hamming) ;
