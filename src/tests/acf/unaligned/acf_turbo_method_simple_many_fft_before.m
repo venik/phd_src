@@ -51,9 +51,11 @@ for jj=1:length(SNR_dB)
         fft_array_size = floor(N/fft_iter) ;
         fft_array = 0; %zeros(fft_array_size, 1) ;
         
+        fourier_length = N ;        
+
         for ii=0:fft_iter-1
             xx = x(ii*fft_array_size + 1 : (ii+1)*fft_array_size) ;
-            XX = fft( xx .* blackman(length(xx)), N) ;
+            XX = fft( xx .* blackman(length(xx)), fourier_length) ;
             XX2 = XX.*conj(XX) ;
             fft_array = fft_array + ifft(XX2) ;
             %fft_array(:, ii) = fft
@@ -62,7 +64,6 @@ for jj=1:length(SNR_dB)
         % normalization
         fft_array = fft_array / fft_array(1) ;
 
-        fourier_length = N ;        
         X = fft(fft_array, fourier_length) ;
         
         x_blackman = x.*blackman(length(x)) ;        
