@@ -1,0 +1,48 @@
+%\documentclass[a4paper,12pt]{eskdtext} %размер бумаги устанавливаем А4, шрифт 12пунктов
+\documentclass[a4paper,12pt]{scrartcl} %размер бумаги устанавливаем А4, шрифт 12пунктов
+%\documentclass[14pt,a4paper,twoside]{report}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc} %включаем свою кодировку: koi8-r или utf8 в UNIX, cp1251 в Windows
+\usepackage[english,russian]{babel} %используем русский и английский языки с переносами
+\usepackage{amssymb,amsfonts,amsmath,mathtext,cite,enumerate,float} %подключаем нужные пакеты расширений
+\usepackage[dvips]{graphicx} %хотим вставлять в диплом рисунки?
+%\usepackage{soul}
+\usepackage[12pt]{extsizes}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage{enumerate}
+
+\usepackage[format=plain,labelformat=simple,labelsep=endash,figurename=\CYRR\cyri\cyrs\cyru\cyrn\cyro\cyrk]{caption}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\paragraph{Интерференция в алгоритме Delay and Multiply Approach.}
+
+Обозначим сигнал как ${s(t)=A C(t) \exp^{j \omega t}}$, тогда смесь двух сигналов и АБГШ может быть записана как (фаза для простоты не рассматривается):
+\begin{equation}
+	x(t) = A_1 C_1(t) \exp^{j \omega_1 t} + A_2 C_2(t) \exp^{j \omega_2 t} + n(t)
+\end{equation}
+
+Алгоритм Delay and Multiply Approach (DMA) представляет собой произведение смеси и задерженной на ${\tau}$ копии смеси. Обозначим за ${C(t)}$ - псевдо-случайную
+последовательность (ПСП). Примем во внимание свойство ПСП, что произведение двух ПСП при смещении кратном длинне чипа (${\tau = kl}$), где ${k}$ - целое число,
+а ${l}$ - длина чипа (при учете апсемплинга она больше 1) представляет собой новую ПСП, с такими же корреляционными свойствами.
+
+Учитывая вышесказанное, можно записать:
+\begin{eqnarray}
+	x(t)x(t-\tau)^* & = & 	\left( A_1 C_1(t) \exp^{j \omega_1 t} + A_2 C_2(t) \exp^{j \omega_2 t} + n(t) \right) \\
+		        &   &	\left( A_1 C_1(t) \exp^{-j \omega_1 (t-\tau)} + A_2 C_2(t) \exp^{-j \omega_2 (t-\tau)} + n(t-\tau) \right)  =  \nonumber  \\
+	 A_1^2 C_{11}(t)\exp^{j \omega_1 \tau} & + & A_1 A_2 C_1(t)C_2(t-\tau) \exp^{j(\omega_1 t - \omega_2 t + \omega_2 \tau)} + A_1 C_1(t)\exp^{j \omega_1 t} n(t-\tau) + \nonumber \\
+	 A_2^2 C_{22}(t)\exp^{j \omega_2 \tau} & + & A_1 A_2 C_1(t-\tau)C_2(t) \exp^{j(\omega_2 t - \omega_1 t + \omega_1 \tau)} + A_2 C_2(t) \exp^{j \omega_2 t}n(t-\tau) + \nonumber \\
+			& + & n(t) A_1 C_1(t-\tau)\exp^{-j \omega_1 (t-\tau)} + n(t) A_2 C_2(t-\tau)\exp^{-j \omega_2 (t-\tau)} + n(t)n(t-\tau) \nonumber
+\end{eqnarray}
+
+Термы ${A_1^2 C_{11}(t)\exp^{j \omega_1 \tau}}$ и ${A_2^2 C_{22}(t)\exp^{j \omega_2 \tau}}$ являются константам, фактически состоящими из ПСП, умноженного на константу.
+
+Термы ${A_1 A_2 C_1(t)C_2(t) \exp^{j(\omega_2 t - \omega_1 t + \omega_1 \tau)}}$ и ${A_1 A_2 C_1(t)C_2(t) \exp^{j(\omega_1 t - \omega_2 t + \omega_2 \tau)}}$ являются
+колебаниями, но их частота существенно ниже частот в области неопределенности, а значит они могут быть отфильтрованы. Следует отметить, что начальная фаза ПСП неизвестна
+и свойства полученной ПСП ${C_1(t)C_2(t-\tau)}$ сильно зависят от ${\tau}$, если ${\tau}$ сдвинута на полчипа, новый код перестает быть последовательностью максимальной длинны,
+а значит обладает плохими корреляционными свойствами относительно других ПСП, по которым может производиться перебор.
+
+\end{document}
