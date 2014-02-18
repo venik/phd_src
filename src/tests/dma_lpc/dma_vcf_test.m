@@ -37,14 +37,16 @@ x = s1 + s2 +  noise ;
 
 xx = x(1:N) .* conj(x(tau : tau + N - 1)) ;
 s1s2 = s1(1:N) .* conj(s2(tau : tau + N - 1)) ;
+s2s1 = s2(1:N) .* conj(s1(tau : tau + N - 1)) ;
 s1s1 = s1(1:N) .* conj(s1(tau : tau + N - 1)) ;
 s2s2 = s2(1:N) .* conj(s2(tau : tau + N - 1)) ;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-subplot(3,1,1), plot(1023, 1:1200, N-1023, 1:1200, 1:N, abs(fft(s1s2)), '-r'), title('s1s2') ,
-subplot(3,1,2), plot(1023, 1:2200, N-1023, 1:2200, 1:N, abs(fft(xx)), '-g'), title('xx') ,
-subplot(3,1,3), plot(1023, 1:1200, N-1023, 1:1200, 1:N, abs(fft(s1s1)), '-g'), title('s1s1') ,
+subplot(3,1,1), plot(1023, 1:2200, N-1023, 1:2200, 1:N, abs(fft(xx)), '-g'), title('xx') ,
+subplot(3,1,2), plot(1023, 1:2200, N-1023, 1:2200, 1:N, abs(fft(xx .* c1(1:N))), '-r'), title('xx') ,
+%subplot(3,1,2), plot(1023, 1:1200, N-1023, 1:1200, 1:N, abs(fft(s1s2)), '-r'), title('s1s2') ,
+subplot(3,1,3), plot(1023, 1:1200, N-1023, 1:1200, 1:N, abs(fft(s1s1)), '-c'), title('s1s1') ,
 
 % remove model path
 rmpath(modelPath) ;
