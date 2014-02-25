@@ -13,7 +13,7 @@ f1 = 4.092e6;
 f2 = 4.095e6;
 a1 = 1 ;
 a2 = 1 ;
-sigma = 0.01 ;
+sigma = 10 ;
 tau_s2 = 24 ;
 tau = 64 ;
 
@@ -45,9 +45,16 @@ interf_noise = xx - s1s1 ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-hist(real(interf_noise), 100) ;
+subplot(2,1,1), hist(real(interf_noise), 100),
+    xlim([-100,100]),
+    title(sprintf('tau_s2 = %d', tau_s2)) ;
 
-title(sprintf('tau_s2 = %d', tau_s2)) ;
+% noise model
+n = sqrt(sigma) * randn(10000, 1);
+nn = n(1:end-1) .* n(2:end);
+subplot(2,1,2), hist(nn, 100),
+    xlim([-100,100]),
+    title(sprintf('just noise')) ;
 
 % remove model path
 rmpath(modelPath) ;
