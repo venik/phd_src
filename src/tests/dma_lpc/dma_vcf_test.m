@@ -41,12 +41,35 @@ s2s1 = s2(1:N) .* conj(s1(tau : tau + N - 1)) ;
 s1s1 = s1(1:N) .* conj(s1(tau : tau + N - 1)) ;
 s2s2 = s2(1:N) .* conj(s2(tau : tau + N - 1)) ;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-subplot(3,1,1), plot(1023, 1:2200, N-1023, 1:2200, 1:N, abs(fft(xx)), '-g'), title('xx') ,
-subplot(3,1,2), plot(1023, 1:2200, N-1023, 1:2200, 1:N, abs(fft(xx .* c1(1:N))), '-r'), title('xx') ,
-%subplot(3,1,2), plot(1023, 1:1200, N-1023, 1:1200, 1:N, abs(fft(s1s2)), '-r'), title('s1s2') ,
-subplot(3,1,3), plot(1023, 1:1200, N-1023, 1:1200, 1:N, abs(fft(s1s1)), '-c'), title('s1s1') ,
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+colormap(gray),
+subplot(3,1,1), hold on, plot(1:N, abs(fft(xx)), 'k'), title('1', 'FontSize', 18) ,
+    plot(1023, 1:100:2200, '--kx', N-1023, 1:100:2200, '--kx') ,
+    xlim([1 16368]),
+    h_legend = legend('1.1', '1.2');
+    set(h_legend, 'FontSize', 18),
+    grid on,
+    hold off,
+
+
+%subplot(3,1,2), hold on, plot(1:N, abs(fft(xx .* c1(1:N))), '-r'), title('xx') ,
+subplot(3,1,2), hold on, plot(1:N, abs(fft(s1s2)), 'k'), title('2', 'FontSize', 18) ,
+    plot(1023, 1:100:2200, '--kx', N-1023, 1:100:2200, '--kx') ,
+    xlim([1 16368]),
+    h_legend = legend('2.1', '2.2');
+    set(h_legend, 'FontSize', 18),
+    grid on,
+    hold off,
+
+
+subplot(3,1,3), hold on, plot(1:N, abs(fft(s2s2 + s1s1)), 'k'), title('3', 'FontSize', 18) ,
+    plot(1023, 1:100:2200, '--kx', N-1023, 1:100:2200, '--kx') ,
+    xlim([1 16368]),
+    h_legend = legend('3.1', '3.2');
+    set(h_legend, 'FontSize', 18),
+    grid on,
+    hold off,
 
 % remove model path
 rmpath(modelPath) ;
