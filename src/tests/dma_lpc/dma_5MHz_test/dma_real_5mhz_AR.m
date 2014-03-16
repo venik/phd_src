@@ -1,6 +1,6 @@
 clc; clear all;
 
-delta1= 10; %дельта смещени€
+delta1 = 10; %дельта смещени€
 fs = 5.456e6 ;
 freq = 4.092e6 ;
 N = 5456 ;
@@ -8,15 +8,15 @@ PRN= 30;
 
 otstup = 70000 - 3645;
 
-y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat',5456*200);
+y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat',N*200);
 y_base = double (y_base);
 
 y = y_base(otstup : end) ;
 
 cacode2= CACode(PRN);
 
-CAcode1 = cacode2.Bits;  %генерируем CA код
-CAcode16 = zeros(1, 5456);  %объ€вили сигнал —инус* на CA код 
+CAcode1 = cacode2.Bits;
+CAcode16 = zeros(1, 5456); 
 
 for i=1:5456
     CAcode16(i) = CAcode1(ceil(1023000/fs*i));  
@@ -49,10 +49,8 @@ x  = y(index_x : N + index_x - 1) .* CAcode16.';
 X = fft(x(1:N), N*5);
 X2 = X.*conj(X);
 X8 = X2.^8./(10^40);
-
-%plot(X8);
-
 r = ifft(X8);
+%plot(X8);
 %plot(r);
 
 R = [r(1) r(2);r(2) r(1)];
