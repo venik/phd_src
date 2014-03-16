@@ -6,8 +6,8 @@ freq = 4.092e6 ;
 N = 5456 ;
 PRN = 30;
 
-%otstup = 70000 - 3645;
-%otstup = 50000;
+otstup = 70000 - 3645;
+%otstup = 1;
 
 y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat',N*200);
 y_base = double (y_base);
@@ -45,7 +45,7 @@ fprintf('PRN: %02d\tCA phase: %d\n', PRN, index_x);
 
 %%%%%%%%%
 % AR part
-x  = y(index_x : N + index_x - 1) .* CAcode16.';
+x = y(index_x : N + index_x - 1) .* CAcode16.';
 
 X = fft(x(1:N), N*5);
 X2 = X.*conj(X);
