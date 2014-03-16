@@ -1,16 +1,17 @@
 clc; clear all;
 
 delta1= 10; %дельта смещения
-fs =5456e3 ;
+fs = 5.456e6 ;
 freq = 4.092e6 ;
 N = 5456 ;
-mi_sec = 0;
 PRN= 30;
 
-otstup = 70000;
+otstup = 70000 - 3645;
 
-y = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat',5456*200);
-y = double (y);   
+y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat',5456*200);
+y_base = double (y_base);
+
+y = y_base(otstup : end) ;
 
 cacode2= CACode(PRN);
 
@@ -27,7 +28,8 @@ CA_lo = repmat(CAcode16, 1, 2) ;
 sig_new = zeros(N, 1);
 
 for jj=0:8
-    sig_new = sig_new + y(otstup + (N * jj) : N + otstup + (N * jj) - 1) .* y(otstup+ delta1+(N * jj) : N + delta1 + otstup + (N * jj)-1) ;
+    sig_new = sig_new + y(N * jj + 1 : N + N * jj) .* ...
+        y(delta1 + N * jj + 1 : N + delta1 + N * jj) ;
 end;
 
 new_CAcode16 = CA_lo(1:N) .* CA_lo(1 + delta1 : N + delta1) ;
@@ -41,16 +43,11 @@ acx = q.*conj(q);
 fprintf('PRN: %02d\tCA phase: %d\n', PRN, index_x);
 
 %%%%%%%%%
-% PLL part
-x  = y(otstup+(N*mi_sec)-(index_x-1):N+otstup+(N*mi_sec)-(index_x-1)-1).*CAcode16.';
+% AR part
+x  = y(index_x : N + index_x - 1) .* CAcode16.';
 
-x_new = zeros(1,N*5);
-
-x_new(1:N)=x(1:N);
-
-X = fft(x_new);
+X = fft(x(1:N), N*5);
 X2 = X.*conj(X);
-
 X8 = X2.^8./(10^40);
 
 %plot(X8);
@@ -60,17 +57,19 @@ r = ifft(X8);
 
 R = [r(1) r(2);r(2) r(1)];
 a = R\[r(2);r(3)];
+Z = roots([1;-a]);
 
-D = a(1)^2 + 4*a(2);
-Z = (a(1) + sqrt(D))/2;
-freq_z = 5456 - (angle(Z)/(2*pi)*5456); 
+freq_z = fs - fs * angle(Z(1)) / (2*pi);
 
-root1 = roots([1;-a]);
+fprintf('freq after AR: %.2f\n', freq_z);
+
+%%%%%%%%%
+% DLL/PLL part
 settings = initSettings();
 ss = FileSource(settings.fileName, 'int8', 'r');
 
 tracker = Tracker(PRN, ss);
-tracker.Init(otstup+(N*mi_sec)-(index_x-1), freq_z*1000);
+tracker.Init(otstup - index_x - 1, freq_z);
                 
 proc_time = settings.processTime;
                 
