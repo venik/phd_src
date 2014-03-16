@@ -4,9 +4,10 @@ delta1 = 10; %дельта смещения
 fs = 5.456e6 ;
 freq = 4.092e6 ;
 N = 5456 ;
-PRN= 30;
+PRN = 30;
 
-otstup = 70000 - 3645;
+%otstup = 70000 - 3645;
+%otstup = 50000;
 
 y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat',N*200);
 y_base = double (y_base);
@@ -35,7 +36,7 @@ end;
 new_CAcode16 = CA_lo(1:N) .* CA_lo(1 + delta1 : N + delta1) ;
 
 % скоррелировали  CA код спутника со сгенерированным кодом
-q = ifft(fft(new_CAcode16(1:N)) .* conj(fft(sig_new(1:N).')) ) ;
+q = ifft(fft(new_CAcode16(1:N)) .* conj(fft(sig_new(1:N).'))) ;
 
 acx = q.*conj(q);
 [value_x, index_x] = max(acx);
@@ -67,7 +68,7 @@ settings = initSettings();
 ss = FileSource(settings.fileName, 'int8', 'r');
 
 tracker = Tracker(PRN, ss);
-tracker.Init(otstup - index_x - 1, freq_z);
+tracker.Init(otstup + (N - index_x), freq_z);
                 
 proc_time = settings.processTime;
                 
