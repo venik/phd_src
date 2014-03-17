@@ -33,7 +33,7 @@ end
 CA_lo = repmat(CAcode16, 1, 2) ;
 sig_new = zeros(N, 1);
 
-for jj=0:8
+for jj=0:2
     sig_new = sig_new + y(N * jj + 1 : N + N * jj) .* ...
         y(delta1 + N * jj + 1 : N + delta1 + N * jj) ;
 end;
@@ -46,7 +46,9 @@ q = ifft(fft(new_CAcode16(1:N)) .* conj(fft(sig_new(1:N).'))) ;
 acx = q.*conj(q);
 [value_x, index_x] = max(acx);
 
-fprintf('PRN: %02d\tCA phase: %d\n', PRN, index_x);
+fprintf('PRN: %02d\tCA phase: %d\tE/sigma: %.2f dB\n', ...
+    PRN, index_x, 10*log10(value_x / std(acx)));
+plot(acx); return ;
 
 %%%%%%%%%
 % AR part
@@ -58,7 +60,7 @@ X2 = X.*conj(X);
 X8 = X2.^8./(10^40);
 r = ifft(X8);
 %plot(X8);
-%plot(r(1:100)); return;
+plot(r(1:100)); return;
 
 R = [r(1) r(2);r(2) r(1)];
 a = R\[r(2);r(3)];

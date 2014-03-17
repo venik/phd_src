@@ -61,8 +61,8 @@ for jj=1:length(PRN)
 
     end; % p
     
-    fprintf('PRN: %02d\tCA phase: %d\tfreq: %.2f\n', ...
-        PRN(jj), ca_phase(jj), freq_z(jj));
+    fprintf('PRN: %02d\tCA phase: %d\tfreq: %.2f\tE/sigma: %.2f dB\n', ...
+        PRN(jj), ca_phase(jj), freq_z(jj), 10*log10(acx(jj) / std(res)));
 
 end; % jj
 
