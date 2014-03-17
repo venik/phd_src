@@ -8,7 +8,7 @@ settings.codeLength = 1023;
 settings.fileName = '101112_0928GMT_primo_fs5456_fif4092.dat';
 
 settings.startTime = 0;
-settings.processTime = 1000; % ms
+settings.processTime = 200; % ms
 
 % Acquisition
 settings.fineFreq = true;

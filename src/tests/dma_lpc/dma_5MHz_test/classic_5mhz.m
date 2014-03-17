@@ -12,7 +12,7 @@ N = 5456 ;
 PRN = 1:32;
 
 %otstup = 70000 - 3645;
-otstup = 40645;
+otstup = 2000;
 
 y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat',N*200);
 y_base = double(y_base);
@@ -66,6 +66,6 @@ for jj=1:length(PRN)
 
 end; % jj
 
-barh(acx), phd_figure_style(gcf) ;
+barh(acx, 'k'), ylim([0 33]), xlabel('Энергия'), ylabel('Источник сигнала'), phd_figure_style(gcf) ;
 
 rmpath(modelPath) ;

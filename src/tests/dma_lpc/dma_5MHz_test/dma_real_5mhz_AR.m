@@ -9,10 +9,10 @@ delta1 = 10; %дельта смещени€
 fs = 5.456e6 ;
 freq = 4.092e6 ;
 N = 5456 ;
-PRN = 29;
+PRN = 21;
 
 %otstup = 70000 - 10*N - 3645;
-otstup = 40645;
+otstup = 2000;
 
 y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat',N*200);
 y_base = double (y_base);
@@ -48,19 +48,18 @@ acx = q.*conj(q);
 
 fprintf('PRN: %02d\tCA phase: %d\tE/sigma: %.2f dB\n', ...
     PRN, index_x, 10*log10(value_x / std(acx)));
-plot(acx); return ;
+%plot(acx); return ;
 
 %%%%%%%%%
 % AR part
 %x = y(index_x : N + index_x - 1) .* CAcode16.';
 x = y(1:N) .* CA_lo(index_x : N + index_x - 1).';
 
-X = fft(x(1:N), N*2);
+X = fft(x(1:N), N*4);
 X2 = X.*conj(X);
 X8 = X2.^8./(10^40);
 r = ifft(X8);
 %plot(X8);
-plot(r(1:100)); return;
 
 R = [r(1) r(2);r(2) r(1)];
 a = R\[r(2);r(3)];
@@ -107,9 +106,8 @@ while true
     end
 end
 
-%plot(I), xlabel('врем€, мс'), ylabel('Ёнерги€'), phd_figure_style(gcf) ;
-
-plot(CarrierError), xlabel('врем€, мс'), ylabel('ќшибка'), phd_figure_style(gcf) ;
+subplot(2,1,2), plot(I), xlabel('врем€, мс'), ylabel('Ёнерги€'), phd_figure_style(gcf) ;
+subplot(2,1,1), plot(CarrierError, 'k'), xlabel('врем€, мс'), ylabel('ќшибка'), phd_figure_style(gcf) ;
     
 % remove model path
 rmpath(modelPath) ;
