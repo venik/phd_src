@@ -1,4 +1,9 @@
 clc; clear all;
+curPath = pwd() ;
+cd('..\\..\\tsim\\model') ;
+modelPath = pwd() ;
+cd( curPath ) ;
+addpath(modelPath) ;
 
 delta1 = 10; %дельта смещени€
 fs = 5.456e6 ;
@@ -100,7 +105,9 @@ while true
     end
 end
 
-%plot(I);
+%plot(I), xlabel('врем€, мс'), ylabel('Ёнерги€'), phd_figure_style(gcf) ;
 
-plot(CarrierError),
-    xlabel('мс'), ylabel('ошибка');
+plot(CarrierError), xlabel('врем€, мс'), ylabel('ќшибка'), phd_figure_style(gcf) ;
+    
+% remove model path
+rmpath(modelPath) ;

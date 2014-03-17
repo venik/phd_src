@@ -6,7 +6,7 @@ N = 5456 ;
 PRN = 30;
 
 %otstup = 70000 - 3645;
-otstup = 50000;
+otstup = 40645;
 
 
 y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat',N*200);
