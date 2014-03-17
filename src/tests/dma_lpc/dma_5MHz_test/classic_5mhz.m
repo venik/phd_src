@@ -5,14 +5,16 @@ clc; clear all;
 N = 5456 ;
 PRN = 30;
 
-otstup = 70000 - 3645;
+%otstup = 70000 - 3645;
+otstup = 50000;
+
 
 y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat',N*200);
 y_base = double(y_base);
 
 y = y_base(otstup : otstup + N - 1) ;
 
-freq = 4.092e6-5e3 : 1e1 : 4.092e6+5e3;
+freq = 4.092e6-5e3 : 1e3 : 4.092e6+5e3;
 %freq = 4.0898e6;
 
 %freq = 4.0935e6;
@@ -43,7 +45,7 @@ for p=1:length(freq)
 
     LO_SIG = fft(lo_sig);
 
-    q = ifft(Y .* conj(LO_SIG).') ;
+    q = ifft(LO_SIG .* conj(Y).') ;
 
     acx_res = q .* conj(q) ;
     [value_x, index_x] = max(acx_res) ;

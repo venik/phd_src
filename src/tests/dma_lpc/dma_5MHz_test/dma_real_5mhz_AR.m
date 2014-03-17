@@ -6,8 +6,8 @@ freq = 4.092e6 ;
 N = 5456 ;
 PRN = 30;
 
-otstup = 70000 - 3645;
-%otstup = 1;
+%otstup = 70000 - 10*N - 3645;
+otstup = 40645;
 
 y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat',N*200);
 y_base = double (y_base);
@@ -45,14 +45,15 @@ fprintf('PRN: %02d\tCA phase: %d\n', PRN, index_x);
 
 %%%%%%%%%
 % AR part
-x = y(index_x : N + index_x - 1) .* CAcode16.';
+%x = y(index_x : N + index_x - 1) .* CAcode16.';
+x = y(1:N) .* CA_lo(index_x : N + index_x - 1).';
 
-X = fft(x(1:N), N*5);
+X = fft(x(1:N), N*2);
 X2 = X.*conj(X);
 X8 = X2.^8./(10^40);
 r = ifft(X8);
 %plot(X8);
-%plot(r);
+%plot(r(1:100)); return;
 
 R = [r(1) r(2);r(2) r(1)];
 a = R\[r(2);r(3)];
@@ -61,6 +62,7 @@ Z = roots([1;-a]);
 freq_z = fs - fs * angle(Z(1)) / (2*pi);
 
 fprintf('freq after AR: %.2f\n', freq_z);
+%return;
 
 %%%%%%%%%
 % DLL/PLL part
@@ -100,5 +102,5 @@ end
 
 %plot(I);
 
-plot(CarrierError(1:200)),
+plot(CarrierError),
     xlabel('мс'), ylabel('ошибка');

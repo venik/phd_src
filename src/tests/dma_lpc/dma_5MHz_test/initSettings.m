@@ -8,7 +8,7 @@ settings.codeLength = 1023;
 settings.fileName = '101112_0928GMT_primo_fs5456_fif4092.dat';
 
 settings.startTime = 0;
-settings.processTime = 200; % ms
+settings.processTime = 1000; % ms
 
 % Acquisition
 settings.fineFreq = true;
@@ -25,7 +25,7 @@ settings.DLL_LBW = 5; %10; %25; %
 settings.DLL_zeta = 0.7;
 
 settings.PLL_K = 1;
-settings.PLL_LBW = 20; %400; %25; %
+settings.PLL_LBW = 40; %20; %400; %25; %
 settings.PLL_zeta = 0.7;
 
 settings.corrSpacing = 0.25;
