@@ -29,22 +29,22 @@ x = prs ;
 
 figure(1) ; set(gcf,'Name','Spectral check')
 
-newcode_x = x(1:5456).*x(1+dmaDelta:5456+dmaDelta) ;
-[DMA_X,omega] = pwelch(newcode_x,512,256,512,5456000);
+newcode_x = x(1:5456*4).*x(1+dmaDelta:5456*4+dmaDelta) ;
+[DMA_X,omega] = pwelch(newcode_x,1024,512,1024,5456000);
 plot(omega,DMA_X,'Color',[0.3 0.6 0.3],'LineWidth',2) 
 xlabel('Frequency, Hz') ;
 
 hold on
 x = sin(phasearg(:)).*prs ;
-dma_x = x(1:5456).*x(1+dmaDelta:5456+dmaDelta) ;
-[DMA_X,omega] = pwelch(dma_x,512,256,512,5456000);
+dma_x = x(1:5456*4).*x(1+dmaDelta:5456*4+dmaDelta) ;
+[DMA_X,omega] = pwelch(dma_x,1024,512,1024,5456000);
 plot(omega,DMA_X,'Color',[0.9 0.6 0.6],'LineWidth',2) ;
 
 x = cos(phasearg(:)).*prs ;
-dma_x = x(1:5456).*x(1+dmaDelta:5456+dmaDelta) ;
-h = firls(64,[0 0.65 0.75 1.0],[1 1 0 0]) ;
+dma_x = x(1:5456*4).*x(1+dmaDelta:5456*4+dmaDelta) ;
+h = firls(64,[0 0.7 0.8 1.0],[1 1 0 0]) ;
 fdma_x = filter(h,1,dma_x) ;
-[DMA_X,omega] = pwelch(fdma_x,512,256,512,5456000);
+[DMA_X,omega] = pwelch(fdma_x,1024,512,1024,5456000);
 plot(omega,DMA_X,'Color',[0.6 0.6 0.9],'LineWidth',2) ;
 grid on ;
 
@@ -52,8 +52,12 @@ grid on ;
 figure(2) ; set(gcf,'Name','Time Alignment')
 hold off, plot(newcode_x,'Color',[0.4 0.4 0.9],'LineWidth',2) ;
 % Why should I use  - sign?
-hold on, plot(-fdma_x(1+32:end),'Color',[0.9 0.4 0.4],'LineWidth',2) ;
+%hold on, plot(-fdma_x(1+32:end),'Color',[0.9 0.4 0.4],'LineWidth',2) ;
+%hold on, plot(-dma_x,'Color',[0.9 0.4 0.4],'LineWidth',2) ;
 grid on ; 
+
+figure(3) ; set(gcf,'Name','Code test')
+hold off, plot(newcode_x,'Color',[0.4 0.4 0.9],'LineWidth',2) ;
 
 % remove model path
 rmpath(modelPath) ;
