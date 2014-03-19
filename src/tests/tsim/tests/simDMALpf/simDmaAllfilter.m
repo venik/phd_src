@@ -59,10 +59,15 @@ for k=1:N
     ht_ccf(k) = sum(ht_out(1:N).*dma_prs(1+(k-1):N+(k-1)))/N ;
 end
 
+[~, dma_index0] = max(abs(dma_ccf)) ;
+[~, bt_index0] = max(abs(bt_ccf)) ;
+[~, fir_index0] = max(abs(fir_ccf)) ;
+[~, ht_index0] = max(abs(ht_ccf)) ;
+
 prs_slope = mean(abs(prs_ccf(2:end))) ;
 dma_slope = mean(abs(dma_ccf(2:end))) ;
-bt_slope = mean(abs(bt_ccf(2:end))) ;
-fir_slope = mean(abs(fir_ccf(2:end))) ;
+bt_slope = mean(abs([bt_ccf(1:bt_index0-1); bt_ccf(bt_index0+1:end)])) ;
+fir_slope = mean(abs([fir_ccf(1:fir_index0-1); fir_ccf(fir_index0+1:end)])) ;
 ht_slope = mean(abs(ht_ccf(2:end))) ;
 
 %hold off, plot(dma_prs,'Color',[0.45 0.45 0.9],'LineWidth',2) ;
@@ -76,7 +81,7 @@ hold on, plot(fftshift(bt_ccf)*prs_slope/bt_slope,'Color',[0.9 0.3 0.3],'LineWid
 hold on, plot(fftshift(fir_ccf)*prs_slope/fir_slope,'Color',[0.9 0.7 0.45],'LineWidth',2) ;
 hold on, plot(fftshift(ht_ccf)*prs_slope/ht_slope,'Color',[0.7 0.1 0.7],'LineWidth',2) ;
 
-%bar([prs_ccf(1), dma_ccf(1)*prs_slope/dma_slope, bt_ccf(1)*prs_slope/bt_slope, fir_ccf(end-31)*prs_slope/fir_slope, ht_ccf(1)*prs_slope/ht_slope]) ;
+bar([prs_ccf(1), dma_ccf(1)*prs_slope/dma_slope, bt_ccf(bt_index0)*prs_slope/bt_slope, fir_ccf(fir_index0)*prs_slope/fir_slope, ht_ccf(1)*prs_slope/ht_slope]) ;
 
 grid on ;
 set(gca,'FontSize',14) ;
