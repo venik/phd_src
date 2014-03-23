@@ -1,7 +1,7 @@
 clear all, clc, clf;
 
-path_gnss = '../../gnss/' ;
-path_model = '../tsim/model/' ;
+path_gnss = '../../../gnss/' ;
+path_model = '../../tsim/model/' ;
 addpath(path_gnss);
 addpath(path_model);
 
@@ -26,9 +26,9 @@ if data_model == 1
 else    
     %sig_from_file = readdump_txt('./data/flush.txt', ms*N);	% create data vector
     %save('./data/flush.txt.mat', 'sig_from_file') ;
-    load('./data/flush.txt.mat') ;
+    load('../data/flush.txt.mat') ;
     sig = sig_from_file(100:ms*N) ;
-	fprintf('Real\n');
+	fprintf('Real signal\n');
 end ; % if model
 
 % Main satellite
