@@ -29,6 +29,9 @@ res_a1a2 = zeros(length(a2), 1) ;
 match = zeros(length(a2), 1) ;
 
 for kk=1:length(a2)
+    
+    fprintf('%d from %d\n', kk, length(a2));
+    
     for jj=1:times
         s1 = a1*exp(1j*2*pi*f1/fs*(0:sig_length)) ;
         s2 = a2(kk)*exp(1j*2*pi*f2/fs*(0:sig_length)) ;
@@ -65,23 +68,30 @@ for kk=1:length(a2)
 
         if((res_pos > tau_s2 + 8) || (res_pos < tau_s2 - 8))
             %fprintf('%0.2f: miss real tau:%d est tau:%d\n', a2(kk), tau_s2, res_pos) ;
-            %res_a1a2(kk) = 0 ;
+            res_a1a2(kk) = 0 ;
         else
             match(kk) = match(kk) + 1 ;
-            %res_a1a2(kk) = 10*log10(res_val / std(res)) ;
+            res_a1a2(kk) = res_a1a2(kk) + 10*log10(res_val / std(res)) ;
         end; % if 
-    end % jj 
+    end % jj
+    
+    res_a1a2(kk) = res_a1a2(kk) / times ;
     match(kk) = match(kk) / times ;
 end % kk=1:length(a2)
 
 base_line = repmat(7, 1, length(res_a1a2));
 a2_dB = 10*log10(a2./a1) ;
 
-%plot(a2_dB, res_a1a2, '-kx', a2_dB, base_line, '-ko'),
-%    legend('max / std', '7dB line') ;
-%    xlabel('A1/A2 dB')  
+figure(1), plot(a2_dB, match, '-kx')
+    xlabel('A1/A2 ไม', 'FontSize', 18)  
 
-plot(a2_dB, match, '-kx')
+
+figure(2)
+plot(a2_dB, res_a1a2, '-kx', a2_dB, base_line, '-ko'),
+    h_legend = legend('1', '2', 'FontSize', 18) ;
+    set(h_legend, 'FontSize', 18),
+    xlabel('A1/A2 ไม', 'FontSize', 18)
+    ylabel('ฬเ๊๑/ัสฮ ไม', 'FontSize', 18)
 
 %plot(res)
 
