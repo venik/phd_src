@@ -1,1 +1,7 @@
-*.asv
+*.aux
+*.blg
+*.dvi
+*.log
+*.pdf
+*.toc
+*.bbl
