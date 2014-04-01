@@ -21,9 +21,6 @@ SEC34 = ${SEC3} ${SEC4}
 DATE = `date +%d.%m.%y`
 STR = "s/{..\...\...}/{$(DATE)}/"
 
-sec4: hw.tex 
-	${TEX2DVI} ${TEX_FLAGS} sec4.tex
-
 thesis: ${THESIS_ALL}
 	@sed -i $(STR) title_page.tex
 	${TEX2DVI} ${TEX_FLAGS} thesis.tex
@@ -36,6 +33,9 @@ sec3: $(SEC3)
 
 sec34: $(SEC34)
 	${TEX2DVI} ${TEX_FLAGS} sec34.tex
+
+sec4: hw.tex 
+	${TEX2DVI} ${TEX_FLAGS} sec4.tex
 
 thesis_ps: ${THESIS_ALL} 
 	${TEX2DVI} thesis.tex
