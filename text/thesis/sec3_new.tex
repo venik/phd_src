@@ -6,160 +6,74 @@
 нужно получить оценку фазы ПСП и произвести повторную модуляцию входной смеси. Получить оценку фазы ПСП не прибегая к перебору по частоте,
 позволяет алгоритм Delay and Multiply Approach (DMA). Данный алгоритм был представлен в статье и книге американского ученого Дж.Цуя \cite{lin_dma, tsui}
 
-%Запишем входной сигнал в двух квадратурном виде:
-%\begin{center}
-%\begin{equation}
-%	\label{eq:dma_lo_signal}
-%	s(t)=C(t)e^{j2{\pi}f_{0}t}
-%\end{equation}
-%\end{center}
-%где $C(t)$ - амплитуда, а $f_{0}$- частота несущей сигнала.
-%
-%Если входящий комплексный сигнал имеет задержку $\tau$, то данный сигнал будет описываться формулой: 
-%\begin{center}
-%\begin{equation}
-%	\label{eq:dma_signal}
-%	s(t-\tau)=C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}
-%\end{equation}
-%\end{center}
-%
-%Получим новый сигнал путем умножения \ref{eq:dma_lo_signal} и \ref{eq:dma_signal}:
-%\begin{center}
-%\begin{eqnarray}
-%	s_{n}(t) & = & s(t)s(t-\tau)^{*}=\nonumber \\
-%	 & = & C(t)C(t-\tau)e^{j2\pi f_{0}t}e^{j2\pi f(t-\tau)}=\label{eq:dma}\\
-%	 & = & C(t)C(t-\tau)e^{j2\pi f_{0}\tau}\nonumber 
-%\end{eqnarray}
-%
-%\par\end{center}
-%
-%Из формулы \ref{eq:dma} видно, что полученный сигнал не зависит от
-%задержки $\tau$. Остается найти фазу ПСП. Референсный сигнал
-%$C(t)C(t-\tau)$ используется для корреляции с новым кодом, который
-%получен по формуле \ref{eq:dma} - умножением принятого сигнала и его задержанной
-%копии. Когда фаза ПСП найдена, поиск сводится к одномерному поиску
-%частоты. Данный метод позволяет уменьшить количество вычислений, путем
-%сведения задачи поиска в двух измерения: по фазе кода и частоте; к
-%задаче поиска только по частоте. Этот метод позволяет существенно
-%сэкономить вычислительные ресурсы при обнаружении сигнала заданного
-%спутника, но, вместе с тем, операция умножения повышает шум в процессе.
-%
-%\subparagraph{Aнализ изменения ОСШ при использовании алгоритма DMA}
-%\label{sssec:dma_noise}
-%
-%Воспользуемся математическим аппаратом теории вероятностей. Необходимый математический аппарат
-%рассмотрен в \cite{ventcel}, для более подробного изучения можно ознакомиться с \cite{feller}.
-%Для упрощения можно принять, что в эфире только 1 сигнал (интерференция будет создавать окрашенный шум).
-%
-%Добавим в формулу \ref{eq:dma} АБГШ:
-%\begin{center}
-%\begin{eqnarray}
-%	\label{eq:dma_general}
-%	x_{n}(t) & = & (s(t)+n_{1}(t))(s(t-\tau)+n_{2}(t))^{*}=\nonumber \\
-%	 & = & C(t)C(t-\tau)e^{j2{\pi}f_{0}{\tau}}+\nonumber \\
-%	 & + & C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+\label{eq:dma_noise_1}\\
-%	 & + & C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t)+\nonumber \\
-%	 & + & n(t)^{2}\nonumber 
-%\end{eqnarray}
-%\end{center}
-%где $C(t)C(t-\tau)e^{j2{\pi}f_{0}{\tau}}$ - новая ПСП, умноженная на константу, а
-%$C(t)e^{j2{\pi}f_{0}t}n_{2}(t)+C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t) + n(t)^{2}$ -
-%шумовая компонента.
-%
-%Свойства дисперсии случайных величин рассмотрены в \cite{ventcel}. Дисперсия суммы 
-%независимых случайных величин приведена на формуле \ref{eq:var_add_full}:
-%\begin{center}
-%\begin{equation}
-%	\label{eq:var_add_full}
-%	D[\sum\limits_{i=1}^{n}{X_i}]=\sum\limits_{i=1}^{n}{D[X_i]} + 2\sum\limits_{i<j}{K_{ij}}
-%\end{equation}
-%\end{center}
-%
-%Для некореллированных случайных величин можно формулу \ref{eq:var_add_full} переписать как \ref{eq:var_add}:
-%\begin{center}
-%\begin{equation}
-%	\label{eq:var_add}
-%	D[\sum\limits_{i=1}^{n}{X_i}]=\sum\limits_{i=1}^{n}{D[X_i]}
-%\end{equation}
-%\end{center}
-%
-%Дисперсия произведения независимых случайных величин может быть представлена как \ref{eq:var_mult}:
-%\begin{center}
-%\begin{equation}
-%	\label{eq:var_mult}
-%	D[\prod\limits_{i=1}^{n}{X_i}]=\prod\limits_{i=1}^{n}{(D_i + m_{i}^{2})} - \prod\limits_{i=1}^{n}{m_{i}^{2}}
-%\end{equation}
-%\end{center}
-%
-%Вернемся к рассмотрению формулы \ref{eq:dma_noise_1}. Известно, что дисперсия ПСП Голда равна 1, учитывая \ref{eq:var_mult}
-%и тот факт, что математическое ожидание ПСП Голда равно 0. Математическое ожидание и дисперсия гармонического сигнала в
-%представленном виде так же равны 0 и 1. На основе этого получаем:
-%\begin{center}
-%\begin{eqnarray}
-%	\label{eq:dma_noise_2}
-%	D[C(t)e^{j2{\pi}f_{0}t}n_{2}(t)] & = & D[n_{2}(t)] \nonumber \\
-%	D[C(t-\tau)e^{j2{\pi}f_{0}(t-\tau)}n_{1}(t)] & = & D[n_{1}(t)]
-%\end{eqnarray}
-%\end{center}
-%
-%В целях получения общего характера снижения ОСШ и для простоты анализа, примем, что величины в \ref{eq:dma_general} некоррелированы
-%Учитывая \ref{eq:dma_noise_2} и теоремы о математическом ожидании и дисперсии, перепишем \ref{eq:dma_noise_1}:
-%\begin{center}
-%\begin{eqnarray}
-%	\label{eq:dma_finish_noise}
-%	D[s_{n}(t)] & = & D[(s(t)+n_{1}(t))(s(t-\tau)+n_{2}(t))^{*}]=\nonumber \\
-%	& = & D[n(t)^{2}] + 2D[n(t)] + 1 \label{eq:dma_noise_3}
-%\end{eqnarray}
-%\end{center}
-%
-%Из \ref{eq:dma_finish_noise}, что уровень ОСШ сильно падает.
-%
-%\subparagraph{Действительный сигнал}
-%\label{sec1:dma_real}
-%
-%Данный подход является достаточно интересным, но работает только с комплексным сигналом. Это ограничение можно
-%обойти, преобразуя входной сигнал из действительного в комплексный, используя преобразование Гильберта.
-%Так же можно специальным образом выбирать ${\tau}$.
-%
-%При детектировании действительного сигнала возникают дополнительные сложности. Рассмотрим действительный сигнал:
-%\begin{center}
-%\begin{equation}
-%	\label{eq:dma_real1}
-%	s(t) = C_s(t) \sin{(2\pi ft)}
-%\end{equation}
-%\end{center}
-%
-%Задержанная версия может быть соответственно описана как:
-%\begin{center}
-%\begin{equation}
-%	\label{eq:dma_real2}
-%	s(t - \tau) = C_s(t-\tau) \sin{\left[2\pi f(t-\tau)\right]}
-%\end{equation}
-%\end{center}
-%
-%Произведение формул \ref{eq:dma_real1} и \ref{eq:dma_real2} равно \cite{tsui}:
-%\begin{center}
-%\begin{equation}
-%	\label{eq:dma_real3}
-%	s(t)s(t - \tau) = \frac{C_n(t)}{2} \left(\cos (2\pi f \tau) - \cos \left[2 \pi f (2t - \tau)\right]\right)
-%\end{equation}
-%\end{center}
-%
-%В формуле \ref{eq:dma_real3} 2 компоненты, постоянная и высокочастотная. Высокочастотная компонента
-%может быть отфильтрована ФНЧ. Задержку ${\tau}$ необходимо выбирать исходя из компоненты ${\left| \cos (2\pi f \tau) \right|}$,
-%максимизируя значение. Нетрудно получить формулу для выбора ${\tau}$: ${\tau = \frac{1}{f} / \frac{1}{f_{samping}}}$.
-%
-%\subparagraph{Недостатки}
-%Одним из основных недостатков является то, что данный алгоритм работает только с комплексным сигналом. Модификации
-%для работы с действительным сигналам ведут к дополнительным вычислительным затратам или потере точности. Для
-%преобразования Гильберта требуются дополнительные вычислительные затраты, а в формуле \ref{eq:dma_real3}, так
-%как ${\tau}$ заранее выбранная константа (${f\tau \approx 1}$), допплеровское смещение частоты будет снижать мощность
-%сигнала \ref{eq:dma_real3}, т.е.
-%\begin{center}
-%\begin{equation}
-%	\left| \cos (2\pi f \tau) \right| >= \left| \cos (2\pi (f - f_d) \tau) \right|
-%\end{equation}
-%\end{center}
+Особенностью данного алгоритма является то, что он позволяет свести перебор в двумерной области неопределенности:
+промежуточная частота, фаза ПСП к перебору только по фазе ПСП.
+Пусть входная смесь представлена выражением \ref{eq:unknown}, а количество источников ${N}$ равно двум. Тогда выражение \ref{eq:unknown} можно переписать в виде:
+\begin{center}
+\begin{equation}
+	\label{eq:dma_cdma_for_2}
+	x(m) =	A_1 g_1(t + \tau_1) exp \left[ j \left( \tilde{\omega_1} m + \phi_1 (m) \right) \right]
+		+ A_2 g_2(t + \tau_2) exp \left[ j \left(  \tilde{\omega_2} m + \phi_2 (m) \right) \right] + n(m) 
+\end{equation}
+\end{center}
+
+Следуя алгоритму DMA, необходимо умножить сигнал на задержанную копию:
+\begin{center}
+\begin{equation}
+	\label{eq:dma_cdma_1}
+	xx(m) = x(m)x(m+\tau)^*,
+\end{equation}
+\end{center}
+где ${*}$ - операция комплексного сопряжения, ${\tau}$ - задержка между копиями сигнала. Подставляя \ref{eq:dma_cdma_for_2} в \ref{eq:dma_cdma_1} получается выражение:
+\begin{center}
+\begin{eqnarray}
+	\label{eq:dma_cdma_2}
+	x(m) & = &[ A_1 g_1(m + \tau_1) exp \left[ j \left( \tilde{\omega_1} m + \phi_1 (m) \right) \right] + \nonumber \\
+	     & + & A_2 g_2(m + \tau_2) exp \left[ j \left(  \tilde{\omega_2} m + \phi_2 (m) \right) \right] + n(m) ] + \nonumber \\
+	     & + & [A_1 g_1(m + \tau + \tau_1) exp \left[ j \left( \tilde{\omega_1} (m + \tau) + \phi_1 (m + \tau) \right) \right]  + \nonumber \\
+	     & + & A_2 g_2(m + \tau + \tau_2) exp \left[ j \left(  \tilde{\omega_2} (m + \tau) + \phi_2 (m + \tau) \right) \right] + n(m + \tau)]^*
+\end{eqnarray}
+\end{center}
+
+В выражении \ref{eq:dma_cdma_2} полезным слагаемым является:
+\begin{center}
+\begin{equation}
+	\label{eq:dma_cdma_3}
+	xx_{sig}(m) = A^2_1 g_{11}(m) exp[j (\tilde {\omega_1} \tau)],
+\end{equation}
+\end{center}
+где ${g_{11}(m)}$ - новая ПСП (структура новых ПСП поясняется ниже). 
+
+Интерференционные помехи, не содержащие полезный сигнал, могут быть представлены как:
+\begin{center}
+\begin{eqnarray}
+	\label{eq:dma_cdma_4}
+	xx_{intf}(m) & = & A_{12} g_{12}(m) exp \left[ j \left( \tilde{\omega_1} m - \tilde{\omega_2}(m + \tau) + \phi_{12} (m) \right) \right] + \nonumber \\
+		& + & A_{21} g_{12}(m) exp \left[ j \left( \tilde{\omega_2} m - \tilde{\omega_1}(m + \tau) + \phi_{21} (m) \right) \right] + \nonumber \\
+		& + & A^2_2 g_{22}(m) exp[j (\tilde {\omega_2} \tau)],
+\end{eqnarray}
+\end{center}
+где ${A_{12}=A_1 A_2}$, ${g_{12}(m)=g(m+\tau+1)g_2(m+\tau_2+\tau)}$, а ${g_{21} = g_2(m+\tau_2)g_1(m+\tau_1+\tau)}$, а ${g_{22}(m)}$ - новая ПСП для источника сигнала 2.
+
+Также появляются новые шумовые компоненты:
+\begin{center}
+\begin{eqnarray}
+	\label{eq:dma_cdma_5}
+	xx_{noise}(m) & = & A_{1} g_{1}(m + \tau_1) exp \left[ j \left( \tilde{\omega_1} m + \phi_{1} (m) \right) \right] n(m + \tau) + \nonumber \\
+		& + & A_{2} g_{2}(m + \tau_2) exp \left[ j \left( \tilde{\omega_2} m + \phi_{2} (m) \right) \right] n(m + \tau)^* + \nonumber \\
+		& = & n(m)A_{1} g_{1}(m + \tau_1 + \tau) exp \left[ j \left( \tilde{\omega_1} (m + \tau) + \phi_{1} (m + \tau) \right) \right] + \nonumber \\
+		& + & n(m)A_{2} g_{2}(m + \tau_2 + \tau) exp \left[ j \left( \tilde{\omega_2} (m + \tau) + \phi_{2} (m + \tau) \right) \right] + \nonumber \\
+		& + & n(m)n(m+\tau)
+\end{eqnarray}
+\end{center}
+
+Таким образом \ref{eq:dma_cdma_2} можно переписать как смесь:
+\begin{center}
+\begin{equation}
+	\label{eq:dma_cdma_6}
+	xx(m) = xx_{sig}(m) + xx_{intf}(m) + xx_{noise}(m)
+\end{equation}
+\end{center}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Алгоритм оценки параметров ШПС в условиях интерференции}
