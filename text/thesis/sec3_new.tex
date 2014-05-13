@@ -370,6 +370,11 @@ ${b_{\hat{\theta}}(\theta)}$ дает смещение оценки ${\theta}$.
 \end{eqnarray}
 \end{center}
 
+Матрица ${J}$ может быть получена из \ref{eq:crlb_Jij_full} для всех возможных комбинаций. В случае если фаза известна матрица ${J}$ становится матрицей 2x2, после удаления третьей строки
+и третьего столбца.
+
+После получения обратной матрицы ${J}$, с учетом всех неизвестных параметров, можно получить следующие выражения.
+Для известной фазы и известной или неизвестной амплитуды:
 \begin{center}
 \begin{equation}
 	\label{eq:clrb_est_omega_1}
@@ -377,6 +382,7 @@ ${b_{\hat{\theta}}(\theta)}$ дает смещение оценки ${\theta}$.
 \end{equation}
 \end{center}
 
+Для неизвестной фазы и известной или неизвестной амплитуды:
 \begin{center}
 \begin{equation}
 	\label{eq:clrb_est_omega_2}
@@ -384,10 +390,27 @@ ${b_{\hat{\theta}}(\theta)}$ дает смещение оценки ${\theta}$.
 \end{equation}
 \end{center}
 
+Для всех случаев:
 \begin{center}
 \begin{equation}
 	\label{eq:clrb_est_b_1}
 	D(\hat{A}) \ge \frac{\sigma^2}{N}
+\end{equation}
+\end{center}
+
+Для известной частоты и известной или неизвестной амплитуды:
+\begin{center}
+\begin{equation}
+	\label{eq:clrb_est_b_1}
+	D(\hat{\theta}) \ge \frac{\sigma^2}{A_0^2N}
+\end{equation}
+\end{center}
+
+Для неизвестной частоты и известной или неизвестной амплитуды:
+\begin{center}
+\begin{equation}
+	\label{eq:clrb_est_b_1}
+	D(\hat{\theta}) \ge \frac{12\sigma^2(n_0N + 2n_0P + Q)}{A_0^2N(N^2-1)}
 \end{equation}
 \end{center}
 
