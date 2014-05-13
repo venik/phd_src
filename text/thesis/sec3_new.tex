@@ -212,16 +212,17 @@
 где ${B_L}$ - шумовая полоса.
 
 Традиционный подход к оценке параметров широкополосного сигнала предусматривает корреляцию входного сигнала и набора локальных копий сигнала шагом 1 кГц.
-Для стационарного приемника СПИ Navstar GPS диапазон смещения частоты, обусловленный Доплеровским эффектом, находится в диапазоне ${\pm 5}$ кГц \cite{tsui, shahtarin-book}.
+Для стационарного приемника СПИ Navstar GPS диапазон смещения частоты, обусловленный Доплеровским эффектом, находится в диапазоне ${\pm 5}$ кГц \cite{tsui, shahtarin_sync}.
 Таким образом, для получения оценки с точностью 1 кГц необходимо провести поиск в 11 ячейках. В каждой ячейке нам необходимо ${N}$-комплексных умножений.
 Для наземных приемников типовое значение ${B_L=20}$ Гц \cite{tsui}. Область синхронизации из выражений \ref{eq:pll_omega_m} и \ref{eq:pll_omega_n}
-${\Delta \omega_m = 100}$ рад/с (примерно 16 Гц).
-В данном случае необходима стадия уточнения частоты. Следует отметить, что заданная точность может быть достигнута даже на сигнале с достаточно
-низким ОСШ при оценке АР-методом после уточнения АКФ – рисунок 8.
-
-Схема традиционного приемника изображена на рисунке 9.
-
-Рисунок 9. Схема традиционного приемника.
+${\Delta \omega_m = 100}$ рад/с (примерно 16 Гц). В виду того, что требуемая точность оценки не может быть получена с использованием стандартного шага в 1 кГц,
+а использование более мелкого шага ведет к расходованию ресурсов, как уже было отмечено, требуется стадия уточнения частоты.
+Схема традиционного приемника изображена на рисунке \ref{pic:corr_scheme}.
+\begin{figure}[H]
+	\center\scalebox{1}{\includegraphics[width=1\linewidth]{corr_scheme.eps}}
+	\caption{Схема традиционного приемника.}
+	\label{pic:corr_scheme}
+\end{figure}
 
 Количество комплексных умножений требуемых для оценки частоты одного источника при помощи алгоритма БПФ:
 \begin{enumerate}
@@ -266,7 +267,132 @@ ${\Delta \omega_m = 100}$ рад/с (примерно 16 Гц).
 \end{center}
 
 \subsection{Сравнение точности оценки частоты с границей Крамера-Рао}
+Оценка Крамера-Рао тесно связана с понятием эффективности . Данная граница эффективности оценки, улучшить которую невозможно, описывается
+неравенством Крамера-Рао-Фреше. Так же известное как неравенство информации.
+
+Если рассматривать класс всевозможных оценок ${\hat{\theta}}$ оцениваемого скалярного параметра ${\theta}$, от которого зависит ПРВ ${f(X; \theta)}$
+исследуемой совокупности. Обозначим
+\begin{center}
+\begin{equation}
+	\label{eq:clrb_mean}
+	{\bf{E}} \hat{\theta} = \int \hat{\theta} (X_1, ..., X_n)L(X_1, ..., X_n; \theta) dX_1 ... dX_n= \theta + b_{\hat{\theta}}(\theta),
+\end{equation}
+\end{center}
+${b_{\hat{\theta}}(\theta)}$ дает смещение оценки ${\theta}$.
+
+В \cite{ayvazyan-book} приведено, что если  ПРВ ${f(X, \theta)}$  
+удовлетворяет некоторым  условиям регулярности (в смысле характера ее зависимости от ${\theta}$), а именно:
+\begin{enumerate}
+\item область возможных значений исследуемой случайной величины в которой ${f(X; \theta)}$, не зависит от ${\theta}$;
+\item в формуле \ref{eq:clrb_mean} и в тождестве ${\int L(X_1, ..., X_n;\theta) dX_1...dX_n = 1}$ допустимо дифференцирование по ${\theta}$ под знаком интеграла;
+\item величина ${I(\theta; X)}$ - количество информации Фишера не равна нулю.
+\end{enumerate}
+
+Тогда для любой оценки ${\hat{\theta}}$ оцениваемого параметра ${\theta}$ может быть записано неравенство:
+\begin{center}
+\begin{equation}
+	\label{eq:crlb_base3}
+	E(\hat{\theta} - \theta) \ge \frac{(1 + \frac{d b_{\hat{\theta}} (\theta)}{d \theta})^2}{n E \left[ \left( \frac{d ln f(X; \theta)}{d \theta} \right)^2 \right]}
+\end{equation}
+\end{center}
+
+В данной работе рассматривается оценка частоты одной гармонической компоненты. Поэтому целесообразно рассмотреть только данный случай. В отчете \ref{commandor-report}
+подробно рассмотрено получение оценки Крамера-Рао для случае одной гармонической компоненты, далее приводится краткая сводка результатов.
+
+Предположим один или несколько параметров сигнала неизвестны. Входная смесь представлена синфазной и квадратурной составляющими. Тогда совместная ПРВ ${\bf{X}}$
+при векторе неизвестных параметров ${\bf{\alpha}}$  может быть записана как :
+\begin{center}
+\begin{equation}
+	\label{eq:clrb_pdf}
+	f({\bf{X}}; {\bf{\alpha}}) = \left( \frac{1}{\sigma^2 2 \pi} \right)^N exp \left[ -\frac{1}{2\sigma^2} \sum_{n=0}^{N-1} (Re(x)-\mu_n)^2 + (Im(x) - \nu_n)^2 \right],
+\end{equation}
+\end{center}
+где
+\begin{center}
+\begin{eqnarray}
+	\label{eq:clrb_alpha}
+	{\bf{\alpha}} & = & [\omega, A, \theta]^T \\
+	\mu_n & = & A \cos{(\omega t + \theta)} \\
+	\nu_n & = & A \sin{(\omega t + \theta)}
+\end{eqnarray}
+\end{center}
+
+Несмещенная оценка Крамера-Рао состоит из диагональных элементов матрицы обратной к информационной матрице Фишера ${J}$, таких что
+\begin{center}
+\begin{equation}
+	\label{eq:crlb_Jij}
+	J_{ij} = E(H_{\alpha i} H_{\alpha j}) = -E(H_{\alpha i \alpha j}),
+\end{equation}
+\end{center}
+где математическое ожидание с учетом вектора ${\bf{X}}$:
+\begin{center}
+\begin{equation}
+	\label{eq:crlb_H}
+	H_{\alpha i} = \frac{\partial}{\partial \alpha_i} \log{f({\bf{X}}; {\bf{\alpha}})}
+\end{equation}
+\end{center}
+Граница задается как:
+\begin{center}
+\begin{equation}
+	\label{eq:crlb_var_alpha}
+	D(\hat{\alpha}_i) \ge J^{ii},
+\end{equation}
+\end{center}
+где ${\hat{\alpha}}$ - это оцениваемый параметр ${\alpha_i}$ и ${J^{ii}}$ - ${i}$-й диагональный элемент матрицы ${J^{-1}}$.
+
+Когда ${f({\bf{X}}; {\bf{\alpha}})}$ задана выражением \ref{eq:clrb_pdf}, элементы матрицы ${J}$ могут быть получены с использованием следующего соотношения:
+\begin{center}
+\begin{equation}
+	\label{eq:crlb_Jij_full}
+	J_{ij} = \frac{1}{\sigma^2} \sum_{n=0}^{N-1} \left[ \frac{\partial \mu_n}{\partial \alpha_i} \frac{\partial \mu_n}{\partial \alpha_j} + \frac{\partial \nu_n}{\partial \alpha_i} \frac{\partial \nu_n}{\partial \alpha_j} \right]
+\end{equation}
+\end{center}
+Индексы ${i}$ и ${j}$ относятся только к неизвестным параметрам ${\alpha}$.
+
+Наиболее общим случаем для всех параметров ${\alpha}$, матрица ${J}$ из \ref{eq:crlb_Jij_full} принимает вид:
+\begin{center}
+\begin{equation}
+	\label{eq:lpc_a_estimation}
+	J = \frac{1}{\sigma^2} =
+		\left[ \begin{array}{ccc}
+			A_0^2 T^2 (n_0^2 N + 2n_0P + Q) & 0 & A_0^2 T^2 (n_0 N + P) \\
+			0 & N & 0 \\
+			A_0^2 T^2 (n_0 N + P) & 0 & A_0^2N
+		\end{array} \right]
+\end{equation}
+\end{center}
+где
+\begin{center}
+\begin{eqnarray}
+	\label{eq:clrb_QP}
+	P & = & \sum_{n=0}^{N-1}n = \frac{N(N-1)}{2} \\
+	Q & = & \sum_{n=0}^{N-1}n^2 = \frac{N(N-1)(2N-1)}{6}
+\end{eqnarray}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	\label{eq:clrb_est_omega_1}
+	D(\hat{\omega}) \ge \frac{\sigma^2}{A_0^2 T^2 (n_0^2 N + 2n_0P + Q)}
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	\label{eq:clrb_est_omega_2}
+	D(\hat{\omega}) \ge \frac{12\sigma^2}{A_0^2 T^2N(N^2-1)}
+\end{equation}
+\end{center}
+
+\begin{center}
+\begin{equation}
+	\label{eq:clrb_est_b_1}
+	D(\hat{A}) \ge \frac{\sigma^2}{N}
+\end{equation}
+\end{center}
 
 \subsection{Выводы}
+В данном случае необходима стадия уточнения частоты. Следует отметить, что заданная точность может быть достигнута даже на сигнале с достаточно
+низким ОСШ при оценке АР-методом после уточнения АКФ – рисунок 8.
 
 \newpage
