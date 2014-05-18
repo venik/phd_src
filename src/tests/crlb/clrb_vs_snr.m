@@ -6,7 +6,7 @@ sigma = 1 ;
 Fd = 16.368e6 ;
 Delta = 1/Fd ;
 
-SNR_dB = -30:1:30 ;
+SNR_dB = -30:1:5 ;
 SNR_range = 10.^(SNR_dB ./ 10) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -54,15 +54,25 @@ load('../acf/acf_ar_sko_300000.mat')
 %plot(SNR_db, sqrt(b22_parameter))
 %    phd_figure_style(gcf) ;
 
+% cut high SNR, was read from the file
+SNR_dB = SNR_dB(1:36);
+
+% eq from
+% Single-Tone Parameter Estimation from Discrete-Time Observations
+% DAVID C. RIFE, ROBERT R. BOORSTYN
 %var_omega = 6 ./ (SNR3 .* N * (N^2-1)) ;
 var_omega = 12 ./ (SNR3 .* N * (N^2-1)) ;
 
 figure(1)
 hold off, semilogy(SNR_dB, sqrt(var_omega), '-mx')
-hold on, semilogy(SNR_dB, freq1, '-go', SNR_dB, freq2, '-b*', SNR_dB, freq3, '-r+') ,
-    legend('Граница Крамера-Рао', '1 итерация','2 итерации','3 итерации') ,
+hold on,  semilogy(  SNR_dB, freq1(1:length(SNR_dB)), '-go', ...
+                    SNR_dB, freq2(1:length(SNR_dB)), '-b*', ...
+                    SNR_dB, freq3(1:length(SNR_dB)), '-r+') ,
+    %legend('Граница Крамера-Рао', '1 итерация','2 итерации','3 итерации') ,
+    legend('Граница Крамера-Рао', '1 итерация','2 итерации','3 итерации')
     xlabel('ОСШ, дБ') ,
     ylabel('Гц') ,
+    xlim([SNR_dB(1) SNR_dB(end)])
     phd_figure_style(gcf) ;    
 
 
