@@ -1,4 +1,8 @@
-\input{thesis_default} % main tamplate
+\documentclass[a4paper,12pt]{report}
+
+%\input{thesis_default} % main tamplate
+\input{packages}		% Подключаемые пакеты
+\input{styles}			% Пользовательские стили
 
 \begin{document}
 \input{title_page} % это титульный лист
@@ -6,7 +10,7 @@
 
 \pagenumbering{arabic}
 \tableofcontents % это оглавление, которое генерируется автоматически
-\newpage
+\clearpage
 
 %\input{intro} % введение
 
@@ -14,51 +18,10 @@
 \input{definitions}		% definitions
 
 \input{intro}
-
 \input{sec1_new}
-
 \input{sec2_new}
-
 \input{sec3_new}
-
 \input{hw}
-
-% sec 1
-%\section{Глава 1. Постановка задачи оценки параметров сигнала с расширенным спектром.}
-%\label{sec1_acq_algo}
-%
-%\input{sec1_acq_algo}		% базовая постановка вопроса
-%
-%% detection 
-%\input{sec1_serial} 		%
-%\input{sec1_chaos}		%
-%\input{sec1_hos}		% Higher-order statistics
-%\input{sec1_dma}		%
-%
-%\input{sec1_2max}		%
-%\input{sec1_che}
-%
-%% noise
-%\input{sec1_noise_est}		% постановка вопроса оценки шума
-%
-%\section{Глава 2. Спектральный анализ на основе АР модели.}
-%\input{sec2_lpc}
-%\input{sec2_acf}
-%\input{sec2_crlb}
-%\input{sec3_crlb}
-%\input{sec2_conclusion}
-%
-%\section{Глава 3. Оценка параметров широкополосного сигнала на основе АР модели.}
-%\input{sec3_lpc}
-%\input{sec3_lpc_dma}
-%\input{sec3_patent}
-%\input{sec3_conclusion}
-%
-%\section{Глава 4. Имитационное моделирование.}
-%
-%\input{sec4_model}
-
-%\input{outro}
 
 \input{bibl} %
 \end{document}
