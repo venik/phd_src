@@ -1,0 +1,31 @@
+%%% Макет страницы %%%
+\geometry{a4paper,top=2cm,bottom=2cm,left=3cm,right=1cm}
+
+%%% Кодировки и шрифты %%%
+\renewcommand{\rmdefault}{ftm} % Включаем Times New Roman
+
+%%% Выравнивание и переносы %%%
+\sloppy					% Избавляемся от переполнений
+\clubpenalty=10000		% Запрещаем разрыв страницы после первой строки абзаца
+\widowpenalty=10000		% Запрещаем разрыв страницы после последней строки абзаца
+
+%%% Библиография %%%
+\makeatletter
+\bibliographystyle{utf8gost705u}	% Оформляем библиографию в соответствии с ГОСТ 7.0.5
+\renewcommand{\@biblabel}[1]{#1.}	% Заменяем библиографию с квадратных скобок на точку:
+\makeatother
+
+%%% Изображения %%%
+\graphicspath{{../images/}} %путь к рисункам
+
+%%% Цвета гиперссылок %%%
+\definecolor{linkcolor}{rgb}{0.9,0,0}
+\definecolor{citecolor}{rgb}{0,0.6,0}
+\definecolor{urlcolor}{rgb}{0,0,1}
+\hypersetup{
+    colorlinks, linkcolor={linkcolor},
+    citecolor={citecolor}, urlcolor={urlcolor}
+}
+
+%%% Оглавление %%%
+\renewcommand{\cftchapdotsep}{\cftdotsep}
