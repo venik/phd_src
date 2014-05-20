@@ -49,4 +49,4 @@ thesis_ps: ${THESIS_ALL}
 .PHONY: clean
 
 clean:
-	rm -f *.log *.aux *.toc *.pdf *.dvi *.bbl *.blg
+	rm -f *.log *.aux *.toc *.pdf *.dvi *.bbl *.blg *.out
