@@ -12,7 +12,7 @@ fs = 16.368e6 ;
 f1 = 4.092e6;
 f2 = 4.095e6;
 a1 = 1 ;
-a2 = 1:-0.05:0.1 ;
+a2 = 1:-0.025:0.1 ;
 sigma = 0 ;
 tau_s2 = 2400 ;
 tau = 64 ;
@@ -82,18 +82,21 @@ end % kk=1:length(a2)
 base_line = repmat(7, 1, length(res_a1a2));
 a2_dB = 10*log10(a2./a1) ;
 
-figure(1), plot(a2_dB, match, '-kx')
-    xlabel('A1/A2 дБ', 'FontSize', 18)  
-
+figure(1),
+    semilogy(a2_dB, 1 - match, '-kx'),
+    ylabel('Вероятность ошибки'),
+    xlabel('ОСШ дБ', 'FontSize', 18),
+    phd_figure_style(gcf) ;
 
 figure(2)
-plot(a2_dB, res_a1a2, '-kx', a2_dB, base_line, '-ko'),
-    h_legend = legend('1', '2', 'FontSize', 18) ;
+semilogy(a2_dB, res_a1a2, '-kx', a2_dB, base_line, '-ko'),
+    h_legend = legend('1', '2') ;
     set(h_legend, 'FontSize', 18),
-    xlabel('A1/A2 дБ', 'FontSize', 18)
-    ylabel('Макс/СКО дБ', 'FontSize', 18)
+    xlabel('ОСШ дБ', 'FontSize', 18),
+    ylabel('Макс/СКО дБ', 'FontSize', 18),
+    phd_figure_style(gcf) ;
 
 %plot(res)
 
 % remove model path
-rmpath(modelPath) ;
+%rmpath(modelPath) ;
