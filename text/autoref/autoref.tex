@@ -1,11 +1,32 @@
 %\input{autoref_default} % main tamplate
 
-\documentclass[a4paper,12pt]{report}
+\documentclass[a4paper,14pt]{report}
 \input{../thesis/packages}		% Подключаемые пакеты
 \input{../thesis/styles}			% Пользовательские стили
 
 % одинарный интервал
 %\renewcommand{\baselinestretch}{1}
+%\usepackage{etoolbox}
+%\makeatletter
+%\preto{\@tabular}{\parskip=0pt}
+%\makeatother
+%\setlength{\textfloatsep}{0.1cm}
+
+%\addtolength{\parskip}{-0.5mm}
+%\setlength{\parskip}{\baselineskip}
+
+% убрать расстояние между параграфами
+\setlength{\parskip}{0pt}
+
+% убрать расстояние внутри списков
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, topsep=0pt}
+\setlist[enumerate]{noitemsep, topsep=0pt}
+
+%\usepackage{fancyhdr}
+%\pagestyle{fancy}
+%\fancyhf{}
+%\fancyfoot[LE,RO]{\thepage}
 
 \begin{document}
 \input{general}

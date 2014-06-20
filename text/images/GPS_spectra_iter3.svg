@@ -15,10 +15,10 @@
    width="600"
    height="451.25"
    xml:space="preserve"
-   sodipodi:docname="GPS_spectra_iter3.eps"><metadata
+   sodipodi:docname="GPS_spectra_iter3.svg"><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
      id="defs6"><clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath18"><path
@@ -40,17 +40,17 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1280"
-     inkscape:window-height="976"
+     inkscape:window-width="1600"
+     inkscape:window-height="852"
      id="namedview4"
      showgrid="false"
      inkscape:zoom="1.0459834"
      inkscape:cx="52.271794"
      inkscape:cy="185.09105"
-     inkscape:window-x="1280"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g10" /><g
+     inkscape:current-layer="g12" /><g
      id="g10"
      inkscape:groupmode="layer"
      inkscape:label="ink_ext_XXXXXX"
@@ -419,22 +419,22 @@
                  x="38.68306"
                  sodipodi:role="line"
                  id="tspan264"
-                 y="-6.25">Нормализованная частота </tspan></text>
+                 y="-6.25">                     Нормированная частота </tspan></text>
 <text
                transform="matrix(1,0,0,-1,294.667,6.25)"
                id="text266"><tspan
-                 style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Symbol;font-variant:normal;font-weight:normal;font-size:18;writing-mode:lr;-inkscape-font-specification:Symbol"
+                 style="font-size:18px;font-variant:normal;font-weight:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Symbol;-inkscape-font-specification:Symbol"
                  x="0"
                  y="0"
-                 id="tspan268">π</tspan></text>
+                 id="tspan268" /></text>
 <text
                transform="matrix(1,0,0,-1,304.5002,6.25)"
                id="text270"><tspan
                  style="font-size:18px;font-variant:normal;font-weight:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Helvetica;-inkscape-font-specification:Helvetica"
-                 x="0 5.0040002 10.998 21.006001 31.014"
+                 x="0"
                  y="0"
                  sodipodi:role="line"
-                 id="tspan272">/rad/отсчет</tspan></text>
+                 id="tspan272" /></text>
 <text
                transform="matrix(0,1,1,0,20.4168,177.75)"
                id="text274"><tspan
