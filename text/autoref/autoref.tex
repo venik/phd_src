@@ -4,6 +4,17 @@
 \input{../thesis/packages}		% Подключаемые пакеты
 \input{../thesis/styles}			% Пользовательские стили
 
+\newcommand{\changefont}{%
+    \fontsize{14pt}{14pt}\selectfont
+}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[LE,RO]{\changefont \thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
 % одинарный интервал
 %\renewcommand{\baselinestretch}{1}
 %\usepackage{etoolbox}
