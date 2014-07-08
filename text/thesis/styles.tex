@@ -1,5 +1,5 @@
 %%% Макет страницы %%%
-\geometry{a4paper,top=2cm,bottom=2cm,left=3cm,right=1cm}
+\geometry{asymmetric,a4paper,top=2cm,bottom=2cm,left=3.5cm,right=1cm}
 
 %%% Кодировки и шрифты %%%
 \renewcommand{\rmdefault}{ftm} % Включаем Times New Roman
@@ -29,3 +29,43 @@
 
 %%% Оглавление %%%
 \renewcommand{\cftchapdotsep}{\cftdotsep}
+\addtocontents{toc}{~\hfill{Стр.}\par}			% добавить Стр. над номерами страниц
+\setcounter{tocdepth}{1}
+
+\titleformat{\chapter}[hang]{\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\bfseries}
+\titleformat{\section}[hang]{\bfseries}{\thesection\hsp\textcolor{gray75}{|}\hsp}{0pt}{\bfseries}
+
+%\titlecontents*{chapter}
+%[0.0cm]             % left margin
+%{\vspace{0.0cm}}                  % above code
+%{\bf{%                  % numbered format
+%{Глава \thecontentslabel. }%
+%}}%
+%{\bf{
+%\\}}         % unnumbered format
+%{\dotfill \thecontentspage}
+%
+%\titlecontents{section}
+%[1.0cm]             % left margin
+%{}                  % above code
+%{%                  % numbered format
+%{\thecontentslabel. }%
+%}%
+%{}         % unnumbered format
+%{\dotfill \thecontentspage}
+
+
+% шрифты
+\usepackage{sectsty}
+%\chapterfont{\fontsize{0.7em}{0.7em}\selectfont}
+
+\partfont{\Large}
+\chapterfont{\Large}
+\sectionfont{\Large}
+\subsectionfont{\Large}
+\subsubsectionfont{\Large}
+
+\abovedisplayskip=12pt plus 3pt minus 9pt
+\abovedisplayshortskip=0pt plus 3pt
+\belowdisplayskip=12pt plus 3pt minus 9pt
+\belowdisplayshortskip=7pt plus 3pt minus 4pt

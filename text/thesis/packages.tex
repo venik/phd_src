@@ -40,9 +40,27 @@
 
 %%% Оглавление %%%
 \usepackage{tocloft}
+\usepackage{titlesec}
+\usepackage{titletoc}
 
 %\usepackage{titlesec}
 %\titleformat{\chapter}{\large\bfseries}{\thesection}{1em}{}
 
-\usepackage{sectsty}
-\chapterfont{\fontsize{0.7em}{0.7em}\selectfont}
+
+% полуторный интервал
+\renewcommand{\baselinestretch}{1.5}
+
+% формат картинок
+
+\usepackage{float}
+\usepackage{caption}
+\captionsetup[figure]{labelsep=period}
+
+% формат списков
+\usepackage{enumerate}
+\renewcommand{\theenumi}{\arabic{enumi}.} % Меняем везде перечисления на цифра.цифра
+\renewcommand{\labelenumi}{\arabic{enumi}.} % Меняем везде перечисления на цифра.цифра
+\renewcommand{\theenumii}{\arabic{enumii}.} % Меняем везде перечисления на цифра.цифра
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}% Меняем везде перечисления на цифра.цифра
+\renewcommand{\theenumiii}{\arabic{enumiii}} % Меняем везде перечисления на цифра.цифра
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}% Меняем везде перечисления на цифра.цифра

@@ -1,4 +1,51 @@
-\input{autoref_default} % main tamplate
+%\input{autoref_default} % main tamplate
+
+\documentclass[a4paper,14pt]{report}
+\input{../thesis/packages}		% Подключаемые пакеты
+\input{../thesis/styles}			% Пользовательские стили
+
+\newcommand{\changefont}{%
+    \fontsize{14pt}{14pt}\selectfont
+}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[LE,RO]{\changefont \thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% одинарный интервал
+%\renewcommand{\baselinestretch}{1}
+%\usepackage{etoolbox}
+%\makeatletter
+%\preto{\@tabular}{\parskip=0pt}
+%\makeatother
+%\setlength{\textfloatsep}{0.1cm}
+
+%\addtolength{\parskip}{-0.5mm}
+%\setlength{\parskip}{\baselineskip}
+
+% убрать расстояние между параграфами
+\setlength{\parskip}{0pt}
+
+% убрать расстояние внутри списков
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, topsep=0pt}
+\setlist[enumerate]{noitemsep, topsep=0pt}
+
+\usepackage{caption} \captionsetup[table]{justification=raggedleft,singlelinecheck=off}
+
+%\captionsetup{labelsep=space,justification=justified,singlelinecheck=off}
+
+% удалить место до и после longtable
+%\setlength{\LTpre}{0pt}
+%\setlength{\LTpost}{0pt}
+
+%\usepackage{fancyhdr}
+%\pagestyle{fancy}
+%\fancyhf{}
+%\fancyfoot[LE,RO]{\thepage}
 
 \begin{document}
 \input{general}
