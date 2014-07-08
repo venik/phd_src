@@ -25,8 +25,7 @@ DATE = `date +%d.%m.%y`
 STR = "s/{..\...\...}/{$(DATE)}/"
 
 thesis: ${THESIS_ALL}
-	@sed -i $(STR) title_page.tex
-	${TEX2DVI} ${TEX_FLAGS} thesis.tex
+	${TEX2DVI} ${TEX_FLAGS} thesis.tex -o Nikiforov_$(DATE).pdf
 
 sec1: $(SEC1)
 	${TEX2DVI} ${TEX_FLAGS} sec1.tex
