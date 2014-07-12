@@ -9,18 +9,30 @@ addpath(modelPath) ;
 % test for estimate how much FFT length we should use to
 % have best precision (saturated) vs best performance 
 
+<<<<<<< HEAD
 num_of_tests = 10000 ;
 N = 16368 ;
 
 A = 1 ; E = A^2 / 2 ;
 SNR_dB = -30:5 ;
+=======
+num_of_tests = 100 ;
+N = 16368 ;
+
+A = 1 ; E = A^2 / 2 ;
+SNR_dB = -10:5 ;
+>>>>>>> 9fcf49c9eb817e6bd6259703e343f76f37419bf0
 SNR = E ./ 10.^(SNR_dB ./ 10) ; 
 
 fd = 16.368e6 ;
 f_base = 4.092e6 ;
 f_doppler = 5e3 ;
 
+<<<<<<< HEAD
 FFT_lengths = [16368, 16368*2, 16368*3, 16368*4, 16368*5, 16368*6, 16368*7] ;
+=======
+FFT_lengths = [16368, 16368*2, 16368*3, 16368*4, 16368*5, 16368*6, 16368*6] ;
+>>>>>>> 9fcf49c9eb817e6bd6259703e343f76f37419bf0
 FFT_length = numel(FFT_lengths) ;
 
 freq = zeros(FFT_length, length(SNR_dB)) ;

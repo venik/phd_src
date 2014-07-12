@@ -9,23 +9,18 @@
 Особенностью данного алгоритма является то, что он позволяет свести перебор в двумерной области неопределенности:
 промежуточная частота, фаза ПСП к перебору только по фазе ПСП.
 Пусть входная смесь представлена выражением \ref{eq:unknown}, а количество источников ${N}$ равно двум. Тогда выражение \ref{eq:unknown} можно переписать в виде:
-\begin{center}
 \begin{equation}
 	\label{eq:dma_cdma_for_2}
 	x(m) =	A_1 g_1(m + \tau_1) exp \left[ j \left( \tilde{\omega_1} m + \phi_1 (m) \right) \right]
 		+ A_2 g_2(t + \tau_2) exp \left[ j \left(  \tilde{\omega_2} m + \phi_2 (m) \right) \right] + n(m) 
 \end{equation}
-\end{center}
 
 Следуя алгоритму DMA, необходимо умножить входную смесь на задержанную копию:
-\begin{center}
 \begin{equation}
 	\label{eq:dma_cdma_1}
 	xx(m) = x(m)x(m+\tau)^*,
 \end{equation}
-\end{center}
 где ${*}$ - операция комплексного сопряжения, ${\tau}$ - задержка между копиями смеси. Подставляя \ref{eq:dma_cdma_for_2} в \ref{eq:dma_cdma_1} получается выражение:
-\begin{center}
 \begin{eqnarray}
 	\label{eq:dma_cdma_2}
 	x(m) & = &[ A_1 g_1(m + \tau_1) exp \left[ j \left( \tilde{\omega_1} m + \phi_1 (m) \right) \right] + \nonumber \\
@@ -33,30 +28,24 @@
 	     & + & [A_1 g_1(m + \tau + \tau_1) exp \left[ j \left( \tilde{\omega_1} (m + \tau) + \phi_1 (m + \tau) \right) \right]  + \nonumber \\
 	     & + & A_2 g_2(m + \tau + \tau_2) exp \left[ j \left(  \tilde{\omega_2} (m + \tau) + \phi_2 (m + \tau) \right) \right] + n(m + \tau)]^*
 \end{eqnarray}
-\end{center}
 
 В выражении \ref{eq:dma_cdma_2} полезным слагаемым является:
-\begin{center}
 \begin{equation}
 	\label{eq:dma_cdma_3}
 	xx_{sig}(m) = A^2_1 g_{11}(m) exp[j (\tilde {\omega_1} \tau)],
 \end{equation}
-\end{center}
 где ${g_{11}(m)}$ - новая ПСП (структура новых ПСП поясняется ниже). 
 
 Интерференционные помехи, не содержащие полезный сигнал, могут быть представлены как:
-\begin{center}
 \begin{eqnarray}
 	\label{eq:dma_cdma_4}
 	xx_{intf}(m) & = & A_{12} g_{12}(m) exp \left[ j \left( \tilde{\omega_1} m - \tilde{\omega_2}(m + \tau) + \phi_{12} (m) \right) \right] + \nonumber \\
 		& + & A_{21} g_{12}(m) exp \left[ j \left( \tilde{\omega_2} m - \tilde{\omega_1}(m + \tau) + \phi_{21} (m) \right) \right] + \nonumber \\
 		& + & A^2_2 g_{22}(m) exp[j (\tilde {\omega_2} \tau)],
 \end{eqnarray}
-\end{center}
 где ${A_{12}=A_1 A_2}$, ${g_{12}(m)=g(m+\tau+1)g_2(m+\tau_2+\tau)}$, а ${g_{21} = g_2(m+\tau_2)g_1(m+\tau_1+\tau)}$, а ${g_{22}(m)}$ - новая ПСП для источника сигнала 2.
 
 Также появляются новые шумовые компоненты:
-\begin{center}
 \begin{eqnarray}
 	\label{eq:dma_cdma_5}
 	xx_{noise}(m) & = & A_{1} g_{1}(m + \tau_1) exp \left[ j \left( \tilde{\omega_1} m + \phi_{1} (m) \right) \right] n(m + \tau) + \nonumber \\
@@ -65,15 +54,12 @@
 		& + & n(m)A_{2} g_{2}(m + \tau_2 + \tau) exp \left[ j \left( \tilde{\omega_2} (m + \tau) + \phi_{2} (m + \tau) \right) \right] + \nonumber \\
 		& + & n(m)n(m+\tau)
 \end{eqnarray}
-\end{center}
 
 Таким образом \ref{eq:dma_cdma_2} можно переписать как смесь:
-\begin{center}
 \begin{equation}
 	\label{eq:dma_cdma_6}
 	xx(m) = xx_{sig}(m) + xx_{intf}(m) + xx_{noise}(m)
 \end{equation}
-\end{center}
 
 %%%%%%%%%%%%5
 \subsection{Алгоритм DMA для одноквадратурного сигнала}
@@ -84,28 +70,22 @@
 Так же можно специальным образом выбирать ${\tau}$.
 
 При оценке фазы ПСП в одноквадратурном приемнике возникают дополнительные сложности. Рассмотрим смесь, полученную одноквадратурным приемником:
-\begin{center}
 \begin{equation}
 	\label{eq:dma_real1}
 	s(m) = g(m) \sin{(2\pi fm)}
 \end{equation}
-\end{center}
 
 Задержанная версия может быть соответственно описана как:
-\begin{center}
 \begin{equation}
 	\label{eq:dma_real2}
 	s(m - \tau) = g(m - \tau) \sin{\left[2\pi f(m-\tau)\right]}
 \end{equation}
-\end{center}
 
 Произведение выражений \ref{eq:dma_real1} и \ref{eq:dma_real2} равно \cite{tsui}:
-\begin{center}
 \begin{equation}
 	\label{eq:dma_real3}
 	s(m)s(m - \tau) = \frac{g(m)}{2} \left(\cos (2\pi f \tau) - \cos \left[2 \pi f (2m - \tau)\right]\right)
 \end{equation}
-\end{center}
 
 В выражении \ref{eq:dma_real3} 2 компоненты: постоянная и высокочастотная. Высокочастотная компонента
 может быть отфильтрована ФНЧ. Задержку ${\tau}$ необходимо выбирать исходя из компоненты ${\left| \cos (2\pi f \tau) \right|}$,
@@ -117,11 +97,9 @@
 преобразования Гильберта требуются дополнительные вычислительные затраты, а в формуле \ref{eq:dma_real3}, так
 как ${\tau}$ заранее выбранная константа (${f\tau \approx 1}$), допплеровское смещение частоты будет снижать мощность
 сигнала \ref{eq:dma_real3}, т.е.
-\begin{center}
 \begin{equation}
 	\left| \cos (2\pi f \tau) \right| \ge \left| \cos (2\pi (f - f_d) \tau) \right|
 \end{equation}
-\end{center}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Алгоритм оценки параметров ШПС в условиях интерференции}
@@ -134,7 +112,7 @@
 
 Данный алгоритм был предложен автором на конференции \cite{my_dma_ar}, а так же с некоторыми доработками в \cite{my_otchet}.
 
-Схематично алгоритм изображен на рисунке \ref{pic4:dma_quadruple_lpc}
+Схематично алгоритм изображен на Рис. \ref{pic4:dma_quadruple_lpc}
 
 \begin{figure}[h]
 \center\scalebox{1}{\includegraphics[width=1\linewidth]{dma_quadruple_lpc.eps}}
@@ -154,33 +132,24 @@
 \item[Шаг 1.] Входная смесь ${x(k)}$ умножается на задержанную копию ${x(k-\tau)}$. Так же
 	на данном шаге можно производить когерентное накопление результата, для
 	увеличения ОСШ.
-
-	\begin{center}
 	\begin{equation}
 		%\label{}
 		x_{new}(k) = \frac{g_{new}(k)}{2} \left(\cos (2\pi f \tau) - \cos \left[2 \pi f (2t - \tau)\right]\right)
 	\end{equation}
-	\end{center}
 
 \item[Шаг 2.] Полученная смесь ${x_{new}(k)}$ фильтруется ФВЧ для отсечения высокочастотной компоненты.
 \item[Шаг 3.] Генерируется локальная ПСП ${g(k)}$ и умножается на задержанную копию ${g(k-\tau)}$.
-
-	\begin{center}
 	\begin{equation}
 		%\label{}
 		g_{new}(k) = g(k)g(k-\tau)
 	\end{equation}
-	\end{center}
 
 \item[Шаг 4.] Отфильтрованная смесь ${x_{filt}(k)}$ коррелируется с новой ПСП ${g_{new}(k)}$
 	с использованием БПФ. Выход коррелятора сравнивается с заранее определенным порогом.
-
-	\begin{center}
 	\begin{equation}
 		%\label{}
 		x_{filt}(k) = \frac{g_{new}(k)}{2} \cos (2\pi f \tau)
 	\end{equation}
-	\end{center}
 
 	\subitem{\bf{Если}}  значение оказалось больше порогового {\bf{то}},
 		принимается решение о наличии сигнала. Полученное значение фазы ПСП  - ${m}$ запоминается.
@@ -198,41 +167,32 @@
 Количество умножений требуемых для оценки частоты одного источника при помощи алгоритма Delay and Multiply Approach и АР-модели:
 \begin{enumerate}
 \item Алгоритм DMA:
-	\begin{center}
 	\begin{equation}
 		%\label{}
 		OP_{DMA} = 8NlogN + 6N
 	\end{equation}
-	\end{center}
 \item Усовершенствованный итеративный алгоритм получения АКФ:
-	\begin{center}
 	\begin{equation}
 		%\label{}
 		OP_{ACF} = 8NlogN + (k+2)N
 	\end{equation}
-	\end{center}
 \item Оценка параметра АР-методом:
 	\subitem Обращение АКФ матрицы 2x2 элементов требует: 5 умножений, 1 обращение и 1 сложение;
 	\subitem Вычисление параметров АР-модели: 4 умножения, 2 сложения;
 	\subitem Вычисление полюсов передаточной функции АР-модели: 2 умножения, 3 сложения, 1 операция извлечения корня.
-
-	\begin{center}
 	\begin{equation}
 		%\label{}
 		OP_{AR} = 51
 	\end{equation}
-	\end{center}
 \end{enumerate}
 
 Следует отметить, что в пункте 3 произведены допущения: стоимость 1 операции деления равна 10 операциям умножения, стоимость операции извлечения
 корня составляет 20 операций умножения, стоимость сложения не учитывается.
 Общее количество умножений для оценки частоты при помощи развиваемого подхода при учете трех итераций уточнения АКФ:
-\begin{center}
 \begin{equation}
 	%\label{}
 	OP_{DMA\_ACF\_AR} = 16NlogN + 11N
 \end{equation}
-\end{center}
 
 %%%%%%%%%%%%%%
 \section{Сравнительный анализ с параллельным коррелятором}
@@ -242,22 +202,18 @@
 Широкая шумовая полоса позволяет системе ФАПЧ быстро войти в синхронизм, но также ведет к существенному ухудшению характеристик системы ФАПЧ за счет возрастания уровня теплового шума. 
 
 Область синхронизации частоты, в пределах которой не обеспечивается срыв синхронизации, определяется как \cite{spilker-book}:
-\begin{center}
 \begin{equation}
 	\label{eq:pll_omega_m}
 	\Delta \omega_m \approx 2 \omega_n (\zeta+0.6),
 \end{equation}
-\end{center}
 где ${\omega_n}$ - собственная частота системы ФАПЧ, ${\zeta}$ - коэффициент демпфирования(${\zeta > 0.3}$).
 
 Примем ${\zeta = 0.707}$. Данное значение   близко к оптимальному \cite{tsui, spilker-book}, тогда ${\Delta \omega_m = 2.614 \omega_n}$.
 Собственная частота системы ФАПЧ вычисляется по формуле:
-\begin{center}
 \begin{equation}
 	\label{eq:pll_omega_n}
 	\omega_n = \frac{8 \zeta B_L}{4 \zeta^2 + 1},
 \end{equation}
-\end{center}
 где ${B_L}$ - шумовая полоса.
 
 Традиционный подход к оценке параметров широкополосного сигнала предусматривает корреляцию входной смеси и набора локальных копий сигнала шагом 1 кГц.
@@ -266,7 +222,7 @@
 Для наземных приемников типовое значение ${B_L=20}$ Гц \cite{tsui}. Область синхронизации из выражений \ref{eq:pll_omega_m} и \ref{eq:pll_omega_n}
 ${\Delta \omega_m = 100}$ рад/с (примерно 16 Гц). В виду того, что требуемая точность оценки не может быть получена с использованием стандартного шага в 1 кГц,
 а использование более мелкого шага ведет к расходованию ресурсов, как уже было отмечено, требуется стадия уточнения частоты.
-Схема традиционного приемника изображена на рисунке \ref{pic:corr_scheme}.
+Схема традиционного приемника изображена на Рис. \ref{pic:corr_scheme}.
 \begin{figure}[h]
 	\center\scalebox{1}{\includegraphics[width=1\linewidth]{corr_scheme.eps}}
 	\caption{Схема традиционного приемника.}
@@ -280,13 +236,10 @@ ${\Delta \omega_m = 100}$ рад/с (примерно 16 Гц). В виду то
 \item ${N}$ - обратное преобразование Фурье.
 \item ${4NlogN}$ - действительных умножений – обратное преобразование Фурье. 
 \end{enumerate}
-
-\begin{center}
 \begin{equation}
 	\label{eq:op_fft}
 	OP_{FFT} = NlogN + 11(N + NlogN) = 12NlogN + 11N
 \end{equation}
-\end{center}
 
 Алгоритм уточнения частоты описан в \cite{tsui}. Данный алгоритм основан на усреднении фазы и требует дополнительной оперативной памяти (ОЗУ) приемника для
 хранения 5 миллисекунд данных при обработке одного источника. Оперативная память потребляет значительное количество энергии, поэтому снижение количества
@@ -299,21 +252,16 @@ ${\Delta \omega_m = 100}$ рад/с (примерно 16 Гц). В виду то
 \item Повышение точности до 400 Гц: ${6N}$ умножений;
 \item Вычисление ДПФ в частотной позиции на длине: ${10N}$ умножений.
 \end{enumerate}
-
-\begin{center}
 \begin{equation}
 	\label{eq:op_fine}
 	OP_{FINE} = 21N
 \end{equation}
-\end{center}
 
 Общее количество операций умножения (количество операций комплексного умножения необходимо домножить на 4):  .
-\begin{center}
 \begin{equation}
 	\label{eq:op_fine_fft}
 	OP_{FFT\_FINE} = 48NlogN + 65N
 \end{equation}
-\end{center}
 
 %%%%%%%%%%%%%%%%
 \section{Сравнение точности оценки частоты с границей Крамера-Рао}
@@ -324,12 +272,10 @@ ${\Delta \omega_m = 100}$ рад/с (примерно 16 Гц). В виду то
 
 Если рассматривать класс всевозможных оценок ${\hat{\theta}}$ оцениваемого скалярного параметра ${\theta}$, от которого зависит ПРВ ${f(X; \theta)}$
 исследуемой совокупности. Обозначим
-\begin{center}
 \begin{equation}
 	\label{eq:clrb_mean}
 	{\bf{E}} \hat{\theta} = \int \hat{\theta} (X_1, ..., X_n)L(X_1, ..., X_n; \theta) dX_1 ... dX_n= \theta + b_{\hat{\theta}}(\theta),
 \end{equation}
-\end{center}
 ${b_{\hat{\theta}}(\theta)}$ дает смещение оценки ${\theta}$.
 
 В \cite{ayvazyan-book} приведено, что если  ПРВ ${f(X, \theta)}$  
@@ -341,12 +287,10 @@ ${b_{\hat{\theta}}(\theta)}$ дает смещение оценки ${\theta}$.
 \end{enumerate}
 
 Тогда для любой оценки ${\hat{\theta}}$ оцениваемого параметра ${\theta}$ может быть записано неравенство:
-\begin{center}
 \begin{equation}
 	\label{eq:crlb_base3}
 	E(\hat{\theta} - \theta) \ge \frac{(1 + \frac{d b_{\hat{\theta}} (\theta)}{d \theta})^2}{n E \left[ \left( \frac{d ln f(X; \theta)}{d \theta} \right)^2 \right]}
 \end{equation}
-\end{center}
 
 \subsection{Граница Крамера-Рао для оценки одной гармонической компоненты}
 В данной работе рассматривается оценка частоты одной гармонической компоненты. Поэтому целесообразно рассмотреть только данный случай. В статье \cite{rife-crlb-article}
@@ -354,56 +298,43 @@ ${b_{\hat{\theta}}(\theta)}$ дает смещение оценки ${\theta}$.
 
 Предположим один или несколько параметров сигнала неизвестны. Входная смесь представлена синфазной и квадратурной составляющими. Тогда совместная ПРВ ${\bf{X}}$
 при векторе неизвестных параметров ${\bf{\alpha}}$  может быть записана как:
-\begin{center}
 \begin{equation}
 	\label{eq:clrb_pdf}
 	f({\bf{X}}; {\bf{\alpha}}) = \left( \frac{1}{\sigma^2 2 \pi} \right)^N exp \left[ -\frac{1}{2\sigma^2} \sum_{n=0}^{N-1} (Re(x)-\mu_n)^2 + (Im(x) - \nu_n)^2 \right],
 \end{equation}
-\end{center}
 где
-\begin{center}
 \begin{eqnarray}
 	\label{eq:clrb_alpha}
 	{\bf{\alpha}} & = & [\omega, A, \theta]^T \\
 	\mu_n & = & A \cos{(\omega t + \theta)} \\
 	\nu_n & = & A \sin{(\omega t + \theta)}
 \end{eqnarray}
-\end{center}
 
 Несмещенная оценка Крамера-Рао состоит из диагональных элементов матрицы обратной к информационной матрице Фишера ${J}$, таких что
-\begin{center}
 \begin{equation}
 	\label{eq:crlb_Jij}
 	J_{ij} = E(H_{\alpha i} H_{\alpha j}) = -E(H_{\alpha i \alpha j}),
 \end{equation}
-\end{center}
 где математическое ожидание с учетом вектора ${\bf{X}}$:
-\begin{center}
 \begin{equation}
 	\label{eq:crlb_H}
 	H_{\alpha i} = \frac{\partial}{\partial \alpha_i} \log{f({\bf{X}}; {\bf{\alpha}})}
 \end{equation}
-\end{center}
 Граница задается как:
-\begin{center}
 \begin{equation}
 	\label{eq:crlb_var_alpha}
 	D(\hat{\alpha}_i) \ge J^{ii},
 \end{equation}
-\end{center}
 где ${\hat{\alpha}}$ - это оцениваемый параметр ${\alpha_i}$ и ${J^{ii}}$ - ${i}$-й диагональный элемент матрицы ${J^{-1}}$.
 
 Когда ${f({\bf{X}}; {\bf{\alpha}})}$ задана выражением \ref{eq:clrb_pdf}, элементы матрицы ${J}$ могут быть получены с использованием следующего соотношения:
-\begin{center}
 \begin{equation}
 	\label{eq:crlb_Jij_full}
 	J_{ij} = \frac{1}{\sigma^2} \sum_{n=0}^{N-1} \left[ \frac{\partial \mu_n}{\partial \alpha_i} \frac{\partial \mu_n}{\partial \alpha_j} + \frac{\partial \nu_n}{\partial \alpha_i} \frac{\partial \nu_n}{\partial \alpha_j} \right]
 \end{equation}
-\end{center}
 Индексы ${i}$ и ${j}$ относятся только к неизвестным параметрам ${\alpha}$.
 
 Наиболее общим случаем для всех параметров ${\alpha}$, матрица ${J}$ из \ref{eq:crlb_Jij_full} принимает вид:
-\begin{center}
 \begin{equation}
 	\label{eq:lpc_a_estimation}
 	J = \frac{1}{\sigma^2} =
@@ -413,59 +344,46 @@ ${b_{\hat{\theta}}(\theta)}$ дает смещение оценки ${\theta}$.
 			A_0^2 T^2 (n_0 N + P) & 0 & A_0^2N
 		\end{array} \right]
 \end{equation}
-\end{center}
 где
-\begin{center}
 \begin{eqnarray}
 	\label{eq:clrb_QP}
 	P & = & \sum_{n=0}^{N-1}n = \frac{N(N-1)}{2} \\
 	Q & = & \sum_{n=0}^{N-1}n^2 = \frac{N(N-1)(2N-1)}{6}
 \end{eqnarray}
-\end{center}
 
 Матрица ${J}$ может быть получена из \ref{eq:crlb_Jij_full} для всех возможных комбинаций. В случае если фаза известна матрица ${J}$ становится матрицей 2x2, после удаления третьей строки
 и третьего столбца.
 
 После получения обратной матрицы ${J}$, с учетом всех неизвестных параметров, можно получить следующие выражения.
 Для известной фазы и известной или неизвестной амплитуды:
-\begin{center}
 \begin{equation}
 	\label{eq:clrb_est_omega_1}
 	D(\hat{\omega}) \ge \frac{\sigma^2}{A_0^2 T^2 (n_0^2 N + 2n_0P + Q)}
 \end{equation}
-\end{center}
 
 Для неизвестной фазы и известной или неизвестной амплитуды:
-\begin{center}
 \begin{equation}
 	\label{eq:clrb_est_omega_2}
 	D(\hat{\omega}) \ge \frac{12\sigma^2}{A_0^2 T^2N(N^2-1)}
 \end{equation}
-\end{center}
 
 Для всех случаев:
-\begin{center}
 \begin{equation}
 	\label{eq:clrb_est_b_1}
 	D(\hat{A}) \ge \frac{\sigma^2}{N}
 \end{equation}
-\end{center}
 
 Для известной частоты и известной или неизвестной амплитуды:
-\begin{center}
 \begin{equation}
 	\label{eq:clrb_est_b_1}
 	D(\hat{\theta}) \ge \frac{\sigma^2}{A_0^2N}
 \end{equation}
-\end{center}
 
 Для неизвестной частоты и известной или неизвестной амплитуды:
-\begin{center}
 \begin{equation}
 	\label{eq:clrb_est_b_1}
 	D(\hat{\theta}) \ge \frac{12\sigma^2(n_0N + 2n_0P + Q)}{A_0^2N(N^2-1)}
 \end{equation}
-\end{center}
 
 \section{Сравнение предлагаемого алгоритма с границей Крамера-Рао}
 \begin{figure}[h]
@@ -474,14 +392,14 @@ ${b_{\hat{\theta}}(\theta)}$ дает смещение оценки ${\theta}$.
 	\label{pic:crlb_vs_algorithm}
 \end{figure}
 
-Из рисунка \ref{pic:crlb_vs_algorithm} видно, что используя итеративный алгоритм вычисления АКФ можно получить заданную точность
+Из Рис. \ref{pic:crlb_vs_algorithm} видно, что используя итеративный алгоритм вычисления АКФ можно получить заданную точность
 при ОСШ -13 дБ для 2 итераций и -20 дБ для 3 итераций. Моделирование проводилось на частоте кратной частоте дискретизации для
 того чтобы избежать эффектов растекания спектра. Данные эффекты можно частично компенсировать дополнением нулями в
 усовершенствованном итеративном алгоритме получения АКФ. Это было учтено при полунатурном моделировании.
 
 \section{Выводы}
 %В данном случае необходима стадия уточнения частоты. Следует отметить, что заданная точность может быть достигнута даже на сигнале с достаточно
-%низким ОСШ при оценке АР-методом после уточнения АКФ – рисунок 8.
+%низким ОСШ при оценке АР-методом после уточнения АКФ – .рисунок 8.
 
 В данной главе рассмотрен метод оценки параметров ШПС. Проведено сравнение с существующим методом оценки параметров СПИ с ШПС. На основании рассмотренного материала можно заключить:
 \begin{enumerate}
