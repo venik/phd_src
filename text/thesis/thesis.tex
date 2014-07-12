@@ -4,6 +4,16 @@
 \input{packages}		% Подключаемые пакеты
 \input{styles}			% Пользовательские стили
 
+% убрать расстояние между параграфами
+\setlength{\parskip}{0pt}
+
+% убрать расстояние внутри списков
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, topsep=0pt}
+\setlist[enumerate]{noitemsep, topsep=0pt}
+
+\usepackage{caption} \captionsetup[table]{justification=raggedleft,singlelinecheck=off}
+
 \begin{document}
 \input{title_page} % это титульный лист
 %\input{diplom_task}
