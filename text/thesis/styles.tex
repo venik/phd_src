@@ -57,13 +57,21 @@
 
 % шрифты
 \usepackage{sectsty}
-%\chapterfont{\fontsize{0.7em}{0.7em}\selectfont}
+\partfont{\fontsize{14pt}{14pt}\selectfont}
+\chapterfont{\fontsize{14pt}{14pt}\selectfont}
+\sectionfont{\fontsize{14pt}{14pt}\selectfont}
+\subsectionfont{\fontsize{14pt}{14pt}\selectfont}
+\subsubsectionfont{\fontsize{14pt}{14pt}\selectfont}
 
-\partfont{\Large}
-\chapterfont{\Large}
-\sectionfont{\Large}
-\subsectionfont{\Large}
-\subsubsectionfont{\Large}
+%\titlespacing\chapter{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+%\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+%\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+%\titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+\titlespacing{\chapter}{0pt}{\parskip}{-\parskip}
+\titlespacing{\section}{0pt}{\parskip}{-\parskip}
+\titlespacing{\subsection}{0pt}{\parskip}{-\parskip}
+\titlespacing{\subsubsection}{0pt}{\parskip}{-\parskip}
 
 \abovedisplayskip=12pt plus 3pt minus 9pt
 \abovedisplayshortskip=0pt plus 3pt
