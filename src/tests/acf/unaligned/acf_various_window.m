@@ -6,7 +6,7 @@ modelPath = pwd() ;
 cd( curPath ) ;
 addpath(modelPath) ;
 
-num_of_tests = 10 ;
+num_of_tests = 20 ;
 N = 16368 ;
 
 f_int = 4.087e6 ;   % 4.092e6 - 5e3 Hz - lowest Doppler freq
@@ -14,8 +14,7 @@ f_doppler = 11e3 ;  % +-5 kHz max Doppler shift
 
 % A = 1, E = 0.5
 A = 1 ; E = A^2 / 2 ;
-SNR_dB = -30:1:15 ;
-%SNR_dB = 90:100 ;
+SNR_dB = -30:1:5 ;
 
 pll_line = repmat(18, 1, length(SNR_dB)) ;
 
@@ -36,10 +35,11 @@ for jj=1:length(SNR_dB)
 
     for k=1:num_of_tests
 
-        fs = f_int + randi(f_doppler) ;
+        freq = f_int + randi(f_doppler, 1, 4) ;
+        fs = freq(1) ;
         
         ifsmp.vars = [E E E E] ;            % FIXME - can't be the same
-        ifsmp.fs = [fs, f_int + randi(2 * f_doppler), f_int + randi(2 * f_doppler), f_int + randi(2 * f_doppler)] ;
+        ifsmp.fs = [fs  freq(2)  freq(3)  freq(4)] ;
         ifsmp.fd = 16.368e6 ;
         ifsmp.delays = [100, 150, 230, 10] ;
     
@@ -56,7 +56,7 @@ for jj=1:length(SNR_dB)
         x_hann = x.*hann(length(x), 'periodic') ;
 
         % interpolation
-        fourier_length = 4*N ;
+        fourier_length = 4 * N ;
         
         X = fft(x, fourier_length) ;
         X_hamming = fft(x_hamming, fourier_length) ;
@@ -115,16 +115,16 @@ for jj=1:length(SNR_dB)
         hann_c = ar_model(ifft(XX_hann .^ power_3) / N) ;
 
         [pole, omega0, Hjw0] = get_ar_pole(c) ;
-        freq3(jj, 1) = freq3(jj, 1) + round((omega0*ifsmp.fd/2/pi - fs))^2 ;
+        freq3(jj, 1) = freq3(jj, 1) + (omega0*ifsmp.fd/2/pi - fs)^2 ;
 
         [hamming_pole, hamming_omega0, hamming_Hjw0] = get_ar_pole(hamming_c) ;
-        freq3(jj, 2) = freq3(jj, 2) + round((hamming_omega0*ifsmp.fd/2/pi - fs))^2 ;
+        freq3(jj, 2) = freq3(jj, 2) + (hamming_omega0*ifsmp.fd/2/pi - fs)^2 ;
         
         [hann_pole, hann_omega0, hann_Hjw0] = get_ar_pole(hann_c) ;
-        freq3(jj, 3) = freq3(jj, 3) + round((hann_omega0*ifsmp.fd/2/pi - fs))^2 ;
+        freq3(jj, 3) = freq3(jj, 3) + (hann_omega0*ifsmp.fd/2/pi - fs)^2 ;
 
         [blackman_pole, blackman_omega0, blackman_Hjw0] = get_ar_pole(blackman_c) ;
-        freq3(jj, 4) = freq3(jj, 4) + round((blackman_omega0*ifsmp.fd/2/pi - fs))^2 ;        
+        freq3(jj, 4) = freq3(jj, 4) + (blackman_omega0*ifsmp.fd/2/pi - fs)^2 ;        
 
     end ;
     
@@ -158,11 +158,13 @@ freq_plot = freq3 ;
 %         legend('Rect', 'Hamming', 'Blackman', 'Hann') ;
 %         phd_figure_style(gcf) ;          
 
+ save('acf_various_windows.mat', 'freq1', 'freq2', 'freq3');
+
     semilogy(SNR_dB, pll_line, '-m*', ...
             SNR_dB, freq_plot(:,1), '-go', SNR_dB, freq_plot(:,2), '-b*', ...
             SNR_dB, freq_plot(:,3), '-r+', SNR_dB, freq_plot(:,4), '-y+') ;        
         title('SKO') ,
-        legend('Rect', 'Hamming', 'Blackman', 'Hann') ;
+        legend('PLL line', 'Rect', 'Hamming', 'Blackman', 'Hann') ;
         phd_figure_style(gcf) ;
 
 % remove model path
