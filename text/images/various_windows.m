@@ -53,7 +53,7 @@ fig3 = figure(3) ;
     
 w_rect = ones(M,1) ;
 W_rect = abs(fft(w_rect(2:end-1), fft_length)) ;    
-    
+     
 fig4 = figure(4) ;
     subplot(1, 2, 1), plot(w_rect), xlim([1 M]), grid on;
     xlabel(sprintf('???????\n?)')) ; ylabel('?????????') ; 
