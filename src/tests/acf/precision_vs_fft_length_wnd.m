@@ -13,14 +13,14 @@ num_of_tests = 1000 ;
 N = 16368 ;
 
 A = 1 ; E = A^2 / 2 ;
-SNR_dB = 0 ;
+SNR_dB = -10 ;
 SNR = E / 10^(SNR_dB / 10) ; 
 
 fd = 16.368e6 ;
 f_base = 4.092e6 ;
 f_doppler = 5e3 ;
 
-FFT_length = 16 ;
+FFT_length = 13 ;
 
 freq = zeros(FFT_length, 4) ;
 
@@ -52,9 +52,9 @@ power_3 = 8 ;
             % plot(x(1:50)) ;
 
             % interpolation
-            fourier_length = N+(jj-1)*N/4 ;
+                fourier_length = N+(jj-1)*N/4 ;
 
-            X = fft(x, fourier_length) ;
+                X = fft(x, fourier_length) ;
             XX = X.*conj(X) ;
             c = ar_model(ifft(XX .^ power_3) / N) ;
             [pole, omega0, Hjw0] = get_ar_pole(c) ;
@@ -97,6 +97,7 @@ hold off, plot(1:0.25:FFT_length/4+0.75, freq(:,1),'b-') ;
 hold on, plot(1:0.25:FFT_length/4+0.75,freq(:,2),'r-') ;
 hold on, plot(1:0.25:FFT_length/4+0.75,freq(:,3),'m-') ;
 hold on, plot(1:0.25:FFT_length/4+0.75,freq(:,4),'k-') ;
+legend('square', 'hamming', 'blackman', 'hann');
 xlabel('FFT size, (xN)') ;
 grid on ;
 
