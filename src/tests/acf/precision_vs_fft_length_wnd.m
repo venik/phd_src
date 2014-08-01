@@ -13,7 +13,7 @@ num_of_tests = 1000 ;
 N = 16368 ;
 
 A = 1 ; E = A^2 / 2 ;
-SNR_dB = -10 ;
+SNR_dB = -20 ;
 SNR = E / 10^(SNR_dB / 10) ; 
 
 fd = 16.368e6 ;
