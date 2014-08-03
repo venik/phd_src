@@ -9,7 +9,7 @@ ms = 32 ;
 N = 16368 ;
 rays = 3 ;
 
-ifsmp.sats = 31 ;
+ifsmp.sats = 30 ;
 ifsmp.fd = 16.368e6 ;
 base_freq = 4.094e6 ;
 
@@ -107,8 +107,8 @@ for i = 0:5000
         kk_detected = kk_detected + 1 ;
         variance = variance + (freq - base_freq)^2 ;
     else
-        fprintf('sat: %02d freq: %03.05f pos=%d\n', ifsmp.sats(1), freq, pos) ;
-        pause;
+        %fprintf('sat: %02d freq: %03.05f pos=%d\n', ifsmp.sats(1), freq, pos) ;
+        %pause;
     end;
     
     kk = kk + 1;
