@@ -1,4 +1,4 @@
-clear all, clc, clf;
+clear all, clc;
 
 path_gnss = '../../../gnss/' ;
 path_model = '../../tsim/model/' ;
@@ -87,7 +87,7 @@ b = ar_model([rxx(1); rxx(2); rxx(3)]) ;
 [poles, omega0, Hjw0] = get_ar_pole(b) ;
 freq = ifsmp.fd * omega0 / (2*pi) ;
 
-fprintf('freq:%03.05f\n', freq);
+fprintf('freq: %03.05f\n', freq);
 
 %semilogy(abs(fft(rxx(1:N))))
 %    title(sprintf('ms: %d, ACF iteration: %d estimated freq: %.0f \n', ...

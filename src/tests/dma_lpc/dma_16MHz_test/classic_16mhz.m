@@ -33,10 +33,10 @@ fd= 16.368e6;		% 16.368 MHz
 debug_me = 0;
 time_offs = 100;
 
-%fs = 4.092e6-5e3 : 1e3 : 4.092e6+5e3 ;		% sampling rate 4.092 MHz
-%PRN = 1:32 ;
-fs = 4.09193734691e6;
-PRN = 31 ;
+fs = 4.092e6-5e3 : 1e3 : 4.092e6+5e3 ;		% sampling rate 4.092 MHz
+PRN = 1:32 ;
+%fs = 4.09193734691e6;
+%PRN = 31 ;
 
 model = 0;				% is it the model?
 
