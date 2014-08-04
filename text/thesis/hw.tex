@@ -229,6 +229,40 @@ MAX2769 компании Maxim Semiconducter, модуль захвата дан
 	\label{eq:sec4_stratonovich_3}
 \end{eqnarray}
 
+В случае когда принимаемый сигнал модулирован оп закону 2-ФМ, когда параметра ${\alpha}$ принимает два дискретных значения 0 и 1,
+функция Стратоновича записывается как \cite{shahtarin-wiener-kalman}:
+\begin{equation}
+	F_1(t, \varphi) = \frac{2A}{N_0}x(t) \cos (\omega_0 t + \varphi) = -F_2(t, \varphi)
+	\label{eq:sec4_stratonovich_bpsk}
+\end{equation}
+
+Сигналы ${s_1(t)}$ и ${s_2(t)}$ определяются равенством: 
+\begin{equation}
+	s_1(t, \varphi) = -s_2(t, \varphi) = A \cos \left[ \omega_0 t \varphi(t) \right].
+	\label{eq:sec4_s1_s2}
+\end{equation}
+
+В данном случае:
+\begin{eqnarray}
+	F_1' + F_2' & = & 0; \nonumber \\
+	F_1'' + F_2'' & = & 0; \nonumber \\
+	F_1 - F_2 & = & 2F_1 = \frac{4A}{N_0}x(t) \cos(\omega_0 t + \hat{\varphi}); \nonumber \\
+	F_1' - F_2' & = & 2F_1' = -\frac{4A}{N_0}x(t) \sin(\omega_0 t + \hat{\varphi}); \nonumber \\
+	F_1'' - F_2'' & = & 2F_1'' = -\frac{4A}{N_0}x(t) \cos(\omega_0 t + \hat{\varphi}) = -2F_1. \nonumber \\
+	\label{eq:sec4_strat_der}
+\end{eqnarray}
+
+При ${\nu = \mu = \frac{1}{2}}$ выражения \ref{eq:sec4_stratonovich_3} принимают вид:
+\begin{eqnarray}
+	\frac{d \hat{\varphi}}{dt} + \frac{2A}{N_0} \sigma_{\hat{\varphi}}^2 z x(t) \sin (\omega_0 t + \hat{\varphi}) & = & 0; \nonumber \\
+	\frac{d \hat{\varphi}^2}{dt} = \frac{1}{2} N_{\varphi} - \sigma_{\hat{\varphi}}^4 z \frac{2A}{N_0} x(t) \cos(\omega_0 t + \hat{\varphi}) & = & \frac{1}{2}N_{\varphi} - \sigma_{\hat{\varphi}}^4 zF_1(t, \hat{\varphi}); \nonumber \\
+	\frac{dz}{dt} = -z + (1 - z^2) \left( 1 - \frac{1}{2} \sigma_{\hat{\varphi}}^2 \right) x(t) \cos(\omega_0 t + \hat{\varphi}) & = & \nonumber \\
+		 = -z + (1 - z^2) \left( 1 - \frac{1}{2} \sigma_{\hat{\varphi}}^2 \right) F_1(t, \hat{\varphi}), & &
+	\label{eq:sec4_strat_der111}
+\end{eqnarray}
+в тоже время ${1 - z^2 \ge 0}$.
+
+
 %%%
 В качестве алгоритма оценки фазы ПСП использовался
 рассмотренный алгоритм DMA, оценка частоты проводилась при помощи алгоритма основанного на применении авторегрессионной модели (АР).
