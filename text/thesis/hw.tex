@@ -169,7 +169,7 @@ MAX2769 компании Maxim Semiconducter, модуль захвата дан
 
 Входная смесь, содержащая 2-ФМ сигнал, может быть представлена в виде:
 \begin{equation}
-	x(t) = s(t, \varphi, \alpha) + n()t = A \cos \left[ \omega_0t + \varphi(t) +\alpha \pi \right] + n(t),
+	x(t) = s(t, \varphi, \alpha) + n(t) = A \cos \left[ \omega_0t + \varphi(t) +\alpha \pi \right] + n(t),
 	\label{eq:sec4_sig}
 \end{equation}
 где ${n(t)}$ - АБГШ, ${\alpha}$ принимает дискретные значения 1 или 0, амплитуда ${A}$ и частота ${\omega}$ постоянны.
@@ -263,6 +263,15 @@ MAX2769 компании Maxim Semiconducter, модуль захвата дан
 в тоже время ${1 - z^2 \ge 0}$.
 
 
+В случае ${z=th \int_{t_k}^t F_1(t, \hat{\varphi}) d\varphi}$ схема алгоритма соответствует оптимальному приемнику, по критерию МАВ \cite{shahtarin-wiener-kalman}, а при ${thx \approx x}$
+соответствует схеме Костаса.
+
+%\begin{figure}[h]
+%\center\scalebox{1}{\includegraphics[width=1\linewidth]{costas_loop.eps}}
+%	\caption{Схема Костаса}
+%	\label{pic:sec4_costas
+%\end{figure}
+`
 %%%
 В качестве алгоритма оценки фазы ПСП использовался
 рассмотренный алгоритм DMA, оценка частоты проводилась при помощи алгоритма основанного на применении авторегрессионной модели (АР).
