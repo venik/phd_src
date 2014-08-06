@@ -5,3 +5,5 @@
 *.pdf
 *.toc
 *.bbl
+*.out
+*.swo
