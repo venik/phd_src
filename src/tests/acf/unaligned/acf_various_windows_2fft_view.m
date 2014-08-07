@@ -6,7 +6,7 @@ modelPath = pwd() ;
 cd( curPath ) ;
 addpath(modelPath) ;          
 
-load('acf_various_windows_4fft.mat');
+load('acf_various_windows_2fft.mat');
 
 figure(1), 
 semilogy(SNR_dB, freq1(:,1), '-go', SNR_dB, freq1(:,2), '-b*', ...
