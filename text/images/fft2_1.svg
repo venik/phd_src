@@ -1858,17 +1858,17 @@
              style="fill:none;stroke:#000000;stroke-opacity:1;stroke-width:20;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none"
              id="path1270" /></g></g></g><text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="238.34746"
-       y="11.440678"
+       style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="190.67796"
+       y="-341.24744"
        id="text4249"
        sodipodi:linespacing="125%"
-       transform="matrix(0.8,0,0,-0.8,0,360)"><tspan
+       transform="scale(1,-1)"><tspan
          sodipodi:role="line"
          id="tspan4251"
-         x="238.34746"
-         y="11.440678"
-         style="font-size:22.5px">1 итерация</tspan></text>
+         x="190.67796"
+         y="-341.24744"
+         style="font-size:18px">1 итерация</tspan></text>
 <text
        xml:space="preserve"
        style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"

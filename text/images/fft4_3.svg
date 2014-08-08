@@ -15,10 +15,10 @@
    width="598.75"
    height="450"
    xml:space="preserve"
-   sodipodi:docname="fft4_3.eps"><metadata
+   sodipodi:docname="fft4_3.svg"><metadata
      id="metadata8100"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
      id="defs8098"><clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath8728"><path
@@ -2235,5 +2235,5 @@
          id="tspan7981"
          x="239.16486"
          y="-340.98718"
-         style="font-size:18px;text-align:center;text-anchor:middle">2 итерации</tspan></text>
+         style="font-size:18px;text-align:center;text-anchor:middle">3 итерации</tspan></text>
 </g></svg>
