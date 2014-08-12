@@ -33,12 +33,14 @@ fd= 16.368e6;		% 16.368 MHz
 debug_me = 0;
 time_offs = 100;
 
-fs = 4.092e6-5e3 : 1e3 : 4.092e6+5e3 ;		% sampling rate 4.092 MHz
+fs = 4.092e6-5e3 : 1e0 : 4.092e6+5e3 ;		% sampling rate 4.092 MHz
 PRN = 1:32 ;
 %fs = 4.09193734691e6;
 %PRN = 31 ;
 
 model = 0;				% is it the model?
+
+matlabpool open 4 ;
 
 % ========= generate =======================
 if model
@@ -71,9 +73,12 @@ freq_z = zeros(length(PRN), 1) ;
 
 res = zeros(N, 1) ;
 
-for jj=1:length(PRN)
-    ca_base = ca_get(PRN(jj), debug_me);		% generate C/A code
+parfor jj=1:length(PRN)
+    ca_base = ca_get(PRN(jj), debug_me) ;		% generate C/A code
+    %ca_base = repmat(ca_base, 1, length(x)) ;
 
+    fprintf('PRN: %d\n', PRN(jj)) ;
+    
     for k = 1:length(fs)
         lo_sig = exp(1i*2*pi * (fs(k)/fd)*(0:N-1)).';
         CA = fft(lo_sig .* ca_base);
@@ -93,10 +98,16 @@ for jj=1:length(PRN)
         end;
     end % for k = 1:length(FR)
     
-    fprintf('PRN: %02d\tCA phase: %d\tfreq: %.2f\tE/sigma: %.2f dB\n', ...
-        PRN(jj), ca_phase(jj), freq_z(jj), 10*log10(acx(jj) / std(res)));
+    %fprintf('PRN: %02d\tCA phase: %d\tfreq: %.2f\tE/sigma: %.2f dB\n', ...
+     %   PRN(jj), ca_phase(jj), freq_z(jj), 10*log10(acx(jj) / std(res)));
 end
 
+matlabpool close ;
+
+for jj=1:length(PRN)
+      fprintf('PRN: %02d\tCA phase: %d\tfreq: %.2f\n', ...
+        PRN(jj), ca_phase(jj), freq_z(jj));
+end
 
 barh(acx((1:32),1), 'k'),
     ylim([0 33]),
