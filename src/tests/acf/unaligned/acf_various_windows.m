@@ -6,7 +6,7 @@ modelPath = pwd() ;
 cd( curPath ) ;
 addpath(modelPath) ;
 
-num_of_tests = 100000 ;
+num_of_tests = 50000 ;
 N = 16368 ;
 
 f_int = 4.087e6 ;   % 4.092e6 - 5e3 Hz - lowest Doppler freq
@@ -32,7 +32,7 @@ parfor jj=1:length(SNR_dB)
     
     ifsmp = get_ifsmp() ;
     ifsmp.snr_db = SNR_dB(jj) ;
-    ifsmp.sats = [1 2 3 4] ;
+    ifsmp.sats = [1] ;
     ifsmp.sigLengthMsec = 1 ;
        
     freq_1 = zeros(4, 1);
@@ -64,7 +64,7 @@ parfor jj=1:length(SNR_dB)
         x_hann = x.*hann(length(x), 'periodic') ;
 
         % interpolation
-        fourier_length = 2 * N ;
+        fourier_length = 8 * N ;
         
         X = fft(x, fourier_length) ;
         X_hamming = fft(x_hamming, fourier_length) ;
