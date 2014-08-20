@@ -11,7 +11,7 @@ fs = 5.456e6 ;
 N = 5456 ;
 PRN = 30 ;
 
-%otstup = 70000 - 10*N - 3645;
+fourier_length = 2 * N ;   
 
 y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat', N*200);
 y_base = double (y_base);
@@ -26,7 +26,7 @@ parfor k = 1:4
     otstup = 0;
     sig = y_base ;
 
-    while otstup < N * 10
+    while otstup < N * 170
     
     otstup = otstup + 100 ;
     lock = 0 ;
@@ -84,8 +84,8 @@ parfor k = 1:4
                 end ; %3
             end ; %2
         end ; % 1    
-    
-    X = fft(x(1:N), N * 2);
+            
+    X = fft(x(1:N), fourier_length);
     X2 = X.*conj(X);
     X8 = X2 .^ 8 ./ (10^40);
     r = ifft(X8);
@@ -157,11 +157,10 @@ parfor k = 1:4
     end ; % outside
 end ; % for k
 
- matlabpool close ;
+matlabpool close ;
 
- times
- 
- prob
+fprintf('Fourier length: %d times %d\n', fourier_length / N, times(1)) ;
+fprintf('Probability: Rect:%.4f Hann:%.4f Hamming:%.4f Blackman:%.4f\n', prob(1), prob(2), prob(3), prob(4)) ;
  
 % subplot(2,1,2), 
 % %figure(1)
