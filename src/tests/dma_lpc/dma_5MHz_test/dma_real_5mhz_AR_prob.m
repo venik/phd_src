@@ -9,11 +9,11 @@ delta1 = 10; %дельта смещения
 fs = 5.456e6 ;
 %freq = 4.092e6 ;
 N = 5456 ;
-PRN = 32 ;
+PRN = 31 ;
 
 fourier_length = 2 * N ;   
 
-y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat', N*200);
+y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat', N * 200);
 y_base = double (y_base);
 
 prob = zeros(4, 1) ;
@@ -167,7 +167,7 @@ end ; % for k
 
 matlabpool close ;
 
-fprintf('PRN:%d', PRN);
+fprintf('PRN:%d\n', PRN);
 fprintf('Fourier length: %d times %d\n', fourier_length / N, times(1)) ;
 
 mean_time = mean_time ./ prob ;
