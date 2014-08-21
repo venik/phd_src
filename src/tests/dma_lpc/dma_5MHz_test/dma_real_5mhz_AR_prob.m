@@ -17,19 +17,19 @@ y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat', N*200);
 y_base = double (y_base);
 
 prob = zeros(4, 1) ;
+mean_time = zeros(4, 1) ;
 times = zeros(4, 1) ;
 
 matlabpool open 4 ;
 
-parfor k = 1:4
+parfor k = 1:1
     
     otstup = 0;
     sig = y_base ;
 
-    while otstup < N * 170
+    while otstup < N * 10
     
     otstup = otstup + 100 ;
-    lock = 0 ;
     res = 0 ;
     
     y = sig(otstup : end) ;
@@ -97,9 +97,16 @@ parfor k = 1:4
 
     freq_z = fs - fs * angle(Z(1)) / (2*pi);
 
-    fprintf('freq after AR: %.2f\n', freq_z);
+    %fprintf('freq after AR: %.2f\n', freq_z);
     %return;
 
+    if abs(4.092e6 - freq_z) > 5e3
+        fprintf('miss with freq %.2f\n', freq_z) ;
+        break;
+    else
+        fprintf('freq after AR: %.2f\n', freq_z);
+    end
+    
     %%%%%%%%%
     % DLL/PLL part
     settings = initSettings();
@@ -135,33 +142,40 @@ parfor k = 1:4
             time = time + 1;
         end
 
-        if time > 10
-            ss = sum(CarrierError(time: -1: time-10).^2) ;
+        num_var = 10 ;
+        if time > num_var
+            ss = sum(CarrierError(time: -1: time-num_var).^2) / num_var ;
             %fprintf('\t sum %.2f\n', ss) ;
 
-            if ss <= 0.15
-                lock = 1 ;
+            if ss < 0.01
+                fprintf('lock, time: %d\n', time) ;
                 res = 1 ;
-                %fprintf('========== [Sync ] ================== time %d\n', time) ;
-            elseif ss > 0.15 && lock == 1
-                    % loose lock
-                    res = 0 ;
-                    break;
-            end;
-        end ;
+                break ;
+            end ; % if ss
+        end ; % if time
     end ;
 
     times(k) = times(k) + 1 ;
-    prob(k) = prob(k) + res ;
+    
+    if res == 1
+        prob(k) = prob(k) + 1 ;
+        mean_time(k) = mean_time(k) + time ;
+    end ;
     
     end ; % outside
 end ; % for k
 
 matlabpool close ;
 
+fprintf('PRN:%d', PRN);
 fprintf('Fourier length: %d times %d\n', fourier_length / N, times(1)) ;
+
+mean_time = mean_time ./ prob ;
+fprintf('Mean time of lock: Rect:%.4f Hann:%.4f Hamming:%.4f Blackman:%.4f\n', mean_time(1), mean_time(2), mean_time(3), mean_time(4)) ;
+
+prb = prob ./ times ;
 fprintf('Probability: Rect:%.4f Hann:%.4f Hamming:%.4f Blackman:%.4f\n', prob(1), prob(2), prob(3), prob(4)) ;
- 
+
 % subplot(2,1,2), 
 % %figure(1)
 %     plot( I ./ 2000), xlabel(sprintf('время, мс\nа)')), ylabel('В'), phd_figure_style(gcf) ;
