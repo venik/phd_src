@@ -9,7 +9,7 @@ delta1 = 10; %дельта смещения
 fs = 5.456e6 ;
 %freq = 4.092e6 ;
 N = 5456 ;
-PRN = 30 ;
+PRN = 31 ;
 
 fourier_length = 2 * N ;   
 
@@ -22,7 +22,7 @@ times = zeros(4, 1) ;
 
 matlabpool open 4 ;
 
-parfor k = 1:4
+for k = 1:4
     
     otstup = 0;
     sig = y_base ;
@@ -31,6 +31,7 @@ parfor k = 1:4
     
     otstup = otstup + 50 ;
     res = 0 ;
+    detected = 0;
     
     y = sig(otstup : end) ;
 
@@ -101,59 +102,62 @@ parfor k = 1:4
     %return;
 
     if abs(4.092e6 - freq_z) > 5e3
-        fprintf('miss with freq %.2f\n', freq_z) ;
-        break;
+        fprintf('%d: miss with freq %.2f\n', k, freq_z) ;
     else
-        fprintf('freq after AR: %.2f\n', freq_z);
+        fprintf('%d: freq after AR: %.2f\n', k, freq_z);
+        detected = 1;
     end
     
     %%%%%%%%%
     % DLL/PLL part
-    settings = initSettings();
-    ss = FileSource(settings.fileName, 'int8', 'r');
+    if detected == 1
+        settings = initSettings();
+        ss = FileSource(settings.fileName, 'int8', 'r');
 
-    tracker = Tracker(PRN, ss);
-    tracker.Init(otstup + (N - index_x), freq_z);
+        tracker = Tracker(PRN, ss);
+        tracker.Init(otstup + (N - index_x), freq_z);
 
-    proc_time = settings.processTime;
+        proc_time = settings.processTime;
 
-    I = zeros(proc_time, 1);
-    Q = zeros(proc_time, 1);
-    CarrierFrequency = 0;
-    CodeError = zeros(proc_time, 1);
-    CarrierError = zeros(proc_time, 1);
-    time = 1;
+        I = zeros(proc_time, 1);
+        Q = zeros(proc_time, 1);
+        CarrierFrequency = 0;
+        CodeError = zeros(proc_time, 1);
+        CarrierError = zeros(proc_time, 1);
+        time = 1;
 
-    while true
-        tracker.Execute();
+        while true
+            tracker.Execute();
 
-        if strcmp(tracker.State, 'nodata')
-            break
-        end
+            if strcmp(tracker.State, 'nodata')
+                break
+            end
 
-        I(time) = tracker.I;
-        Q(time) = tracker.Q;
-        CodeError(time) = tracker.codeErr;
-        CarrierError(time) = tracker.carrErr;
+            I(time) = tracker.I;
+            Q(time) = tracker.Q;
+            CodeError(time) = tracker.codeErr;
+            CarrierError(time) = tracker.carrErr;
 
-        if time == settings.processTime
-            break
-        else
-            time = time + 1;
-        end
+            if time == settings.processTime
+                break
+            else
+                time = time + 1;
+            end
 
-        num_var = 10 ;
-        if time > num_var
-            ss = sum(CarrierError(time: -1: time-num_var).^2) / num_var ;
-            %fprintf('\t sum %.2f\n', ss) ;
+            num_var = 10 ;
+            if time > num_var
+                ss = sum(CarrierError(time: -1: time-num_var).^2) / num_var ;
+                %fprintf('\t sum %.2f\n', ss) ;
 
-            if ss < 0.01
-                fprintf('lock, time: %d\n', time) ;
-                res = 1 ;
-                break ;
-            end ; % if ss
-        end ; % if time
-    end ;
+                if ss < 0.01
+                    fprintf('lock, time: %d\n', time) ;
+                    res = 1 ;
+                    break ;
+                end ; % if ss
+            end ; % if time
+            
+        end ; % while true        
+    end ; % if detected
 
     times(k) = times(k) + 1 ;
     
@@ -176,12 +180,5 @@ fprintf('Mean time of lock: Rect:%.2f Hann:%.2f Hamming:%.2f Blackman:%.2f\n', m
 prb = prob ./ times ;
 fprintf('Probability: Rect:%.2f Hann:%.2f Hamming:%.2f Blackman:%.2f\n', prb(1), prb(2), prb(3), prb(4)) ;
 
-% subplot(2,1,2), 
-% %figure(1)
-%     plot( I ./ 2000), xlabel(sprintf('время, мс\nа)')), ylabel('В'), phd_figure_style(gcf) ;
-% subplot(2,1,1),
-% %figure(2),
-%     plot(Q ./ 2000), xlabel(sprintf('время, мс\nб)')), ylabel('В'), phd_figure_style(gcf) ;
-    
 % remove model path
 rmpath(modelPath) ;
