@@ -9,7 +9,7 @@ delta1 = 10; %дельта смещения
 fs = 5.456e6 ;
 %freq = 4.092e6 ;
 N = 5456 ;
-PRN = 31 ;
+PRN = 30 ;
 
 fourier_length = 2 * N ;   
 
@@ -29,7 +29,7 @@ parfor k = 1:4
 
     while otstup < N * 150
     
-    otstup = otstup + 100 ;
+    otstup = otstup + 50 ;
     res = 0 ;
     
     y = sig(otstup : end) ;
@@ -174,7 +174,7 @@ mean_time = mean_time ./ prob ;
 fprintf('Mean time of lock: Rect:%.2f Hann:%.2f Hamming:%.2f Blackman:%.2f\n', mean_time(1), mean_time(2), mean_time(3), mean_time(4)) ;
 
 prb = prob ./ times ;
-fprintf('Probability: Rect:%.2f Hann:%.2f Hamming:%.2f Blackman:%.2f\n', prob(1), prob(2), prob(3), prob(4)) ;
+fprintf('Probability: Rect:%.2f Hann:%.2f Hamming:%.2f Blackman:%.2f\n', prb(1), prb(2), prb(3), prb(4)) ;
 
 % subplot(2,1,2), 
 % %figure(1)
