@@ -9,7 +9,7 @@ delta1 = 10; %дельта смещения
 fs = 5.456e6 ;
 %freq = 4.092e6 ;
 N = 5456 ;
-PRN = 30 ;
+PRN = 32 ;
 
 fourier_length = 2 * N ;   
 
@@ -22,12 +22,12 @@ times = zeros(4, 1) ;
 
 matlabpool open 4 ;
 
-parfor k = 1:1
+parfor k = 1:4
     
     otstup = 0;
     sig = y_base ;
 
-    while otstup < N * 10
+    while otstup < N * 150
     
     otstup = otstup + 100 ;
     res = 0 ;
@@ -171,10 +171,10 @@ fprintf('PRN:%d', PRN);
 fprintf('Fourier length: %d times %d\n', fourier_length / N, times(1)) ;
 
 mean_time = mean_time ./ prob ;
-fprintf('Mean time of lock: Rect:%.4f Hann:%.4f Hamming:%.4f Blackman:%.4f\n', mean_time(1), mean_time(2), mean_time(3), mean_time(4)) ;
+fprintf('Mean time of lock: Rect:%.2f Hann:%.2f Hamming:%.2f Blackman:%.2f\n', mean_time(1), mean_time(2), mean_time(3), mean_time(4)) ;
 
 prb = prob ./ times ;
-fprintf('Probability: Rect:%.4f Hann:%.4f Hamming:%.4f Blackman:%.4f\n', prob(1), prob(2), prob(3), prob(4)) ;
+fprintf('Probability: Rect:%.2f Hann:%.2f Hamming:%.2f Blackman:%.2f\n', prob(1), prob(2), prob(3), prob(4)) ;
 
 % subplot(2,1,2), 
 % %figure(1)
