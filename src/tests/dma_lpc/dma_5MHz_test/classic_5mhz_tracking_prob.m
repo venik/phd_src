@@ -6,7 +6,7 @@ cd( curPath ) ;
 addpath(modelPath) ;
 
 N = 5456 ;
-PRN = 31;
+PRN = 30;
 
 otstup = 0;
 
@@ -15,11 +15,14 @@ mean_time = 0 ;
 times = 0 ;
 
 while otstup < N * 10
+    
+    otstup = otstup + 100 ;
+    res = 0 ;
+    
     %%%%%%%
     % Fine freq
     settings = initSettings();
     ss = FileSource(settings.fileName, 'int8', 'r');
-
     ss.Move(otstup);
 
     detector = Detector(PRN, ss);
@@ -81,11 +84,14 @@ while otstup < N * 10
 
 end % otstup < N * 10
 
-fprintf('PRN:%d', PRN);
+fprintf('PRN:%d\n', PRN);
 fprintf('times %d\n', times(1)) ;
 
 mean_time = mean_time ./ prob ;
 prb = prob ./ times ;
 fprintf('Mean time of lock: %.4f Probability: %.4f\n', mean_time, prb) ;
+
+% subplot(2,1,2), plot(I), xlabel('врем€, мс'), ylabel('Ёнерги€'), phd_figure_style(gcf) ;
+% subplot(2,1,1), plot(CarrierError, 'k'), xlabel('врем€, мс'), ylabel('ќшибка'), phd_figure_style(gcf) ;
 
 rmpath(modelPath) ;
