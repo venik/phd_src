@@ -6,7 +6,7 @@ cd( curPath ) ;
 addpath(modelPath) ;
 
 N = 5456 ;
-PRN = 30;
+PRN = 31;
 
 otstup = 0;
 
@@ -14,7 +14,7 @@ prob = 0 ;
 mean_time = 0 ;
 times = 0 ;
 
-while otstup < N * 10
+while otstup < N * 170
     
     otstup = otstup + 100 ;
     res = 0 ;
