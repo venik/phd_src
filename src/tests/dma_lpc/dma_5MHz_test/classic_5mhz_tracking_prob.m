@@ -10,6 +10,10 @@ PRN = 31;
 
 otstup = 0;
 
+prob = 0 ;
+mean_time = 0 ;
+times = 0 ;
+
 while otstup < N * 10
     %%%%%%%
     % Fine freq
@@ -49,16 +53,17 @@ while otstup < N * 10
         CodeError(time) = tracker.codeErr;
         CarrierError(time) = tracker.carrErr;
 
-        nnn = 10 ;
-        if time > nnn
-            ss = sum(CarrierError(time:-1:time-nnn).^2) / nnn ;
-            fprintf('%.4f\n', ss ) ;
+        num_var = 10 ;
+        if time > num_var
+            ss = sum(CarrierError(time: -1: time-num_var).^2) / num_var ;
+            %fprintf('\t sum %.2f\n', ss) ;
 
-            if abs(ss) < 0.01
-                fprintf('lock time:%5d\n', time) ;
-                % break;
-            end
-        end
+            if ss < 0.01
+                fprintf('lock, time: %d\n', time) ;
+                res = 1 ;
+                break ;
+            end ; % if ss
+        end ; % if time
 
         if time == settings.processTime
             break
@@ -66,11 +71,21 @@ while otstup < N * 10
             time = time + 1;
         end
     end % while true
+    
+    times = times + 1 ;
+    
+    if res == 1
+        prob = prob + 1 ;
+        mean_time = mean_time + time ;
+    end ;
 
 end % otstup < N * 10
 
-subplot(2,1,2), plot(I), xlabel('врем€, мс'), ylabel('Ёнерги€'), phd_figure_style(gcf) ;
-subplot(2,1,1), plot(CarrierError, 'k'), xlabel('врем€, мс'), ylabel('ќшибка'), phd_figure_style(gcf) ;
+fprintf('PRN:%d', PRN);
+fprintf('times %d\n', times(1)) ;
 
+mean_time = mean_time ./ prob ;
+prb = prob ./ times ;
+fprintf('Mean time of lock: %.4f Probability: %.4f\n', mean_time, prb) ;
 
 rmpath(modelPath) ;
