@@ -1,0 +1,29 @@
+PRN:1
+times 9276
+Mean time of lock: 40.26 Probability: 0.88
+
+++++++++++++++++++++++++++++++++++++++++++
+
+PRN:21
+times 9276
+Mean time of lock: 41.39 Probability: 1.00
+
+++++++++++++++++++++++++++++++++++++++++++
+
+PRN:29
+times 9276
+Mean time of lock: 36.02 Probability: 0.94
+
+++++++++++++++++++++++++++++++++++++++++++
+
+PRN:30
+times 9276
+Mean time of lock: 34.77 Probability: 0.93
+
+++++++++++++++++++++++++++++++++++++++++++
+
+PRN:31
+times 9276
+Mean time of lock: 36.11 Probability: 0.99
+
+++++++++++++++++++++++++++++++++++++++++++
