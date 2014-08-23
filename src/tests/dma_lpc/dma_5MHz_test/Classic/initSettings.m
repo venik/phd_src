@@ -6,7 +6,7 @@ settings.samplingFreq = 5.456E6; % Hz
 settings.codeFreqBase = 1.023E6; % Hz
 settings.codeLength = 1023;
 % settings.fileName = '101112_0928GMT_primo_fs5456_fif4092.dat';
-settings.fileName = '101112_0928GMT_primo_fs5456_fif4092.dat';
+settings.fileName = '../101112_0928GMT_primo_fs5456_fif4092.dat';
 
 settings.startTime = 0;
 settings.processTime = 1000; % ms
