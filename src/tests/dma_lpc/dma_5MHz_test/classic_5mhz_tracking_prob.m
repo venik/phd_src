@@ -6,7 +6,7 @@ cd( curPath ) ;
 addpath(modelPath) ;
 
 N = 5456 ;
-PRN = 31;
+PRN = 1;
 
 otstup = 0;
 
@@ -28,8 +28,13 @@ while otstup < N * 170
     detector = Detector(PRN, ss);
     detector.Execute();
 
+    times = times + 1 ;
     fprintf('PRN:%d state:%s ca_phase:%d freq:%.2f\n', PRN, detector.State, detector.CodePhase, detector.Frequency) ;
 
+    if strcmp(detector.State,'notdetected')
+        continue;
+    end;
+    
     %%%%%%%%%
     % DLL/PLL part
     tracker = Tracker(PRN, ss);
@@ -74,9 +79,7 @@ while otstup < N * 170
             time = time + 1;
         end
     end % while true
-    
-    times = times + 1 ;
-    
+        
     if res == 1
         prob = prob + 1 ;
         mean_time = mean_time + time ;
@@ -90,6 +93,8 @@ fprintf('times %d\n', times(1)) ;
 mean_time = mean_time ./ prob ;
 prb = prob ./ times ;
 fprintf('Mean time of lock: %.2f Probability: %.2f\n', mean_time, prb) ;
+
+fprintf('\n++++++++++++++++++++++++++++++++++++++++++\n') ;
 
 % subplot(2,1,2), plot(I), xlabel('врем€, мс'), ylabel('Ёнерги€'), phd_figure_style(gcf) ;
 % subplot(2,1,1), plot(CarrierError, 'k'), xlabel('врем€, мс'), ylabel('ќшибка'), phd_figure_style(gcf) ;
