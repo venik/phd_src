@@ -11,7 +11,7 @@ fs = 5.456e6 ;
 N = 5456 ;
 PRN = 31 ;
 
-fourier_length = 2 * N ;   
+fourier_length = 8 * N ;   
 
 y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat', N * 200);
 y_base = double (y_base);
@@ -22,7 +22,7 @@ times = zeros(4, 1) ;
 
 matlabpool open 4 ;
 
-for k = 1:4
+parfor k = 1:4
     
     otstup = 0;
     sig = y_base ;
@@ -101,6 +101,8 @@ for k = 1:4
     %fprintf('freq after AR: %.2f\n', freq_z);
     %return;
 
+    times(k) = times(k) + 1 ;
+    
     if abs(4.092e6 - freq_z) > 5e3
         fprintf('%d: miss with freq %.2f\n', k, freq_z) ;
     else
@@ -158,8 +160,6 @@ for k = 1:4
             
         end ; % while true        
     end ; % if detected
-
-    times(k) = times(k) + 1 ;
     
     if res == 1
         prob(k) = prob(k) + 1 ;
@@ -179,6 +179,7 @@ fprintf('Mean time of lock: Rect:%.2f Hann:%.2f Hamming:%.2f Blackman:%.2f\n', m
 
 prb = prob ./ times ;
 fprintf('Probability: Rect:%.2f Hann:%.2f Hamming:%.2f Blackman:%.2f\n', prb(1), prb(2), prb(3), prb(4)) ;
+fprintf('\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n') ;
 
 % remove model path
 rmpath(modelPath) ;
