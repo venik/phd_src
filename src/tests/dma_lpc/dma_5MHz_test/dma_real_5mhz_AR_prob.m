@@ -9,10 +9,12 @@ delta1 = 10; %дельта смещения
 fs = 5.456e6 ;
 %freq = 4.092e6 ;
 N = 5456 ;
-PRN = 31 ;
+PRN = 30 ;
 
 fourier_length = 8 * N ;   
 
+%%%%%
+% ftp://rf-lab.org/pub/nikiforov/101112_0928GMT_primo_fs5456_fif4092.dat
 y_base = load_primo_file('101112_0928GMT_primo_fs5456_fif4092.dat', N * 200);
 y_base = double (y_base);
 
