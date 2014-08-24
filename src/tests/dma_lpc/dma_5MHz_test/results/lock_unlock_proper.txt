@@ -1,0 +1,99 @@
+PRN:31
+Fourier length: 8 times 16368
+Mean time of lock: Rect:36.90 Hann:38.56 Hamming:36.90 Blackman:36.90
+Probability: Rect:0.43 Hann:0.37 Hamming:0.43 Blackman:0.43
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:30
+Fourier length: 8 times 16368
+Mean time of lock: Rect:35.16 Hann:36.25 Hamming:35.16 Blackman:35.16
+Probability: Rect:0.90 Hann:0.81 Hamming:0.90 Blackman:0.90
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:29
+Fourier length: 8 times 16368
+Mean time of lock: Rect:36.06 Hann:36.79 Hamming:36.06 Blackman:36.06
+Probability: Rect:0.80 Hann:0.70 Hamming:0.80 Blackman:0.80
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:21
+Fourier length: 8 times 16368
+Mean time of lock: Rect:44.43 Hann:39.42 Hamming:44.43 Blackman:44.43
+Probability: Rect:0.03 Hann:0.02 Hamming:0.03 Blackman:0.03
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:1
+Fourier length: 8 times 16368
+Mean time of lock: Rect:36.65 Hann:36.43 Hamming:36.65 Blackman:36.65
+Probability: Rect:0.48 Hann:0.43 Hamming:0.48 Blackman:0.48
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:1
+Fourier length: 4 times 16368
+Mean time of lock: Rect:36.81 Hann:36.43 Hamming:36.81 Blackman:36.81
+Probability: Rect:0.48 Hann:0.43 Hamming:0.48 Blackman:0.48
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:21
+Fourier length: 4 times 16368
+Mean time of lock: Rect:43.95 Hann:39.42 Hamming:43.95 Blackman:43.95
+Probability: Rect:0.03 Hann:0.02 Hamming:0.03 Blackman:0.03
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:29
+Fourier length: 4 times 16368
+Mean time of lock: Rect:36.06 Hann:36.79 Hamming:36.06 Blackman:36.06
+Probability: Rect:0.80 Hann:0.70 Hamming:0.80 Blackman:0.80
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:30
+Fourier length: 4 times 16368
+Mean time of lock: Rect:35.19 Hann:36.25 Hamming:35.19 Blackman:35.19
+Probability: Rect:0.89 Hann:0.81 Hamming:0.89 Blackman:0.89
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:31
+Fourier length: 4 times 16368
+Mean time of lock: Rect:36.75 Hann:38.56 Hamming:36.75 Blackman:36.75
+Probability: Rect:0.43 Hann:0.37 Hamming:0.43 Blackman:0.43
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:31
+Fourier length: 2 times 16368
+Mean time of lock: Rect:36.27 Hann:37.83 Hamming:36.27 Blackman:36.27
+Probability: Rect:0.39 Hann:0.38 Hamming:0.39 Blackman:0.39
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:30
+Fourier length: 2 times 16368
+Mean time of lock: Rect:42.84 Hann:37.46 Hamming:42.84 Blackman:42.84
+Probability: Rect:0.50 Hann:0.77 Hamming:0.50 Blackman:0.50
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:29
+Fourier length: 2 times 16368
+Mean time of lock: Rect:42.31 Hann:37.21 Hamming:42.31 Blackman:42.31
+Probability: Rect:0.49 Hann:0.65 Hamming:0.49 Blackman:0.49
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+PRN:21
+Fourier length: 2 times 16368
+Mean time of lock: Rect:46.22 Hann:39.43 Hamming:46.22 Blackman:46.22
+Probability: Rect:0.02 Hann:0.02 Hamming:0.02 Blackman:0.02
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
