@@ -96,4 +96,9 @@ Probability: Rect:0.02 Hann:0.02 Hamming:0.02 Blackman:0.02
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+PRN:1
+Fourier length: 2 times 16368
+Mean time of lock: Rect:45.09 Hann:37.69 Hamming:45.09 Blackman:45.09
+Probability: Rect:0.32 Hann:0.42 Hamming:0.32 Blackman:0.32
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
