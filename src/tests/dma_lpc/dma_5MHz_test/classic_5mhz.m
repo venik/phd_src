@@ -33,8 +33,8 @@ res = zeros(N, 1) ;
 for jj=1:length(PRN)
     Y = fft(y);
     cacode2= CACode(PRN(jj));
-    CAcode1 = cacode2.Bits;  %генерируем CA код
-    CAcode16 = zeros(1, N);  %объявили сигнал Синус* на CA код 
+    CAcode1 = cacode2.Bits;
+    CAcode16 = zeros(1, N); 
 
     for i=1:N
         CAcode16(i) = CAcode1(ceil(1023000/fs*i));  
@@ -66,6 +66,6 @@ for jj=1:length(PRN)
 
 end; % jj
 
-barh(acx, 'k'), ylim([0 33]), xlabel('Энергия'), ylabel('Источник сигнала'), phd_figure_style(gcf) ;
+barh(acx, 'k'), ylim([0 33]), xlabel('Energy'), ylabel('Satellite'), phd_figure_style(gcf) ;
 
 rmpath(modelPath) ;

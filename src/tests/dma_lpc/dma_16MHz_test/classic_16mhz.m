@@ -111,8 +111,8 @@ end
 
 barh(acx((1:32),1), 'k'),
     ylim([0 33]),
-    xlabel('Энергия'),
-    ylabel('Источник сигнала'),
+    xlabel('Energy'),
+    ylabel('Satellite'),
     grid on,
     phd_figure_style(gcf) ;
 	

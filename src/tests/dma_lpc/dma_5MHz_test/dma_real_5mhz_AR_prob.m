@@ -5,7 +5,7 @@ modelPath = pwd() ;
 cd( curPath ) ;
 addpath(modelPath) ;
 
-delta1 = 10; %дельта смещения
+delta1 = 10;
 fs = 5.456e6 ;
 %freq = 4.092e6 ;
 N = 5456 ;
@@ -58,7 +58,6 @@ parfor k = 1:4
 
     new_CAcode16 = CA_lo(1:N) .* CA_lo(1 + delta1 : N + delta1) ;
 
-    % скоррелировали  CA код спутника со сгенерированным кодом
     q = ifft(fft(new_CAcode16(1:N)) .* conj(fft(sig_new(1:N).'))) ;
 
     acx = q .* conj(q);

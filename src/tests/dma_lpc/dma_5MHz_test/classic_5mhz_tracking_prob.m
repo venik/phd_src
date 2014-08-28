@@ -96,7 +96,4 @@ fprintf('Mean time of lock: %.2f Probability: %.2f\n', mean_time, prb) ;
 
 fprintf('\n++++++++++++++++++++++++++++++++++++++++++\n') ;
 
-% subplot(2,1,2), plot(I), xlabel('врем€, мс'), ylabel('Ёнерги€'), phd_figure_style(gcf) ;
-% subplot(2,1,1), plot(CarrierError, 'k'), xlabel('врем€, мс'), ylabel('ќшибка'), phd_figure_style(gcf) ;
-
 rmpath(modelPath) ;
