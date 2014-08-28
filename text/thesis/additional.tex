@@ -1,9 +1,28 @@
-\begin{appendices}
-\begin{appendix}
-\chapter{}
+%\begin{appendices}
+\appendix
+%\begin{appendix}
 
-\lstinputlisting[language=Matlab, caption=MyClass, label={mine.py}, breaklines=true]
-{../../src/tests/acf/acf_ar_sko_freq.m}
+\chapter*{Приложение 1}
+\addcontentsline{toc}{chapter}{Приложение 1}
+\label{app:1}
 
-\end{appendix}
-\end{appendices}
+%%% 16 MHz
+\lstinputlisting[language=Matlab, caption={classic\_16mhz.m}, label={src:classic16mhz}, breaklines=true, firstline=21]
+{../../src/tests/dma_lpc/dma_16MHz_test/classic_16mhz.m}
+
+\lstinputlisting[language=Matlab, caption={dma\_16mhz\_AR\_prob\_test\_mt.m}, label={src:dma16mhz}, breaklines=true]
+{../../src/tests/dma_lpc/dma_16MHz_test/dma_16mhz_AR_prob_test_mt.m}
+
+
+%%% 5 MHz
+\lstinputlisting[language=Matlab, caption={classic\_5mhz.m}, label={src:classic5mhz}, breaklines=true]
+{../../src/tests/dma_lpc/dma_5MHz_test/classic_5mhz.m}
+
+\lstinputlisting[language=Matlab, caption={classic\_5mhz\_tracking\_prob.m}, label={src:classic5mhzTracking}, breaklines=true]
+{../../src/tests/dma_lpc/dma_5MHz_test/classic_5mhz_tracking_prob.m}
+
+\lstinputlisting[language=Matlab, caption={dma\_real\_5mhz\_AR\_prob.m}, label={src:dma5mhzProb}, breaklines=true]
+{../../src/tests/dma_lpc/dma_5MHz_test/dma_real_5mhz_AR_prob.m}
+
+%\end{appendix}
+%\end{appendices}
