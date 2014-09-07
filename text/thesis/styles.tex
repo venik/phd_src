@@ -35,26 +35,6 @@
 \titleformat{\chapter}[hang]{\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\bfseries}
 \titleformat{\section}[hang]{\bfseries}{\thesection\hsp\textcolor{gray75}{|}\hsp}{0pt}{\bfseries}
 
-%\titlecontents*{chapter}
-%[0.0cm]             % left margin
-%{\vspace{0.0cm}}                  % above code
-%{\bf{%                  % numbered format
-%{Глава \thecontentslabel. }%
-%}}%
-%{\bf{
-%\\}}         % unnumbered format
-%{\dotfill \thecontentspage}
-%
-%\titlecontents{section}
-%[1.0cm]             % left margin
-%{}                  % above code
-%{%                  % numbered format
-%{\thecontentslabel. }%
-%}%
-%{}         % unnumbered format
-%{\dotfill \thecontentspage}
-
-
 % шрифты
 \usepackage{sectsty}
 \partfont{\fontsize{14pt}{14pt}\selectfont}
@@ -62,11 +42,6 @@
 \sectionfont{\fontsize{14pt}{14pt}\selectfont}
 \subsectionfont{\fontsize{14pt}{14pt}\selectfont}
 \subsubsectionfont{\fontsize{14pt}{14pt}\selectfont}
-
-%\titlespacing\chapter{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
-%\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
-%\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
-%\titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
 
 \titlespacing{\chapter}{0pt}{\parskip}{-\parskip}
 \titlespacing{\section}{0pt}{\parskip}{-\parskip}
@@ -81,3 +56,16 @@
 % listing
 \renewcommand{\lstlistingname}{Листинг}% Listing -> Algorithm
 %\renewcommand{\lstlistlistingname}{List of \lstlistingname s}% List of Listings -> List of Algorithms
+
+% формат нумерации списков 
+\renewcommand{\theenumi}{\arabic{enumi}.} % Меняем везде перечисления на цифра.цифра
+\renewcommand{\labelenumi}{\arabic{enumi}.} % Меняем везде перечисления на цифра.цифра
+\renewcommand{\theenumii}{\arabic{enumii}.} % Меняем везде перечисления на цифра.цифра
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}% Меняем везде перечисления на цифра.цифра
+\renewcommand{\theenumiii}{\arabic{enumiii}} % Меняем везде перечисления на цифра.цифра
+\renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}% Меняем везде перечисления на цифра.цифра
+
+% формат нумерации заголовков
+%\renewcommand{\thechapter}{\arabic{chapter}.}
+%\renewcommand{\thesection}{\thechapter\arabic{section}.}
+%\renewcommand{\thesubsection}{\thechapter\arabic{subsection}.}
