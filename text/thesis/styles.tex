@@ -65,12 +65,20 @@
 \renewcommand{\theenumiii}{\arabic{enumiii}} % Меняем везде перечисления на цифра.цифра
 \renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}% Меняем везде перечисления на цифра.цифра
 
-% формат нумерации заголовков
+% формат нумерации заголовков, рисунков, таблиц
 \renewcommand{\thechapter}{\arabic{chapter}.}
 \renewcommand{\thesection}{\thechapter\arabic{section}.}
 \renewcommand{\thesubsection}{\thechapter\arabic{subsection}.}
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\thefigure}{\thechapter\arabic{figure}}
 
 % меняем Оглавление с жирной и огромной на лаконичную - 14 pt, Times New Roman, по центру - ппц как было не просто (работает с babel)
 \addto\captionsrussian{% Replace "english" with the language you use
   \renewcommand{\contentsname}{\sffamily\fontsize{14pt}{14pt}\selectfont{\texttm{\hfill Оглавление \hfill}}}
+}
+
+%% Нумерация страниц
+
+\newcommand{\changefont}{%
+    \fontsize{14pt}{14pt}\selectfont
 }
