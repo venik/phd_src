@@ -27,6 +27,10 @@
     citecolor={citecolor}, urlcolor={urlcolor}
 }
 
+% listing
+\renewcommand{\lstlistingname}{Листинг}% Listing -> Algorithm
+%\renewcommand{\lstlistlistingname}{List of \lstlistingname s}% List of Listings -> List of Algorithms
+
 %%% Оглавление %%%
 \renewcommand{\cftchapdotsep}{\cftdotsep}
 \addtocontents{toc}{~\hfill{Стр.}\par}			% добавить Стр. над номерами страниц
@@ -53,10 +57,6 @@
 \belowdisplayskip=12pt plus 3pt minus 9pt
 \belowdisplayshortskip=7pt plus 3pt minus 4pt
 
-% listing
-\renewcommand{\lstlistingname}{Листинг}% Listing -> Algorithm
-%\renewcommand{\lstlistlistingname}{List of \lstlistingname s}% List of Listings -> List of Algorithms
-
 % формат нумерации списков 
 \renewcommand{\theenumi}{\arabic{enumi}.} % Меняем везде перечисления на цифра.цифра
 \renewcommand{\labelenumi}{\arabic{enumi}.} % Меняем везде перечисления на цифра.цифра
@@ -66,6 +66,11 @@
 \renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.}% Меняем везде перечисления на цифра.цифра
 
 % формат нумерации заголовков
-%\renewcommand{\thechapter}{\arabic{chapter}.}
-%\renewcommand{\thesection}{\thechapter\arabic{section}.}
-%\renewcommand{\thesubsection}{\thechapter\arabic{subsection}.}
+\renewcommand{\thechapter}{\arabic{chapter}.}
+\renewcommand{\thesection}{\thechapter\arabic{section}.}
+\renewcommand{\thesubsection}{\thechapter\arabic{subsection}.}
+
+% меняем Оглавление с жирной и огромной на лаконичную - 14 pt, Times New Roman, по центру - ппц как было не просто (работает с babel)
+\addto\captionsrussian{% Replace "english" with the language you use
+  \renewcommand{\contentsname}{\sffamily\fontsize{14pt}{14pt}\selectfont{\texttm{\hfill Оглавление \hfill}}}
+}

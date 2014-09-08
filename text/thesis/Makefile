@@ -3,7 +3,6 @@ TEX2DVI = texi2dvi
 TEX_FLAGS = --dvipdf
 
 THESIS_ALL = 	\
-		thesis_default.tex	\
 		thesis.tex		\
 		sec1_new.tex
 
