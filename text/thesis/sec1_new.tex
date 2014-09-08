@@ -121,11 +121,11 @@
 
 СПМ ${G_p(f)}$ центрированного СП по теореме Винера-Хинчина является преобразованием Фурье
 от КФ \cite{borisovBook}:
-\begin{eqnarray}
+\begin{align}
 	\label{eq:psd_corr_func}
 	G_p(f) & = & \int^{\inf}_{inf} R(\tau)e^{-j2\pi f \tau} d\tau = \int^{\inf}_{inf} \left( 1 - \frac{|\tau|}{\tau_c} \right) e^{-j2\pi f \tau} d\tau = \nonumber \\
 		& = & \int^{\tau_c}_{0}\left( 1 - \frac{|\tau|}{\tau_c} \right) \cos{(2\pi f \tau)} d\tau = \tau_c \left( \frac{\sin{(\pi f \tau_c)}}{\pi f \tau_c} \right)^2
-\end{eqnarray}
+\end{align}
 
 Выражение \ref{eq:psd_corr_func} представляет собой СПМ произведения ${p(t)d(t)}$ при использовании случайного сигнала ${p(t)}$.
 
