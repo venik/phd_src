@@ -87,6 +87,7 @@
 \pagestyle{fancy} {%
 	\fancyhf{}
 	\fancyhead[CE,CO]{\changefont \thepage}
+	\headsep = -1.5cm
 }
 
 \renewcommand{\headrulewidth}{0pt}
@@ -96,9 +97,10 @@
 \fancypagestyle{plain}{%
 	\fancyhf{}
 	\fancyhead[CE,CO]{\changefont \thepage}
+	\headsep = -1.5cm
 }
 
 \titleformat{\section}[runin]{}{}{}{}[]
 
 % отключить переносы
-\pretolerance10000
+%\pretolerance10000
