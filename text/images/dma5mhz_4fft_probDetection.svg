@@ -15,7 +15,7 @@
    width="598.75"
    height="450"
    xml:space="preserve"
-   sodipodi:docname="dma5mhz_4fft_probDetection.eps"><metadata
+   sodipodi:docname="dma5mhz_4fft_probDetection.svg"><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
@@ -410,14 +410,6 @@
              id="tspan242"
              x="198.84988"
              y="-4.1668">источник</tspan></text>
-<text
-           transform="matrix(0,1,1,0,25.9168,175.25)"
-           id="text244"><tspan
-             style="font-size:18px;font-variant:normal;font-weight:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Helvetica;-inkscape-font-specification:Helvetica"
-             sodipodi:role="line"
-             id="tspan246"
-             x="0"
-             y="0">мс</tspan></text>
 </g><path
          d="m 3772.5,2388.33 521.668,0 0,891.668 -521.668,0 0,-891.668 z"
          style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
@@ -523,4 +515,17 @@
            clip-path="url(#clipPath342)"><path
              d="m 3830.83,2512.5 294.17,0"
              style="fill:none;stroke:#000000;stroke-opacity:1;stroke-width:20;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:60;stroke-dashoffset:0"
-             id="path346" /></g></g></g></g></svg>
+             id="path346" /></g></g></g><text
+       style="font-size:12px"
+       transform="matrix(0,1,1,0,0,0)"
+       id="text222"
+       x="148.7124"
+       y="23.652554"><tspan
+         style="font-size:18px;font-variant:normal;font-weight:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVuSans"
+         x="148.7124"
+         y="23.652554"
+         sodipodi:role="line"
+         id="tspan224">p<tspan
+   style="font-size:12px;baseline-shift:sub"
+   id="tspan4268">зах</tspan> (k)</tspan></text>
+</g></svg>

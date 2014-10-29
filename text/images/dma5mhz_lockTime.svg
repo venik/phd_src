@@ -15,7 +15,7 @@
    width="598.75"
    height="450"
    xml:space="preserve"
-   sodipodi:docname="dma5mhz_lockTime.eps"><metadata
+   sodipodi:docname="dma5mhz_lockTime.svg"><metadata
      id="metadata4318"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
@@ -426,11 +426,13 @@
              x="152.44981"
              y="-4.1668">Номер источника, k</tspan></text>
 <text
-           transform="matrix(0,1,1,0,30.9168,175.25)"
-           id="text4556"><tspan
+           transform="matrix(0,1,1,0,0,0)"
+           id="text4556"
+           x="149.6499"
+           y="30.9168"><tspan
              style="font-size:18px;font-variant:normal;font-weight:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVuSans"
-             x="0"
-             y="0"
+             x="149.6499"
+             y="30.9168"
              sodipodi:role="line"
              id="tspan4558">t<tspan
    style="font-size:12px;baseline-shift:sub"
