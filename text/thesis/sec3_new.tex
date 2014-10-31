@@ -40,9 +40,9 @@
 где ${*}$ - операция комплексного сопряжения, ${\tau}$ - задержка между копиями смеси. Подставляя (\ref{eq:dma_cdma_for_2}) в (\ref{eq:dma_cdma_1}) получается выражение:
 \begin{eqnarray}
 	\label{eq:dma_cdma_2}
-	x(m) & = &[ A_1 g_1(m + \tau_1) exp \left[ j \left( \tilde{\omega_1} m + \phi_1 (m) \right) \right] + \nonumber \\
-	     & + & A_2 g_2(m + \tau_2) exp \left[ j \left(  \tilde{\omega_2} m + \phi_2 (m) \right) \right] + n(m) ] + \nonumber \\
-	     & + & [A_1 g_1(m + \tau + \tau_1) exp \left[ j \left( \tilde{\omega_1} (m + \tau) + \phi_1 (m + \tau) \right) \right]  + \nonumber \\
+	xx(m) & = &[ A_1 g_1(m + \tau_1) exp \left[ j \left( \tilde{\omega_1} m + \phi_1 (m) \right) \right] + \nonumber \\
+	     & + & A_2 g_2(m + \tau_2) exp \left[ j \left(  \tilde{\omega_2} m + \phi_2 (m) \right) \right] + n(m) ] \cdot \nonumber \\
+	     & \cdot & [A_1 g_1(m + \tau + \tau_1) exp \left[ j \left( \tilde{\omega_1} (m + \tau) + \phi_1 (m + \tau) \right) \right]  + \nonumber \\
 	     & + & A_2 g_2(m + \tau + \tau_2) exp \left[ j \left(  \tilde{\omega_2} (m + \tau) + \phi_2 (m + \tau) \right) \right] +  \\
 	     & + & n(m + \tau)]^*. \nonumber
 \end{eqnarray}
@@ -66,9 +66,9 @@
 Также появляются новые шумовые компоненты:
 \begin{eqnarray}
 	\label{eq:dma_cdma_5}
-	xx_{noise}(m) & = & A_{1} g_{1}(m + \tau_1) exp \left[ j \left( \tilde{\omega_1} m + \phi_{1} (m) \right) \right] n(m + \tau) + \nonumber \\
+	xx_{noise}(m) & = & A_{1} g_{1}(m + \tau_1) exp \left[ j \left( \tilde{\omega_1} m + \phi_{1} (m) \right) \right] n(m + \tau)^* + \nonumber \\
 		& + & A_{2} g_{2}(m + \tau_2) exp \left[ j \left( \tilde{\omega_2} m + \phi_{2} (m) \right) \right] n(m + \tau)^* + \nonumber \\
-		& = & n(m)A_{1} g_{1}(m + \tau_1 + \tau) exp \left[ j \left( \tilde{\omega_1} (m + \tau) + \phi_{1} (m + \tau) \right) \right] + \nonumber \\
+		& + & n(m)A_{1} g_{1}(m + \tau_1 + \tau) exp \left[ j \left( \tilde{\omega_1} (m + \tau) + \phi_{1} (m + \tau) \right) \right] + \nonumber \\
 		& + & n(m)A_{2} g_{2}(m + \tau_2 + \tau) exp \left[ j \left( \tilde{\omega_2} (m + \tau) + \phi_{2} (m + \tau) \right) \right] + \nonumber \\
 		& + & n(m)n(m+\tau).
 \end{eqnarray}
@@ -156,7 +156,7 @@
 		x_{new}(k) = \frac{g_{new}(k)}{2} \left(\cos (2\pi f \tau) - \cos \left[2 \pi f (2t - \tau)\right]\right).
 	\end{equation}
 
-\item[Шаг 2.] Полученная смесь ${x_{new}(k)}$ фильтруется ФВЧ для отсечения высокочастотной компоненты.
+\item[Шаг 2.] Полученная смесь ${x_{new}(k)}$ фильтруется ФНЧ для отсечения высокочастотной компоненты.
 \item[Шаг 3.] Генерируется локальная ПСП ${g(k)}$ и умножается на задержанную копию ${g(k-\tau)}$
 	\begin{equation}
 		%\label{}
@@ -297,7 +297,7 @@ ${\Delta \omega_m = 100}$ рад/с. Ввиду того, что требуем�
 	\label{eq:clrb_mean}
 	{\bf{E}} \hat{\theta} = \int \hat{\theta} (X_1, ..., X_n)L(X_1, ..., X_n; \theta) dX_1 ... dX_n= \theta + b_{\hat{\theta}}(\theta),
 \end{equation}
-${b_{\hat{\theta}}(\theta)}$ дает смещение оценки ${\theta}$.
+где ${b_{\hat{\theta}}(\theta)}$ дает смещение оценки ${\theta}$.
 
 В \cite{ayvazyan-book} приведено, что если  ПРВ ${f(X, \theta)}$  
 удовлетворяет некоторым  условиям регулярности (в смысле характера ее зависимости от ${\theta}$), а именно:
